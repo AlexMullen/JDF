@@ -2,8 +2,6 @@ package uk.ac.tees.aia.mullen.draughts.backend;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
-
 import java.util.List;
 
 import org.junit.Test;
@@ -43,15 +41,12 @@ public class TestEnglishDraughtsMoveFinder {
                 moveFinder.findMoves(board, lightPieceOwner);
         // There should only be one found.
         assertEquals(1, foundMoves.size());
-        if (foundMoves.get(0) instanceof SimpleMove) {
-            final SimpleMove foundMove = (SimpleMove) foundMoves.get(0);
-            final BoardPosition expectedFromPosition = new BoardPosition(3, 7);
-            final BoardPosition expectedtoPosition = new BoardPosition(2, 6);
-            assertEquals(expectedFromPosition, foundMove.getFrom());
-            assertEquals(expectedtoPosition, foundMove.getTo());
-        } else {
-            fail("Expected a SimpleMove instance!");
-        }
+        final Move foundMove = foundMoves.get(0);
+        // There should be no jumps.
+        assertNull(foundMove.getJumps());
+        // Assert the expected move positions.
+        assertEquals(new BoardPosition(3, 7), foundMove.getFrom());
+        assertEquals(new BoardPosition(2, 6), foundMove.getTo());
     }
     /**
      * A test for making sure a simple move can be properly found.
@@ -64,19 +59,15 @@ public class TestEnglishDraughtsMoveFinder {
                 moveFinder.findMoves(board, lightPieceOwner);
         // There should only be two found.
         assertEquals(2, foundMoves.size());
-        if (foundMoves.get(0) instanceof SimpleMove
-                && foundMoves.get(1) instanceof SimpleMove) {
-            // Check the first move is what we expect.
-            final SimpleMove firstfoundMove = (SimpleMove) foundMoves.get(0);
-            assertEquals(new BoardPosition(3, 1), firstfoundMove.getFrom());
-            assertEquals(new BoardPosition(2, 0), firstfoundMove.getTo());
-            // Check the second move is what we expect.
-            final SimpleMove secondfoundMove = (SimpleMove) foundMoves.get(1);
-            assertEquals(new BoardPosition(3, 1), secondfoundMove.getFrom());
-            assertEquals(new BoardPosition(4, 0), secondfoundMove.getTo());
-        } else {
-            fail("Expected SimpleMove instances!");
-        }
+        final Move firstfoundMove = foundMoves.get(0);
+        assertNull(firstfoundMove.getJumps());
+        assertEquals(new BoardPosition(3, 1), firstfoundMove.getFrom());
+        assertEquals(new BoardPosition(2, 0), firstfoundMove.getTo());
+        // Check the second move is what we expect.
+        final Move secondfoundMove = foundMoves.get(1);
+        assertNull(secondfoundMove.getJumps());
+        assertEquals(new BoardPosition(3, 1), secondfoundMove.getFrom());
+        assertEquals(new BoardPosition(4, 0), secondfoundMove.getTo());
     }
     /**
      * A test for making sure no moves are returned when there isn't any.
@@ -107,25 +98,20 @@ public class TestEnglishDraughtsMoveFinder {
                 moveFinder.findMoves(board, lightPieceOwner);
         // There should only be one found.
         assertEquals(1, foundMoves.size());
-        if (foundMoves.get(0) instanceof JumpMoveSequence) {
-            final JumpMoveSequence jumpMoveSeq =
-                    (JumpMoveSequence) foundMoves.get(0);
-            final BoardPosition expectedFromPosition = new BoardPosition(3, 7);
-            final BoardPosition expectedtoPosition = new BoardPosition(1, 5);
-            final BoardPosition expectedJumpPosition = new BoardPosition(2, 6);
-            assertEquals(expectedFromPosition, jumpMoveSeq.getFrom());
-            assertEquals(expectedtoPosition, jumpMoveSeq.getTo());
-            // There should be one jump in the sequence.
-            assertEquals(1, jumpMoveSeq.getJumps().size());
-            assertEquals(expectedFromPosition,
-                    jumpMoveSeq.getJumps().get(0).getFrom());
-            assertEquals(expectedtoPosition,
-                    jumpMoveSeq.getJumps().get(0).getTo());
-            assertEquals(expectedJumpPosition,
-                    jumpMoveSeq.getJumps().get(0).getJumped());
-        } else {
-            fail("Expected a JumpMoveSequence instance!");
-        }
+        final Move jumpMove = foundMoves.get(0);
+        final BoardPosition expectedFromPosition = new BoardPosition(3, 7);
+        final BoardPosition expectedtoPosition = new BoardPosition(1, 5);
+        final BoardPosition expectedJumpPosition = new BoardPosition(2, 6);
+        assertEquals(expectedFromPosition, jumpMove.getFrom());
+        assertEquals(expectedtoPosition, jumpMove.getTo());
+        // There should be one jump in the sequence.
+        assertEquals(1, jumpMove.getJumps().size());
+        assertEquals(expectedFromPosition,
+                jumpMove.getJumps().get(0).getFrom());
+        assertEquals(expectedtoPosition,
+                jumpMove.getJumps().get(0).getTo());
+        assertEquals(expectedJumpPosition,
+                jumpMove.getJumps().get(0).getJumped());
     }
     /**
      * A test for making sure a double jump in the same diagonal direction works
@@ -141,24 +127,19 @@ public class TestEnglishDraughtsMoveFinder {
                 moveFinder.findMoves(board, lightPieceOwner);
         // There should only be one found.
         assertEquals(1, foundMoves.size());
-        if (foundMoves.get(0) instanceof JumpMoveSequence) {
-            final JumpMoveSequence jumpMoveSeq =
-                    (JumpMoveSequence) foundMoves.get(0);
-            // There should be two jumps in the sequence.
-            assertEquals(2, jumpMoveSeq.getJumps().size());
-            // Check the first jump in the sequence is what we expect.
-            final JumpMove firstJump = jumpMoveSeq.getJumps().get(0);
-            assertEquals(new BoardPosition(0, 7), firstJump.getFrom());
-            assertEquals(new BoardPosition(2, 5), firstJump.getTo());
-            assertEquals(new BoardPosition(1, 6), firstJump.getJumped());
-            // Check the second jump in the sequence is what we expect.
-            final JumpMove secondJump = jumpMoveSeq.getJumps().get(1);
-            assertEquals(new BoardPosition(2, 5), secondJump.getFrom());
-            assertEquals(new BoardPosition(4, 3), secondJump.getTo());
-            assertEquals(new BoardPosition(3, 4), secondJump.getJumped());
-        } else {
-            fail("Expected a JumpMoveSequence instance!");
-        }
+        final Move foundJumpMove = foundMoves.get(0);
+        // There should be two jumps in the sequence.
+        assertEquals(2, foundJumpMove.getJumps().size());
+        // Check the first jump in the sequence is what we expect.
+        final Jump firstJump = foundJumpMove.getJumps().get(0);
+        assertEquals(new BoardPosition(0, 7), firstJump.getFrom());
+        assertEquals(new BoardPosition(2, 5), firstJump.getTo());
+        assertEquals(new BoardPosition(1, 6), firstJump.getJumped());
+        // Check the second jump in the sequence is what we expect.
+        final Jump secondJump = foundJumpMove.getJumps().get(1);
+        assertEquals(new BoardPosition(2, 5), secondJump.getFrom());
+        assertEquals(new BoardPosition(4, 3), secondJump.getTo());
+        assertEquals(new BoardPosition(3, 4), secondJump.getJumped());
     }
     /**
      * An empty mock <code>PieceOwner</code> instance used as a place holder

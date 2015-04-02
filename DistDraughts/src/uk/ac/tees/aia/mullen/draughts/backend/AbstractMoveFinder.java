@@ -29,7 +29,7 @@ public abstract class AbstractMoveFinder implements
         // First check if the top-left position exists and is vacant.
         if (board.isPositionValid(spaceX, spaceY)
                 && !board.isPieceAt(spaceX, spaceY)) {
-            return new SimpleMove(position, new BoardPosition(spaceX, spaceY));
+            return new Move(position, new BoardPosition(spaceX, spaceY));
         }
         // No move.
         return null;
@@ -50,7 +50,7 @@ public abstract class AbstractMoveFinder implements
         // First check if the top-left position exists and is vacant.
         if (board.isPositionValid(spaceX, spaceY)
                 && !board.isPieceAt(spaceX, spaceY)) {
-            return new SimpleMove(position, new BoardPosition(spaceX, spaceY));
+            return new Move(position, new BoardPosition(spaceX, spaceY));
         }
         // No move.
         return null;
@@ -71,7 +71,7 @@ public abstract class AbstractMoveFinder implements
         // First check if the top-left position exists and is vacant.
         if (board.isPositionValid(spaceX, spaceY)
                 && !board.isPieceAt(spaceX, spaceY)) {
-            return new SimpleMove(position, new BoardPosition(spaceX, spaceY));
+            return new Move(position, new BoardPosition(spaceX, spaceY));
         }
         // No move.
         return null;
@@ -92,7 +92,7 @@ public abstract class AbstractMoveFinder implements
         // First check if the top-left position exists and is vacant.
         if (board.isPositionValid(spaceX, spaceY)
                 && !board.isPieceAt(spaceX, spaceY)) {
-            return new SimpleMove(position, new BoardPosition(spaceX, spaceY));
+            return new Move(position, new BoardPosition(spaceX, spaceY));
         }
         // No move.
         return null;
@@ -107,7 +107,7 @@ public abstract class AbstractMoveFinder implements
      * @return              the jump move or <code>null</code> if there is no
      *                      jump
      */
-    protected static JumpMove getJumpAboveLeft(
+    protected static Jump getJumpAboveLeft(
             final Board board,
             final BoardPosition fromPosition,
             final PieceOwner owner) {
@@ -127,7 +127,7 @@ public abstract class AbstractMoveFinder implements
             if (pieceToJumpOver != null
                     && !owner.equals(pieceToJumpOver.getOwner())) {
                 // This is a jump move.
-                return new JumpMove(
+                return new Jump(
                         fromPosition,
                         new BoardPosition(landPosX, landPosY),
                         new BoardPosition(jumpedPosX, jumpedPosY));
@@ -145,7 +145,7 @@ public abstract class AbstractMoveFinder implements
      * @return              the jump move or <code>null</code> if there is no
      *                      jump
      */
-    protected static JumpMove getJumpAboveRight(
+    protected static Jump getJumpAboveRight(
             final Board board,
             final BoardPosition fromPosition,
             final PieceOwner owner) {
@@ -165,7 +165,7 @@ public abstract class AbstractMoveFinder implements
             if (pieceToJumpOver != null
                     && !owner.equals(pieceToJumpOver.getOwner())) {
                 // This is a jump move.
-                return new JumpMove(
+                return new Jump(
                         fromPosition,
                         new BoardPosition(landPosX, landPosY),
                         new BoardPosition(jumpedPosX, jumpedPosY));
@@ -183,7 +183,7 @@ public abstract class AbstractMoveFinder implements
      * @return              the jump move or <code>null</code> if there is no
      *                      jump
      */
-    protected static JumpMove getJumpBottomLeft(
+    protected static Jump getJumpBottomLeft(
             final Board board,
             final BoardPosition fromPosition,
             final PieceOwner owner) {
@@ -203,7 +203,7 @@ public abstract class AbstractMoveFinder implements
             if (pieceToJumpOver != null
                     && !owner.equals(pieceToJumpOver.getOwner())) {
                 // This is a jump move.
-                return new JumpMove(
+                return new Jump(
                         fromPosition,
                         new BoardPosition(landPosX, landPosY),
                         new BoardPosition(jumpedPosX, jumpedPosY));
@@ -221,7 +221,7 @@ public abstract class AbstractMoveFinder implements
      * @return              the jump move or <code>null</code> if there is no
      *                      jump
      */
-    protected static JumpMove getJumpBottomRight(
+    protected static Jump getJumpBottomRight(
             final Board board,
             final BoardPosition fromPosition,
             final PieceOwner owner) {
@@ -241,7 +241,7 @@ public abstract class AbstractMoveFinder implements
             if (pieceToJumpOver != null
                     && !owner.equals(pieceToJumpOver.getOwner())) {
                 // This is a jump move.
-                return new JumpMove(
+                return new Jump(
                         fromPosition,
                         new BoardPosition(landPosX, landPosY),
                         new BoardPosition(jumpedPosX, jumpedPosY));

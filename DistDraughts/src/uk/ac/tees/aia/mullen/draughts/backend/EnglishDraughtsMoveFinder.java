@@ -18,8 +18,8 @@ public class EnglishDraughtsMoveFinder extends AbstractMoveFinder {
     @Override
     public final List<Move> findMoves(final Board board,
             final PieceOwner owner) {
-        final Collection<JumpMove> foundJumps = new ArrayList<>();
-        final Collection<Move> foundSimpleMoves = new ArrayList<>();
+        final Collection<Jump> foundJumps = new ArrayList<>();
+        final List<Move> foundSimpleMoves = new ArrayList<>();
         for (final BoardPosition piecePosition
                 : getPositionsForPieces(board, owner)) {
             final Piece piece = board.getPieceAt(piecePosition);
@@ -35,12 +35,9 @@ public class EnglishDraughtsMoveFinder extends AbstractMoveFinder {
             }
         }
         if (foundJumps.isEmpty()) {
-            final List<Move> combinedMoves = new ArrayList<>();
-            combinedMoves.addAll(foundJumps);
-            combinedMoves.addAll(foundSimpleMoves);
-            return combinedMoves;
+            return foundSimpleMoves;
         } else {
-            // Explore jumps further and get their sequences.
+            // Explore the found jumps further.
             return new ArrayList<Move>(getJumpSequences(board, foundJumps));
         }
     }
@@ -54,9 +51,9 @@ public class EnglishDraughtsMoveFinder extends AbstractMoveFinder {
      *                       or an empty list if there are no jumps available;
      *                       never <code>null</code>
      */
-    private static Collection<JumpMove> getJumpsForPiece(final Board board,
+    private static Collection<Jump> getJumpsForPiece(final Board board,
             final Piece piece, final BoardPosition piecePosition) {
-        final Collection<JumpMove> jumps = new ArrayList<>();
+        final Collection<Jump> jumps = new ArrayList<>();
         if (piece.isCrowned()) {
             /*
              * The piece is crowned so can move in any direction.
@@ -164,8 +161,8 @@ public class EnglishDraughtsMoveFinder extends AbstractMoveFinder {
      *                      <code>null</code>
      * @param possibleJump  the jump to potentially add to <code>jumps</code>
      */
-    private static void addJumpIfNotNull(final Collection<JumpMove> jumps,
-            final JumpMove possibleJump) {
+    private static void addJumpIfNotNull(final Collection<Jump> jumps,
+            final Jump possibleJump) {
         if (possibleJump != null) {
             jumps.add(possibleJump);
         }
@@ -175,14 +172,13 @@ public class EnglishDraughtsMoveFinder extends AbstractMoveFinder {
      *
      * @param board  the board to use
      * @param jumps  the jumps
-     * @return       a collection of {@link JumpMoveSequence} instances for the
-     *               given jumps
+     * @return       a collection of {@link Move} instances for the given jumps
      */
-    private static Collection<JumpMoveSequence> getJumpSequences(
+    private static Collection<Move> getJumpSequences(
             final Board board,
-            final Collection<JumpMove> jumps) {
-        final Collection<JumpMoveSequence> jumpSequences = new ArrayList<>();
-        for (final JumpMove singleJump : jumps) {
+            final Collection<Jump> jumps) {
+        final Collection<Move> jumpSequences = new ArrayList<>();
+        for (final Jump singleJump : jumps) {
             exploreJump(board,
                         board.getPieceAt(singleJump.getFrom()),
                         singleJump,
@@ -204,11 +200,11 @@ public class EnglishDraughtsMoveFinder extends AbstractMoveFinder {
     private static void exploreJump(
             final Board board,
             final Piece piece,
-            final JumpMove jump,
-            final List<JumpMove> path,
-            final Collection<JumpMoveSequence> sequences) {
+            final Jump jump,
+            final List<Jump> path,
+            final Collection<Move> sequences) {
         path.add(jump);
-        final Collection<JumpMove> furtherJumps =
+        final Collection<Jump> furtherJumps =
                 getJumpsForPiece(board, piece, jump.getTo());
         /*
          * Need to remove jumps that have already been done. This will happen
@@ -216,12 +212,12 @@ public class EnglishDraughtsMoveFinder extends AbstractMoveFinder {
          */
         removeAlreadyJumpedPositionMoves(furtherJumps, path);
         if (furtherJumps.isEmpty()) {
-            sequences.add(new JumpMoveSequence(
+            sequences.add(new Move(
                     path.get(0).getFrom(),
                     jump.getTo(),
                     path));
         } else {
-            for (final JumpMove furtherJump : furtherJumps) {
+            for (final Jump furtherJump : furtherJumps) {
                 // Check we have not already jumped over this position.
                 exploreJump(board,
                             piece,
@@ -239,14 +235,14 @@ public class EnglishDraughtsMoveFinder extends AbstractMoveFinder {
      * @param previousJumps  previous jumps
      */
     private static void removeAlreadyJumpedPositionMoves(
-            final Collection<JumpMove> jumps,
-            final List<JumpMove> previousJumps) {
-        final Iterator<JumpMove> jumpsIterator = jumps.iterator();
+            final Collection<Jump> jumps,
+            final List<Jump> previousJumps) {
+        final Iterator<Jump> jumpsIterator = jumps.iterator();
         while (jumpsIterator.hasNext()) {
             final BoardPosition jumpedPosition =
                     jumpsIterator.next().getJumped();
             // Check jumps already found.
-            for (final JumpMove jumpAlreadyMade : previousJumps) {
+            for (final Jump jumpAlreadyMade : previousJumps) {
                 if (jumpedPosition.equals(jumpAlreadyMade.getJumped())) {
                     jumpsIterator.remove();
                     // No point in searching the remaining if any.

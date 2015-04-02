@@ -11,7 +11,7 @@ import org.junit.Test;
  *
  * @author  Alex Mullen
  */
-public class TestSimpleMove {
+public class TestMove {
     /**
      * Tests the object with some typical expected arguments.
      */
@@ -20,7 +20,7 @@ public class TestSimpleMove {
     public final void testWithValidArgs() {
         final BoardPosition fromPos = new BoardPosition(1, 3);
         final BoardPosition toPos = new BoardPosition(1, 5);
-        final Move move = new SimpleMove(fromPos, toPos);
+        final Move move = new Move(fromPos, toPos);
         assertNotNull(move.getFrom());
         assertNotNull(move.getTo());
         assertEquals(fromPos, move.getFrom());
@@ -34,7 +34,7 @@ public class TestSimpleMove {
     @Test (expected = NullPointerException.class)
     public final void testConstructorWithNullFromPosition() {
         final BoardPosition toPos = new BoardPosition(1, 5);
-        new SimpleMove(null, toPos);
+        new Move(null, toPos);
         fail("NPE should have been thrown!");
     }
     /**
@@ -45,7 +45,7 @@ public class TestSimpleMove {
     @Test (expected = NullPointerException.class)
     public final void testConstructorWithNullToPosition() {
         final BoardPosition fromPos = new BoardPosition(1, 3);
-        new SimpleMove(fromPos, null);
+        new Move(fromPos, null);
         fail("NPE should have been thrown!");
     }
     /**
@@ -55,34 +55,7 @@ public class TestSimpleMove {
     @SuppressWarnings({ "static-method", "unused" })
     @Test (expected = NullPointerException.class)
     public final void testConstructorWithNullFromPositionAndToPosition() {
-        new SimpleMove(null, null);
+        new Move(null, null);
         fail("NPE should have been thrown!");
-    }
-    /**
-     * Tests the constructor with the same <code>BoardPosition</code> reference
-     * for both the <code>fromPosition</code> and <code>fromPosition</code>
-     * arguments.
-     */
-    @SuppressWarnings({ "static-method", "unused" })
-    @Test (expected = IllegalArgumentException.class)
-    public final void testConstructorWithSameFromAndToPositionReference() {
-        final BoardPosition pos = new BoardPosition(1, 3);
-        new SimpleMove(pos, pos);
-        fail("The fromPosition and toPosition arguments should not be allowed"
-                + " to be the same!");
-    }
-    /**
-     * Tests the constructor with the same <code>fromPosition</code> and
-     * <code>toPosition</code> but with two different object references to test
-     * that they are being compared for equality rather by identity.
-     */
-    @SuppressWarnings({ "static-method", "unused" })
-    @Test (expected = IllegalArgumentException.class)
-    public final void testConstructorWithSameFromAndToPosition() {
-        final BoardPosition fromPos = new BoardPosition(1, 1);
-        final BoardPosition toPos = new BoardPosition(1, 1);
-        new SimpleMove(fromPos, toPos);
-        fail("The fromPosition and toPosition arguments should not be allowed"
-                + " to be the same position!");
     }
 }

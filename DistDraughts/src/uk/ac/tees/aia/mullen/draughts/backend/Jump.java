@@ -8,36 +8,49 @@ import java.util.Objects;
  * @author  Alex Mullen
  *
  */
-public class JumpMove extends Move {
+public class Jump {
+    /** Holds the original position before the jump. */
+    private final BoardPosition from;
+    /** Holds the destination position for the jump. */
+    private final BoardPosition to;
     /** Holds the position that was jumped over. */
     private final BoardPosition jumped;
     /**
      * Creates a new instance using the specified source, destination
      * and jumped position.
      *
-     * @param fromPosition    the source position of the move
-     * @param toPosition      the destination position of the move
+     * @param fromPosition    the source position of the jump
+     * @param toPosition      the destination position of the jump
      * @param jumpedPosition  the position that was jumped over
      *
-     * @throws IllegalArgumentException  if any of <code>fromPosition</code>,
-     *                                   <code>toPosition</code> or
-     *                                   <code>jumpedPosition</code> point to
-     *                                   the same position
      * @throws NullPointerException  if either <code>fromPosition</code>,
      *                               <code>toPosition</code> or
      *                               <code>jumpedPosition</code> is
      *                               <code>null</code>
      */
-    public JumpMove(
+    public Jump(
             final BoardPosition fromPosition,
             final BoardPosition toPosition,
             final BoardPosition jumpedPosition) {
-        super(fromPosition, toPosition);
-        jumped = Objects.requireNonNull(jumpedPosition);
-        if (jumped.equals(fromPosition) || jumped.equals(toPosition)) {
-            throw new IllegalArgumentException(
-                    "Jumping over its start or end position?");
-        }
+        from = Objects.requireNonNull(fromPosition, "eessh");
+        to = Objects.requireNonNull(toPosition, "to nowhere? idiots");
+        jumped = Objects.requireNonNull(jumpedPosition, "jumped nothing?");
+    }
+    /**
+     * Gets the source position before the move.
+     *
+     * @return  the source position
+     */
+    public final BoardPosition getFrom() {
+        return from;
+    }
+    /**
+     * Gets the destination position after the move completes.
+     *
+     * @return  the destination position.
+     */
+    public final BoardPosition getTo() {
+        return to;
     }
     /**
      * Gets the position that was jumped.
@@ -49,7 +62,7 @@ public class JumpMove extends Move {
     }
     @Override
     public final String toString() {
-        return "JumpMove [getFrom()=" + getFrom() + ", getTo()=" + getTo()
+        return "Jump [getFrom()=" + getFrom() + ", getTo()=" + getTo()
                 + ", getJumped()=" + getJumped() + "]";
     }
 
