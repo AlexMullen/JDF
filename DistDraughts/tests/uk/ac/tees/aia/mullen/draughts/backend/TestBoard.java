@@ -397,6 +397,23 @@ public class TestBoard {
         assertEquals(piece, retrievedPiece);
     }
     /**
+     * Tests {@link Board#setPieceAt(int, int, Piece)} throws an exception when
+     * passed in an out-of-bounds position.
+     */
+    @SuppressWarnings("static-method")
+    @Test (expected = ArrayIndexOutOfBoundsException.class)
+    public final void testSetPieceAtOutOfBounds() {
+        final int width = 8;
+        final int height = 8;
+        final int positionPlacedX = -1;
+        final int positionPlacedY = 8;
+        final Board board = new Board(width, height);
+        final Piece piece = new Piece(
+                new EmptyMockPieceOwner(), MoveDirection.DOWN);
+        board.setPieceAt(positionPlacedX, positionPlacedY, piece);
+        fail("Exception should have been thrown!");
+    }
+    /**
      * Tests {@link Board#isPieceAt(int, int)} behaves as expected when setting
      * and clearing positions.
      */

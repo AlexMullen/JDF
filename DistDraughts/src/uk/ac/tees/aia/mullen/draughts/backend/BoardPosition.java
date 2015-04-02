@@ -48,6 +48,14 @@ public class BoardPosition {
     public final int getY() {
         return y;
     }
+    /**
+     * Indicates whether one board position is equivalent to another.
+     * <p>
+     * Two positions are considered equivalent if:
+     * <p>
+     * <code>this.</code>{@link #getX()} == <code>obj.</code>{@link #getX()}
+     * && <code>this.</code>{@link #getY()} == <code>obj.</code>{@link #getY()}
+     */
     @Override
     public final boolean equals(final Object obj) {
         if (this == obj) {

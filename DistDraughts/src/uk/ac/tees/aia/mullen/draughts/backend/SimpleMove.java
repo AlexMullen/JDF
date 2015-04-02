@@ -14,6 +14,13 @@ public class SimpleMove extends Move {
      *
      * @param fromPosition  the source position of the move
      * @param toPosition    the destination position of the move
+     *
+     * @throws IllegalArgumentException  if <code>fromPosition</code> and
+     *                                   <code>toPosition</code> point to the
+     *                                   same position
+     * @throws NullPointerException  if either <code>fromPosition</code> or
+     *                               <code>toPosition</code> is
+     *                               <code>null</code>
      */
     public SimpleMove(final BoardPosition fromPosition,
             final BoardPosition toPosition) {

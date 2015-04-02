@@ -96,6 +96,9 @@ public class Board {
      * @return          the piece that was replaced at the specified position
      *                  - this could be <code>null</code> if there was no piece
      *                  at the set position
+     * @throws ArrayIndexOutOfBoundsException  if the location specified with
+     *                                         <code>x</code> and <code>y</code>
+     *                                         is out of bounds on this board
      */
     public final Piece setPieceAt(final int x, final int y,
             final Piece newPiece) {
@@ -142,5 +145,9 @@ public class Board {
      */
     public final boolean isKingsRow(final int y) {
         return y == 0 || y == (height - 1);
+    }
+    @Override
+    public final String toString() {
+        return "Board [width=" + width + ", height=" + height + "]";
     }
 }

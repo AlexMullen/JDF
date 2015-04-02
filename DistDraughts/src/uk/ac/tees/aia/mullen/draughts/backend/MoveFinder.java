@@ -16,7 +16,9 @@ public interface MoveFinder {
      *
      * @param board  the board
      * @param owner  the piece owner
-     * @return       a list of all the available moves
+     * @return       a list of all the available moves; if there are no moves an
+     *               empty list should be returned rather than
+     *               <code>null</code>.
      */
     List<Move> findMoves(Board board, PieceOwner owner);
 }

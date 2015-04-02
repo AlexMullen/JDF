@@ -68,6 +68,11 @@ public class Piece {
         }
         moveDirection = MoveDirection.BOTH;
     }
+    @Override
+    public final String toString() {
+        return "Piece [pieceOwner=" + pieceOwner + ", moveDirection="
+                + moveDirection + "]";
+    }
     /**
      * An enum that defines movement directions a draughts piece can move in.
      *
