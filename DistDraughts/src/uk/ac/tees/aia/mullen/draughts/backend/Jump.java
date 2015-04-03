@@ -65,5 +65,4 @@ public class Jump {
         return "Jump [getFrom()=" + getFrom() + ", getTo()=" + getTo()
                 + ", getJumped()=" + getJumped() + "]";
     }
-
 }

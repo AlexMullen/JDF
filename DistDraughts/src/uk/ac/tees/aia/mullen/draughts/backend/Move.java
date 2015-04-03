@@ -83,8 +83,13 @@ public class Move {
         final StringBuilder sb = new StringBuilder();
         sb.append("Move [getFrom()=").append(getFrom())
                 .append(", getTo()=").append(getTo()).append(", getJumps()=");
-        for (final Jump jump : getJumps()) {
-            sb.append("\n    ").append(jump);
+        // Need to remember to check for null.
+        if (getJumps() == null) {
+            sb.append("null");
+        } else {
+            for (final Jump jump : getJumps()) {
+                sb.append("\n    ").append(jump);
+            }
         }
         return sb.append("]").toString();
     }

@@ -250,29 +250,6 @@ public abstract class AbstractMoveFinder implements
         return null;
     }
     /**
-     * Performs a scan of the specified board and returns a list of all pieces
-     * found that belong to the specified <code>PieceOwner</code>.
-     *
-     * @param board  the board to scan
-     * @param owner  the owner of the pieces to get
-     * @return       a list of found pieces that belong to the specified owner
-     *               or an empty list if none are found; never <code>null</code>
-     */
-    protected static List<Piece> getAllPieces(
-            final Board board,
-            final PieceOwner owner) {
-        final List<Piece> pieces = new ArrayList<>();
-        for (int x = 0; x < board.getWidth(); x++) {
-            for (int y = 0; y < board.getHeight(); y++) {
-                final Piece foundPiece = board.getPieceAt(x, x);
-                if (foundPiece != null && foundPiece.getOwner().equals(owner)) {
-                    pieces.add(foundPiece);
-                }
-            }
-        }
-        return pieces;
-    }
-    /**
      * Performs a scan of the specified board and returns a list of all board
      * positions that have pieces belonging to the specified
      * <code>PieceOwner</code> on.
@@ -284,8 +261,7 @@ public abstract class AbstractMoveFinder implements
      *               <code>null</code>
      */
     protected static List<BoardPosition> getPositionsForPieces(
-            final Board board,
-            final PieceOwner owner) {
+            final Board board, final PieceOwner owner) {
         final List<BoardPosition> positions = new ArrayList<>();
         for (int x = 0; x < board.getWidth(); x++) {
             for (int y = 0; y < board.getHeight(); y++) {

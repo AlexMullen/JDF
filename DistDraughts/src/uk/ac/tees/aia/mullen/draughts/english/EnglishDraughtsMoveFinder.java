@@ -1,10 +1,17 @@
-package uk.ac.tees.aia.mullen.draughts.backend;
+package uk.ac.tees.aia.mullen.draughts.english;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import uk.ac.tees.aia.mullen.draughts.backend.AbstractMoveFinder;
+import uk.ac.tees.aia.mullen.draughts.backend.Board;
+import uk.ac.tees.aia.mullen.draughts.backend.BoardPosition;
+import uk.ac.tees.aia.mullen.draughts.backend.Jump;
+import uk.ac.tees.aia.mullen.draughts.backend.Move;
+import uk.ac.tees.aia.mullen.draughts.backend.Piece;
+import uk.ac.tees.aia.mullen.draughts.backend.PieceOwner;
 import uk.ac.tees.aia.mullen.draughts.backend.Piece.MoveDirection;
 
 /**
@@ -206,6 +213,10 @@ public class EnglishDraughtsMoveFinder extends AbstractMoveFinder {
         path.add(jump);
         final Collection<Jump> furtherJumps =
                 getJumpsForPiece(board, piece, jump.getTo());
+        /*
+         * TODO Stop an uncrowned piece moving againafter getting crowned in
+         * one move.
+         */
         /*
          * Need to remove jumps that have already been done. This will happen
          * with crown pieces as they can go back and forth.

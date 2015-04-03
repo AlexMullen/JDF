@@ -58,4 +58,20 @@ public class TestMove {
         new Move(null, null);
         fail("NPE should have been thrown!");
     }
+    /**
+     * Tests {@link Move#toString()} does not throw an NPE when attempting to
+     * print out a <code>null</code> {@link Move#getJumps()} reference.
+     */
+    @SuppressWarnings("static-method")
+    @Test
+    public final void testToStringWithNullJumpList() {
+        final BoardPosition fromPos = new BoardPosition(1, 3);
+        final BoardPosition toPos = new BoardPosition(1, 5);
+        // Test implicit null jump list constructor.
+        Move move = new Move(fromPos, toPos);
+        assertNotNull(move.toString());
+        // Test explicit null jump list constructor.
+        move = new Move(fromPos, toPos);
+        assertNotNull(move.toString());
+    }
 }

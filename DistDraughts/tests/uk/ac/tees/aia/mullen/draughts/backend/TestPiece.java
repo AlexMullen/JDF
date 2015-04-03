@@ -45,6 +45,41 @@ public class TestPiece {
         new Piece(null, null);
     }
     /**
+     * Tests the copy constructor to make sure it produces a copy that is
+     * exactly the same and does not change its state when the original
+     * changes.
+     */
+    @SuppressWarnings("static-method")
+    @Test
+    public final void testCopyConstructor() {
+        final Piece originalPiece = new Piece(new EmptyMockPieceOwner(),
+                MoveDirection.DOWN);
+        // Now create a clone.
+        final Piece clonedPiece = new Piece(originalPiece);
+        // Check the fields are the same.
+        assertEquals(originalPiece.getOwner(), clonedPiece.getOwner());
+        assertEquals(originalPiece.getMoveDirection(),
+                clonedPiece.getMoveDirection());
+        assertTrue(originalPiece.isCrowned() == clonedPiece.isCrowned());
+        // Crown the original
+        originalPiece.crown();
+        assertTrue(originalPiece.isCrowned());
+        // Assert that the clone has not changed.
+        assertEquals(originalPiece.getOwner(), clonedPiece.getOwner());
+        assertNotSame(originalPiece.getMoveDirection(),
+                clonedPiece.getMoveDirection());
+        assertTrue(originalPiece.isCrowned() != clonedPiece.isCrowned());
+    }
+    /**
+     * Tests that the copy constructor throws an NPE if <code>null</code> is
+     * passed into it.
+     */
+    @SuppressWarnings({ "static-method", "unused" })
+    @Test (expected = NullPointerException.class)
+    public final void testCopyConstructorWithNull() {
+        new Piece(null);
+    }
+    /**
      * Tests that {@link Piece#getMoveDirection()} returns the expected
      * value.
      */

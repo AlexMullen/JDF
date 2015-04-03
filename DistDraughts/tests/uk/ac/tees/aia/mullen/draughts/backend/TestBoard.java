@@ -389,12 +389,47 @@ public class TestBoard {
         final Board board = new Board(width, height);
         final Piece piece = new Piece(
                 new EmptyMockPieceOwner(), MoveDirection.DOWN);
-        Piece retrievedPiece;
         board.setPieceAt(positionPlacedX, positionPlacedY, piece);
-        retrievedPiece =
+        final Piece retrievedPiece =
                 board.setPieceAt(positionPlacedX, positionPlacedY, null);
         // This should be the same one we placed.
         assertEquals(piece, retrievedPiece);
+    }
+    /**
+     * Tests {@link Board#setPieceAt(BoardPosition, Piece)} sets the piece at
+     * the correct position.
+     */
+    @SuppressWarnings("static-method")
+    @Test
+    public final void testSetPieceAtBoardPosition() {
+        final int width = 8;
+        final int height = 8;
+        final int positionPlacedX = 7;
+        final int positionPlacedY = 2;
+        final Board board = new Board(width, height);
+        final Piece piece = new Piece(
+                new EmptyMockPieceOwner(), MoveDirection.DOWN);
+        assertNull(board.setPieceAt(
+                new BoardPosition(positionPlacedX, positionPlacedY), piece));
+        final Piece retrievedPiece =
+                board.getPieceAt(positionPlacedX, positionPlacedY);
+        // This should be the same one we placed.
+        assertEquals(piece, retrievedPiece);
+    }
+    /**
+     * Tests {@link Board#setPieceAt(BoardPosition, Piece)} throws an exception
+     * if passed in a <code>null</code> position.
+     */
+    @SuppressWarnings("static-method")
+    @Test (expected = NullPointerException.class)
+    public final void testSetPieceAtNullBoardPosition() {
+        final int width = 8;
+        final int height = 8;
+        final Board board = new Board(width, height);
+        final Piece piece = new Piece(
+                new EmptyMockPieceOwner(), MoveDirection.DOWN);
+        board.setPieceAt(null, piece);
+        fail("NPE should have been thrown!");
     }
     /**
      * Tests {@link Board#setPieceAt(int, int, Piece)} throws an exception when

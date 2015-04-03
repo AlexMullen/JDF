@@ -107,6 +107,25 @@ public class Board {
         return previousPiece;
     }
     /**
+     * Sets the piece at the specified position.
+     *
+     * @param position  the position
+     * @param newPiece  the piece to place at the specified position
+     *                  (this can be <code>null</code>)
+     * @return          the piece that was replaced at the specified position
+     *                  - this could be <code>null</code> if there was no piece
+     *                  at the set position
+     * @throws ArrayIndexOutOfBoundsException  if the location specified with
+     *                                         <code>position</code> is out of
+     *                                         bounds on this board
+     * @throws NullPointerException  if <code>position</code> is
+     *                               <code>null</code>
+     */
+    public final Piece setPieceAt(final BoardPosition position,
+            final Piece newPiece) {
+        return setPieceAt(position.getX(), position.getY(), newPiece);
+    }
+    /**
      * Gets whether there is a piece at the specified position.
      *
      * @param x  the X position (left-to-right)

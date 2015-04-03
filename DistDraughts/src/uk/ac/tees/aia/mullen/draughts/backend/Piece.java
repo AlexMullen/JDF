@@ -31,6 +31,18 @@ public class Piece {
         moveDirection = Objects.requireNonNull(direction, "Move nowhere?");
     }
     /**
+     * Creates a new instance that is a copy of the specified piece.
+     *
+     * @param piece  the piece to copy
+     * @throws NullPointerException  if <code>piece</code> is <code>null</code>
+     *
+     * @see #Piece(PieceOwner, MoveDirection)
+     */
+    public Piece(final Piece piece) {
+        pieceOwner = piece.pieceOwner;
+        moveDirection = piece.moveDirection;
+    }
+    /**
      * Gets the {@link PieceOwner} instance that this piece belongs to.
      *
      * @return  the owner
@@ -70,8 +82,8 @@ public class Piece {
     }
     @Override
     public final String toString() {
-        return "Piece [pieceOwner=" + pieceOwner + ", moveDirection="
-                + moveDirection + "]";
+        return "Piece [getOwner()=" + getOwner() + ", getMoveDirection()="
+                + getMoveDirection() + ", isCrowned()=" + isCrowned() + "]";
     }
     /**
      * An enum that defines movement directions a draughts piece can move in.

@@ -1,12 +1,24 @@
-package uk.ac.tees.aia.mullen.draughts.backend;
+package uk.ac.tees.aia.mullen.draughts.backend.english;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+
 import java.util.List;
 
 import org.junit.Test;
 
+import uk.ac.tees.aia.mullen.draughts.backend.ArtificialPlayer;
+import uk.ac.tees.aia.mullen.draughts.backend.BasicBoardEvaluator;
+import uk.ac.tees.aia.mullen.draughts.backend.Board;
+import uk.ac.tees.aia.mullen.draughts.backend.BoardPosition;
+import uk.ac.tees.aia.mullen.draughts.backend.Jump;
+import uk.ac.tees.aia.mullen.draughts.backend.MinimaxArtificialPlayer;
+import uk.ac.tees.aia.mullen.draughts.backend.Move;
+import uk.ac.tees.aia.mullen.draughts.backend.Piece;
+import uk.ac.tees.aia.mullen.draughts.backend.PieceOwner;
 import uk.ac.tees.aia.mullen.draughts.backend.Piece.MoveDirection;
+import uk.ac.tees.aia.mullen.draughts.english.EnglishDraughtsMoveFinder;
+import uk.ac.tees.aia.mullen.draughts.english.EnglishDraughtsMovePerformer;
 
 /**
  * Unit tests for {@link EnglishDraughtsMoveFinder}.
@@ -141,6 +153,61 @@ public class TestEnglishDraughtsMoveFinder {
         assertEquals(new BoardPosition(4, 3), secondJump.getTo());
         assertEquals(new BoardPosition(3, 4), secondJump.getJumped());
     }
+    /**
+     * A test for making sure a triple jump in the same diagonal direction works
+     * returns the correct move.
+     */
+    @Test
+    public final void testFindMovesWithTripleJumpSameDirection1() {
+        final Board board = new Board(8, 8);
+        assertNull(board.setPieceAt(0, 7, lightPiece));
+        assertNull(board.setPieceAt(1, 6, darkPiece));
+        assertNull(board.setPieceAt(3, 4, darkPiece));
+        assertNull(board.setPieceAt(5, 2, darkPiece));
+        final List<Move> foundMoves =
+                moveFinder.findMoves(board, lightPieceOwner);
+        // There should only be one found.
+        assertEquals(1, foundMoves.size());
+        final Move foundJumpMove = foundMoves.get(0);
+        // There should be two jumps in the sequence.
+        assertEquals(3, foundJumpMove.getJumps().size());
+        // Check the first jump in the sequence is what we expect.
+        final Jump firstJump = foundJumpMove.getJumps().get(0);
+        assertEquals(new BoardPosition(0, 7), firstJump.getFrom());
+        assertEquals(new BoardPosition(2, 5), firstJump.getTo());
+        assertEquals(new BoardPosition(1, 6), firstJump.getJumped());
+        // Check the second jump in the sequence is what we expect.
+        final Jump secondJump = foundJumpMove.getJumps().get(1);
+        assertEquals(new BoardPosition(2, 5), secondJump.getFrom());
+        assertEquals(new BoardPosition(4, 3), secondJump.getTo());
+        assertEquals(new BoardPosition(3, 4), secondJump.getJumped());
+        // Check the third jump in the sequence is what we expect.
+        final Jump thirdJump = foundJumpMove.getJumps().get(2);
+        assertEquals(new BoardPosition(4, 3), thirdJump.getFrom());
+        assertEquals(new BoardPosition(6, 1), thirdJump.getTo());
+        assertEquals(new BoardPosition(5, 2), thirdJump.getJumped());
+    }
+//    /**
+//     * This is just temporary for testing the AI in a basic way by tweaking
+//     * the values and seeing the output whilst there is no GUI for testing.
+//     */
+//    @Test
+//    public final void TestAi() {
+//        final Board board = new Board(8, 8);
+//        final ArtificialPlayer ai = new MinimaxArtificialPlayer(
+//                new BasicBoardEvaluator(),
+//                moveFinder,
+//                new EnglishDraughtsMovePerformer(),
+//                darkPieceOwner,
+//                9);
+//        final Piece aiPiece = new Piece(ai, MoveDirection.UP);
+//        board.setPieceAt(3, 7, aiPiece);
+//        board.setPieceAt(2, 6, darkPiece);
+//        board.setPieceAt(4, 6, darkPiece);
+//        board.setPieceAt(4, 4, darkPiece);
+//        board.setPieceAt(4, 2, darkPiece);
+//        ai.performMove(board);
+//    }
     /**
      * An empty mock <code>PieceOwner</code> instance used as a place holder
      * for testing.
