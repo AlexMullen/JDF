@@ -35,6 +35,27 @@ public class Board {
         board = new Piece[width][height];
     }
     /**
+     * Creates a new instance that is a deep-copy of the specified board.
+     *
+     * @param boardToCopy  the board to copy for this instance.
+     *
+     * @throws NullPointerException  if <code>boardToCopy</code> is
+     *                               <code>null</code>
+     */
+    public Board(final Board boardToCopy) {
+        width = boardToCopy.width;
+        height = boardToCopy.height;
+        board = new Piece[width][height];
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                final Piece foundPiece = boardToCopy.board[x][y];
+                if (foundPiece != null) {
+                    board[x][y] = new Piece(foundPiece);
+                }
+            }
+        }
+    }
+    /**
      * Gets the width of the board.
      * <p>
      * The width of the board goes from left-to-right in 2D space.
@@ -207,6 +228,18 @@ public class Board {
     }
     @Override
     public final String toString() {
-        return "Board [width=" + width + ", height=" + height + "]";
+        final StringBuilder sb = new StringBuilder();
+        sb.append("Board [width=").append(width).append(", height=")
+          .append(height).append("]");
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                final Piece foundPiece = board[x][y];
+                if (foundPiece != null) {
+                    sb.append("\n    (").append(x).append(",")
+                      .append(y).append(") = ").append(foundPiece);
+                }
+            }
+        }
+        return sb.toString();
     }
 }

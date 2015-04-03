@@ -78,6 +78,7 @@ public class TestPiece {
     @Test (expected = NullPointerException.class)
     public final void testCopyConstructorWithNull() {
         new Piece(null);
+        fail("NPE should have been thrown!");
     }
     /**
      * Tests that {@link Piece#getMoveDirection()} returns the expected

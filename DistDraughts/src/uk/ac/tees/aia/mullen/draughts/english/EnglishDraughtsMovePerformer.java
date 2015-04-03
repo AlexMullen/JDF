@@ -1,7 +1,7 @@
 package uk.ac.tees.aia.mullen.draughts.english;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.Objects;
 
 import uk.ac.tees.aia.mullen.draughts.backend.Board;
@@ -26,29 +26,31 @@ public class EnglishDraughtsMovePerformer implements MovePerformer {
     }
     @Override
     public final PerformedMove perform(final Move move, final Board board) {
-        final List<UndoOperation> undoOperations = new ArrayList<>();
+        final Deque<UndoOperation> undoOperations = new ArrayDeque<>();
         final Piece pieceToMove = board.getPieceAt(move.getFrom());
-        undoOperations.add(setPieceAt(board, move.getFrom(), null));
-        undoOperations.add(setPieceAt(board, move.getTo(), pieceToMove));
+        undoOperations.addFirst(setPieceAt(board, move.getFrom(), null));
+        undoOperations.addFirst(setPieceAt(board, move.getTo(), pieceToMove));
         if (move.getJumps() != null) {
             for (final Jump currentJump : move.getJumps()) {
-                undoOperations.add(
+                undoOperations.addFirst(
                         setPieceAt(board, currentJump.getJumped(), null));
             }
         }
         if (!pieceToMove.isCrowned() && board.isKingsRow(move.getTo().getY())) {
             /*
-             * Create a copy of the uncrowned piece before it gets crowned.
+             * Create a copy of the uncrowned piece, crown it and then place it
+             * into the board whilst saving the original for undoing.
              */
-            undoOperations.add(setPieceAt(board, move.getTo(),
-                    new Piece(pieceToMove)));
-            pieceToMove.crown();
+            final Piece pieceToMoveCopy = new Piece(pieceToMove);
+            pieceToMoveCopy.crown();
+            undoOperations.addFirst(
+                    setPieceAt(board, move.getTo(), pieceToMoveCopy));
         }
         return new PerformedMove() {
             @Override
             public void undo() {
-                for (final UndoOperation operation : undoOperations) {
-                    operation.undo();
+                while (!undoOperations.isEmpty()) {
+                    undoOperations.removeFirst().undo();
                 }
             }
         };

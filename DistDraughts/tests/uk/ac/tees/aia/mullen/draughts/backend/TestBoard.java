@@ -2,6 +2,7 @@ package uk.ac.tees.aia.mullen.draughts.backend;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
@@ -28,6 +29,56 @@ public class TestBoard {
         final Board board = new Board(width, height);
         assertEquals(width, board.getWidth());
         assertEquals(height, board.getHeight());
+    }
+    /**
+     * Tests the copy constructor to make sure it produces a copy that is
+     * exactly the same and does not change its state when the original
+     * changes.
+     */
+    @SuppressWarnings("static-method")
+    @Test
+    public final void testBoardCopyConstructor() {
+        // Check an empty board copy is the same.
+        final Board board1 = new Board(7, 8);
+        final Board board1Copy = new Board(board1);
+        assertEquals(board1, board1Copy);
+        /*
+         * Check a placed piece is equal to its copied counterpart but does not
+         * share the same reference.
+         */
+        final Piece piece1 = new Piece(
+                new EmptyMockPieceOwner(), MoveDirection.DOWN);
+        final Board board2 = new Board(5, 8);
+        final int piecePosX = 2;
+        final int piecePosY = 3;
+        assertNull(board2.setPieceAt(piecePosX, piecePosY, piece1));
+        final Board board2Copy = new Board(board2);
+        // They should equal each other...
+        assertTrue(board2.equals(board2Copy));
+        assertTrue(board2Copy.equals(board2));
+        final Piece board2Piece = board2.getPieceAt(piecePosX, piecePosY);
+        final Piece board2CopyPiece =
+                board2Copy.getPieceAt(piecePosX, piecePosY);
+        assertEquals(board2Piece, board2CopyPiece);
+        // ... but not be the same reference.
+        assertNotSame(board2Piece, board2CopyPiece);
+        // Crowning one of them should mean both boards are no longer equal.
+        board2Piece.crown();
+        assertFalse(board2.equals(board2Copy));
+        assertFalse(board2Copy.equals(board2));
+        // Crowning the other one should make them equal again.
+        board2CopyPiece.crown();
+        assertTrue(board2.equals(board2Copy));
+        assertTrue(board2Copy.equals(board2));
+    }
+    /**
+     * Tests that the copy constructor throws an NPE if <code>null</code> is
+     * passed into it.
+     */
+    @SuppressWarnings({ "static-method", "unused" })
+    @Test (expected = NullPointerException.class)
+    public final void testBoardCopyConstructorWithNull() {
+        new Board(null);
     }
     /**
      * Tests the constructor with the lowest allowed width and height a board

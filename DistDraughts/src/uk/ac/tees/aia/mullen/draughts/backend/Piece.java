@@ -120,7 +120,7 @@ public class Piece {
                 + getMoveDirection() + ", isCrowned()=" + isCrowned() + "]";
     }
     /**
-     * An enum that defines movement directions a draughts piece can move in.
+     * Defines movement directions a draughts piece can move in.
      *
      * @author  Alex Mullen
      */

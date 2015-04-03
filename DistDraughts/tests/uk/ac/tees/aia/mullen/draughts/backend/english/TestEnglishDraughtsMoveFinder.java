@@ -14,6 +14,7 @@ import uk.ac.tees.aia.mullen.draughts.backend.BoardPosition;
 import uk.ac.tees.aia.mullen.draughts.backend.Jump;
 import uk.ac.tees.aia.mullen.draughts.backend.MinimaxArtificialPlayer;
 import uk.ac.tees.aia.mullen.draughts.backend.Move;
+import uk.ac.tees.aia.mullen.draughts.backend.MoveFinder;
 import uk.ac.tees.aia.mullen.draughts.backend.Piece;
 import uk.ac.tees.aia.mullen.draughts.backend.PieceOwner;
 import uk.ac.tees.aia.mullen.draughts.backend.Piece.MoveDirection;
@@ -27,8 +28,7 @@ import uk.ac.tees.aia.mullen.draughts.english.EnglishDraughtsMovePerformer;
  */
 public class TestEnglishDraughtsMoveFinder {
     /** The move finder to use for each test. */
-    private final EnglishDraughtsMoveFinder moveFinder =
-            new EnglishDraughtsMoveFinder();
+    private final MoveFinder moveFinder = new EnglishDraughtsMoveFinder();
     /** The dark piece owner used for testing. */
     private final PieceOwner darkPieceOwner = new EmptyMockPieceOwner();
     /** The light piece owner used for testing. */
