@@ -81,6 +81,40 @@ public class Piece {
         moveDirection = MoveDirection.BOTH;
     }
     @Override
+    public final int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + moveDirection.hashCode();
+        result = prime * result + pieceOwner.hashCode();
+        return result;
+    }
+    /**
+     * Indicates whether this piece is equal to the specified piece.
+     * <p>
+     * Two pieces are equal if they have the same identity or they have the same
+     * owner and move direction.
+     */
+    @Override
+    public final boolean equals(final Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Piece other = (Piece) obj;
+        if (moveDirection != other.moveDirection) {
+            return false;
+        }
+        if (!pieceOwner.equals(other.pieceOwner)) {
+            return false;
+        }
+        return true;
+    }
+    @Override
     public final String toString() {
         return "Piece [getOwner()=" + getOwner() + ", getMoveDirection()="
                 + getMoveDirection() + ", isCrowned()=" + isCrowned() + "]";

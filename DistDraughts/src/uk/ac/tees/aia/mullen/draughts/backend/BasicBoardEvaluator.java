@@ -9,9 +9,9 @@ package uk.ac.tees.aia.mullen.draughts.backend;
  */
 public class BasicBoardEvaluator implements BoardEvaluator {
     /** The number of points given for each piece. */
-    private static final int POINTS_FOR_PIECE = 1;
+    static final int POINTS_FOR_PIECE = 1;
     /** The number of points given for each crowned piece. */
-    private static final int POINTS_FOR_PIECE_CROWNED = 2;
+    static final int POINTS_FOR_PIECE_CROWNED = 2;
     /**
      * Creates a new instance.
      */

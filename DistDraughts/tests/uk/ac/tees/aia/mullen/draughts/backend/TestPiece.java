@@ -90,24 +90,12 @@ public class TestPiece {
         final Piece piece = new Piece(
                 new EmptyMockPieceOwner(), expectedMoveDirection);
         assertEquals(expectedMoveDirection, piece.getMoveDirection());
-    }
-    /**
-     * Tests that {@link Piece#getMoveDirection()} returns the expected
-     * value after crowning the piece.
-     */
-    @SuppressWarnings("static-method")
-    @Test
-    public final void testGetMoveDirectionAfterCrown() {
-        final MoveDirection originalMoveDirection = MoveDirection.DOWN;
-        final MoveDirection expectedMoveDirection = MoveDirection.BOTH;
-        final Piece piece = new Piece(
-                new EmptyMockPieceOwner(), originalMoveDirection);
+        // Test the move direction has changed after crowning.
         piece.crown();
-        assertEquals(expectedMoveDirection, piece.getMoveDirection());
+        assertEquals(MoveDirection.BOTH, piece.getMoveDirection());
     }
     /**
-     * Tests that {@link Piece#isCrowned()} returns <code>false</code>
-     * when the piece has not yet been crowned.
+     * Tests that {@link Piece#isCrowned()} returns expected values.
      */
     @SuppressWarnings("static-method")
     @Test
@@ -120,40 +108,18 @@ public class TestPiece {
          * directions.
          */
         assertNotSame(MoveDirection.BOTH, piece.getMoveDirection());
-    }
-    /**
-     * Tests that {@link Piece#isCrowned()} returns <code>true</code>
-     * when the piece has been crowned.
-     */
-    @SuppressWarnings("static-method")
-    @Test
-    public final void testIsCrownedAfterCrown() {
-        final Piece piece = new Piece(
-                new EmptyMockPieceOwner(), MoveDirection.UP);
-        // Should not be crowned yet.
-        assertFalse(piece.isCrowned());
         piece.crown();
         // Should be now crowned.
         assertTrue(piece.isCrowned());
         // A piece that is crowned should be able to move in both directions.
         assertEquals(MoveDirection.BOTH, piece.getMoveDirection());
-    }
-    /**
-     * Tests that {@link Piece#isCrowned()} returns <code>true</code>
-     * when the piece has been crowned by setting the <code>direction</code>
-     * parameter in the
-     * {@link Piece#Piece(PieceOwner, MoveDirection)}
-     * constructor to {@link MoveDirection#BOTH}.
-     */
-    @SuppressWarnings("static-method")
-    @Test
-    public final void testIsCrownedAfterCrownedInConstructor() {
-        final Piece piece = new Piece(
+        // Test a piece is crowned when crowned in the constructor.
+        final Piece crownedPiece = new Piece(
                 new EmptyMockPieceOwner(), MoveDirection.BOTH);
         // Should be already crowned.
-        assertTrue(piece.isCrowned());
+        assertTrue(crownedPiece.isCrowned());
         // A piece that is crowned should be able to move in both directions.
-        assertEquals(MoveDirection.BOTH, piece.getMoveDirection());
+        assertEquals(MoveDirection.BOTH, crownedPiece.getMoveDirection());
     }
     /**
      * Tests that {@link Piece#crown()} causes
@@ -200,6 +166,37 @@ public class TestPiece {
                 new EmptyMockPieceOwner(), MoveDirection.BOTH);
         piece.crown();
         fail("Should not allow a piece to crowned if it already is crowned.");
+    }
+    /**
+     * Tests that {@link Piece#equals(Object)} tests for equality correctly.
+     */
+    @SuppressWarnings("static-method")
+    @Test
+    public final void testEquals() {
+        final PieceOwner owner1 = new EmptyMockPieceOwner();
+        final PieceOwner owner2 = new EmptyMockPieceOwner();
+        final Piece piece1 = new Piece(owner1, MoveDirection.DOWN);
+        final Piece piece2 = new Piece(owner2, MoveDirection.UP);
+        final Piece piece1Copy = new Piece(piece1);
+        final Piece piece2Copy = new Piece(piece2);
+        // Test null.
+        assertFalse(piece1.equals(null));
+        assertFalse(piece2.equals(null));
+        // Test identity equality.
+        assertTrue(piece1.equals(piece1));
+        assertTrue(piece2.equals(piece2));
+        // Test non-identity equality.
+        assertTrue(piece1.equals(piece1Copy));
+        assertTrue(piece2.equals(piece2Copy));
+        assertTrue(piece1Copy.equals(piece1));
+        assertTrue(piece2Copy.equals(piece2));
+        // Test non-identity equality after crowning original pieces.
+        piece1.crown();
+        piece2.crown();
+        assertFalse(piece1.equals(piece1Copy));
+        assertFalse(piece2.equals(piece2Copy));
+        assertFalse(piece1Copy.equals(piece1));
+        assertFalse(piece2Copy.equals(piece2));
     }
     /**
      * An empty mock <code>PieceOwner</code> instance used as a place holder

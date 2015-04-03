@@ -1,5 +1,7 @@
 package uk.ac.tees.aia.mullen.draughts.backend;
 
+import java.util.Arrays;
+
 
 /**
  * Represents a board for the game of draughts.
@@ -164,6 +166,38 @@ public class Board {
      */
     public final boolean isKingsRow(final int y) {
         return y == 0 || y == (height - 1);
+    }
+    @Override
+    public final int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + Arrays.hashCode(board);
+        result = prime * result + height;
+        result = prime * result + width;
+        return result;
+    }
+    @Override
+    public final boolean equals(final Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Board other = (Board) obj;
+        if (width != other.width) {
+            return false;
+        }
+        if (height != other.height) {
+            return false;
+        }
+        if (!Arrays.deepEquals(board, other.board)) {
+            return false;
+        }
+        return true;
     }
     @Override
     public final String toString() {
