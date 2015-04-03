@@ -176,6 +176,12 @@ public class Board {
         result = prime * result + width;
         return result;
     }
+    /**
+     * Indicates whether two boards are equal to each other.
+     * <p>
+     * Two boards are equal if they both are the same size and each
+     * corresponding position is equal.
+     */
     @Override
     public final boolean equals(final Object obj) {
         if (this == obj) {

@@ -505,6 +505,7 @@ public class TestBoard {
     /**
      * Tests that {@link Board#equals(Object)} tests for equality correctly.
      */
+    @SuppressWarnings("static-method")
     @Test
     public final void testEquals() {
         final Board board1 = new Board(8, 8);
@@ -519,12 +520,9 @@ public class TestBoard {
         assertTrue(board1.equals(board2));
         assertTrue(board2.equals(board1));
         // Test non-identity equality when adding a piece to a board.
-        final PieceOwner owner1 = new EmptyMockPieceOwner();
-        final PieceOwner owner2 = new EmptyMockPieceOwner();
-        final Piece piece1 = new Piece(owner1, MoveDirection.DOWN);
-        final Piece piece2 = new Piece(owner2, MoveDirection.UP);
+        final Piece piece1 =
+                new Piece(new EmptyMockPieceOwner(), MoveDirection.DOWN);
         final Piece piece1Copy = new Piece(piece1);
-        final Piece piece2Copy = new Piece(piece2);
         // Add a piece to board 1 and assert board1 and board2 are not equal.
         assertNull(board1.setPieceAt(0, 7, piece1));
         assertFalse(board1.equals(board2));
