@@ -107,15 +107,12 @@ public class TestEnglishDraughtsMovePerformer {
         // There should be one move found.
         assertEquals(1, foundMoves.size());
         final Move moveToPerform = foundMoves.get(0);
-        System.out.println(moveToPerform);
         final PerformedMove performedMove =
                 movePerformer.perform(moveToPerform, board1);
         // The board should now look like the specified board.
         assertEquals(board1ExpectedStateAfterMove, board1);
         // Undoing the move should make the board look like its original state.
         performedMove.undo();
-        System.out.println(board1);
-        System.out.println(board1OriginalState);
         assertEquals(board1OriginalState, board1);
     }
     /**

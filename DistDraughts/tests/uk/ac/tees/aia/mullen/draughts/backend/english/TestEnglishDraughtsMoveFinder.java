@@ -7,19 +7,15 @@ import java.util.List;
 
 import org.junit.Test;
 
-import uk.ac.tees.aia.mullen.draughts.backend.ArtificialPlayer;
-import uk.ac.tees.aia.mullen.draughts.backend.BasicBoardEvaluator;
 import uk.ac.tees.aia.mullen.draughts.backend.Board;
 import uk.ac.tees.aia.mullen.draughts.backend.BoardPosition;
 import uk.ac.tees.aia.mullen.draughts.backend.Jump;
-import uk.ac.tees.aia.mullen.draughts.backend.MinimaxArtificialPlayer;
 import uk.ac.tees.aia.mullen.draughts.backend.Move;
 import uk.ac.tees.aia.mullen.draughts.backend.MoveFinder;
 import uk.ac.tees.aia.mullen.draughts.backend.Piece;
 import uk.ac.tees.aia.mullen.draughts.backend.PieceOwner;
 import uk.ac.tees.aia.mullen.draughts.backend.Piece.MoveDirection;
 import uk.ac.tees.aia.mullen.draughts.english.EnglishDraughtsMoveFinder;
-import uk.ac.tees.aia.mullen.draughts.english.EnglishDraughtsMovePerformer;
 
 /**
  * Unit tests for {@link EnglishDraughtsMoveFinder}.
@@ -187,27 +183,6 @@ public class TestEnglishDraughtsMoveFinder {
         assertEquals(new BoardPosition(6, 1), thirdJump.getTo());
         assertEquals(new BoardPosition(5, 2), thirdJump.getJumped());
     }
-//    /**
-//     * This is just temporary for testing the AI in a basic way by tweaking
-//     * the values and seeing the output whilst there is no GUI for testing.
-//     */
-//    @Test
-//    public final void TestAi() {
-//        final Board board = new Board(8, 8);
-//        final ArtificialPlayer ai = new MinimaxArtificialPlayer(
-//                new BasicBoardEvaluator(),
-//                moveFinder,
-//                new EnglishDraughtsMovePerformer(),
-//                darkPieceOwner,
-//                9);
-//        final Piece aiPiece = new Piece(ai, MoveDirection.UP);
-//        board.setPieceAt(3, 7, aiPiece);
-//        board.setPieceAt(2, 6, darkPiece);
-//        board.setPieceAt(4, 6, darkPiece);
-//        board.setPieceAt(4, 4, darkPiece);
-//        board.setPieceAt(4, 2, darkPiece);
-//        ai.performMove(board);
-//    }
     /**
      * An empty mock <code>PieceOwner</code> instance used as a place holder
      * for testing.
