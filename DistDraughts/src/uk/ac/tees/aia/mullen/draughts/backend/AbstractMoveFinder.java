@@ -110,7 +110,7 @@ public abstract class AbstractMoveFinder implements
     protected static Jump getJumpAboveLeft(
             final Board board,
             final BoardPosition fromPosition,
-            final PieceOwner owner) {
+            final Player owner) {
         final int landPosX = fromPosition.getX() - 2;
         final int landPosY = fromPosition.getY() - 2;
         /*
@@ -148,7 +148,7 @@ public abstract class AbstractMoveFinder implements
     protected static Jump getJumpAboveRight(
             final Board board,
             final BoardPosition fromPosition,
-            final PieceOwner owner) {
+            final Player owner) {
         final int landPosX = fromPosition.getX() + 2;
         final int landPosY = fromPosition.getY() - 2;
         /*
@@ -186,7 +186,7 @@ public abstract class AbstractMoveFinder implements
     protected static Jump getJumpBottomLeft(
             final Board board,
             final BoardPosition fromPosition,
-            final PieceOwner owner) {
+            final Player owner) {
         final int landPosX = fromPosition.getX() - 2;
         final int landPosY = fromPosition.getY() + 2;
         /*
@@ -224,7 +224,7 @@ public abstract class AbstractMoveFinder implements
     protected static Jump getJumpBottomRight(
             final Board board,
             final BoardPosition fromPosition,
-            final PieceOwner owner) {
+            final Player owner) {
         final int landPosX = fromPosition.getX() + 2;
         final int landPosY = fromPosition.getY() + 2;
         /*
@@ -261,7 +261,7 @@ public abstract class AbstractMoveFinder implements
      *               <code>null</code>
      */
     protected static List<BoardPosition> getPositionsForPieces(
-            final Board board, final PieceOwner owner) {
+            final Board board, final Player owner) {
         final List<BoardPosition> positions = new ArrayList<>();
         for (int x = 0; x < board.getWidth(); x++) {
             for (int y = 0; y < board.getHeight(); y++) {

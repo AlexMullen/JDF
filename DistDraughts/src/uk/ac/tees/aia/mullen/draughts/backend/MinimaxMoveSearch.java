@@ -36,8 +36,8 @@ public class MinimaxMoveSearch implements MoveSearch {
         maxSearchDepth = depth;
     }
     @Override
-    public final Move search(final Game game, final PieceOwner owner,
-            final PieceOwner opponent) {
+    public final Move search(final Game game, final Player owner,
+            final Player opponent) {
         int currentBestScore = Integer.MIN_VALUE;
         Move currentBestMove = null;
         final Board board = game.getBoard();
@@ -83,7 +83,7 @@ public class MinimaxMoveSearch implements MoveSearch {
      */
     private int minimax(final Board board, final int currentDepth,
             final boolean maximisingPlayer, final Game game,
-            final PieceOwner owner, final PieceOwner opponent) {
+            final Player owner, final Player opponent) {
         if (currentDepth == maxSearchDepth) {
             return boardEvaluator.evaluate(board, owner);
         } else {

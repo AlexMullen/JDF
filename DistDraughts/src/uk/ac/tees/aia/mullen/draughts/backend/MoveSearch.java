@@ -18,5 +18,5 @@ public interface MoveSearch {
      * @return          the best move or <code>null</code> if there are no
      *                  available moves
      */
-    Move search(Game game, PieceOwner owner, PieceOwner opponent);
+    Move search(Game game, Player owner, Player opponent);
 }

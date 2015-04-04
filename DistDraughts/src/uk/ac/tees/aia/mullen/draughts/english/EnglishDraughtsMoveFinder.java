@@ -11,7 +11,7 @@ import uk.ac.tees.aia.mullen.draughts.backend.BoardPosition;
 import uk.ac.tees.aia.mullen.draughts.backend.Jump;
 import uk.ac.tees.aia.mullen.draughts.backend.Move;
 import uk.ac.tees.aia.mullen.draughts.backend.Piece;
-import uk.ac.tees.aia.mullen.draughts.backend.PieceOwner;
+import uk.ac.tees.aia.mullen.draughts.backend.Player;
 import uk.ac.tees.aia.mullen.draughts.backend.Piece.MoveDirection;
 
 /**
@@ -24,7 +24,7 @@ import uk.ac.tees.aia.mullen.draughts.backend.Piece.MoveDirection;
 public class EnglishDraughtsMoveFinder extends AbstractMoveFinder {
     @Override
     public final List<Move> findMoves(final Board board,
-            final PieceOwner owner) {
+            final Player owner) {
         final Collection<Jump> foundJumps = new ArrayList<>();
         final List<Move> foundSimpleMoves = new ArrayList<>();
         for (final BoardPosition piecePosition

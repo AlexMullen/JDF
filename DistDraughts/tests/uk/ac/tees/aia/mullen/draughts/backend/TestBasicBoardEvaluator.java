@@ -19,9 +19,9 @@ public class TestBasicBoardEvaluator {
     /** The evaluator available for each test. */
     private final BoardEvaluator evaluator = new BasicBoardEvaluator();
     /** The dark piece owner used for testing. */
-    private final PieceOwner darkPieceOwner = new EmptyMockPieceOwner();
+    private final Player darkPieceOwner = new EmptyMockPieceOwner();
     /** The light piece owner used for testing. */
-    private final PieceOwner lightPieceOwner = new EmptyMockPieceOwner();
+    private final Player lightPieceOwner = new EmptyMockPieceOwner();
 //    /** The dark pieces used for testing. */
 //    private final Piece darkPiece =
 //            new Piece(darkPieceOwner, MoveDirection.DOWN);
@@ -94,9 +94,14 @@ public class TestBasicBoardEvaluator {
      *
      * @author  Alex Mullen
      */
-    private static class EmptyMockPieceOwner implements PieceOwner {
-        /*
-         * Nothing to implement.
-         */
+    private static class EmptyMockPieceOwner implements Player {
+        @Override
+        public void onTurn(final Game game) {
+            // Empty.
+        }
+        @Override
+        public void onGameEnded(final Game game, final Player winner) {
+            // Empty.
+        }
     }
 }

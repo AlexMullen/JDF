@@ -20,5 +20,5 @@ public interface MoveFinder {
      *               empty list should be returned rather than
      *               <code>null</code>.
      */
-    List<Move> findMoves(Board board, PieceOwner owner);
+    List<Move> findMoves(Board board, Player owner);
 }

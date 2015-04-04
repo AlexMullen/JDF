@@ -644,9 +644,14 @@ public class TestBoard {
      *
      * @author  Alex Mullen
      */
-    private static class EmptyMockPieceOwner implements PieceOwner {
-        /*
-         * Nothing to implement.
-         */
+    private static class EmptyMockPieceOwner implements Player {
+        @Override
+        public void onTurn(final Game game) {
+            // Empty.
+        }
+        @Override
+        public void onGameEnded(final Game game, final Player winner) {
+            // Empty.
+        }
     }
 }

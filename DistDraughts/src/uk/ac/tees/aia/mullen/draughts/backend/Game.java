@@ -1,8 +1,5 @@
 package uk.ac.tees.aia.mullen.draughts.backend;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 /**
  * An abstract class that that represents a game of Draughts.
  *
@@ -10,30 +7,6 @@ import java.util.Collection;
  *
  */
 public abstract class Game {
-    /** The collection of observers for this game. */
-    private final Collection<GameObserver> observers;
-    /**
-     * Creates a new instance.
-     */
-    protected Game() {
-        observers = new ArrayList<>();
-    }
-    /**
-     * Attaches the specified observer to this.
-     *
-     * @param observer  the observer
-     */
-    public final void addObserver(final GameObserver observer) {
-        observers.add(observer);
-    }
-    /**
-     * Gets all attached game observers.
-     *
-     * @return  all observers
-     */
-    protected final Collection<GameObserver> getObservers() {
-        return observers;
-    }
     /**
      * Starts the game.
      */
@@ -49,7 +22,7 @@ public abstract class Game {
      *
      * @return  the owner of the turn
      */
-    public abstract PieceOwner getTurnOwner();
+    public abstract Player getTurnOwner();
     /**
      * Gets the move finder this game uses.
      *
@@ -68,7 +41,7 @@ public abstract class Game {
      * @param owner  the piece owner
      * @return       the opponent
      */
-    public abstract PieceOwner getOpponent(final PieceOwner owner);
+    public abstract Player getOpponent(final Player owner);
     /**
      * Performs a move for the current turn owner.
      *

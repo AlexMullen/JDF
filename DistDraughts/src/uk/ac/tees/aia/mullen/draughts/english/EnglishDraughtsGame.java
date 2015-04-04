@@ -4,12 +4,11 @@ import java.util.Objects;
 
 import uk.ac.tees.aia.mullen.draughts.backend.Board;
 import uk.ac.tees.aia.mullen.draughts.backend.Game;
-import uk.ac.tees.aia.mullen.draughts.backend.GameObserver;
 import uk.ac.tees.aia.mullen.draughts.backend.Move;
 import uk.ac.tees.aia.mullen.draughts.backend.MoveFinder;
 import uk.ac.tees.aia.mullen.draughts.backend.MovePerformer;
 import uk.ac.tees.aia.mullen.draughts.backend.Piece;
-import uk.ac.tees.aia.mullen.draughts.backend.PieceOwner;
+import uk.ac.tees.aia.mullen.draughts.backend.Player;
 import uk.ac.tees.aia.mullen.draughts.backend.Piece.MoveDirection;
 
 /**
@@ -24,9 +23,9 @@ public class EnglishDraughtsGame extends Game {
     /** The height of the board. */
     private static final int BOARD_HEIGHT = 8;
     /** Holds the owner of the dark pieces. */
-    private final PieceOwner darkPieceOwner;
+    private final Player darkPieceOwner;
     /** Holds the owner of the light pieces. */
-    private final PieceOwner lightPieceOwner;
+    private final Player lightPieceOwner;
     /** Holds the board for this game. */
     private final Board board;
     /** The move finder for getting legal moves this uses. */
@@ -34,17 +33,17 @@ public class EnglishDraughtsGame extends Game {
     /** The move performer for performing moves this uses. */
     private final MovePerformer movePerformer;
     /** Holds whoever's turn it currently is. */
-    private PieceOwner turnOwner;
+    private Player turnOwner;
     /** Indicates whether the game has ended or not. */
     private boolean ended;
     /**
-     * Creates a new instance and associates the specified piece owners with the
+     * Creates a new instance and associates the specified players with the
      * light and dark pieces respectively.
      *
      * @param light  the owner of the light pieces
      * @param dark   the owner of the dark pieces
      */
-    public EnglishDraughtsGame(final PieceOwner light, final PieceOwner dark) {
+    public EnglishDraughtsGame(final Player light, final Player dark) {
         super();
         lightPieceOwner = Objects.requireNonNull(light);
         darkPieceOwner = Objects.requireNonNull(dark);
@@ -57,9 +56,7 @@ public class EnglishDraughtsGame extends Game {
     }
     @Override
     public final void start() {
-        for (final GameObserver observer : getObservers()) {
-            observer.onTurnChange(this, turnOwner);
-        }
+        turnOwner.onTurn(this);
     }
     @Override
     public final Board getBoard() {
@@ -67,7 +64,7 @@ public class EnglishDraughtsGame extends Game {
         return new Board(board);
     }
     @Override
-    public final PieceOwner getTurnOwner() {
+    public final Player getTurnOwner() {
         return turnOwner;
     }
     @Override
@@ -90,25 +87,23 @@ public class EnglishDraughtsGame extends Game {
         if (moveFinder.findMoves(board, turnOwner).isEmpty()) {
             // They moved but have no moves left so the other player wins.
             ended = true;
-            for (final GameObserver observer : getObservers()) {
-                observer.onGameEnded(this, getOpponent(turnOwner));
-            }
+            final Player winningPlayer = getOpponent(turnOwner);
+            lightPieceOwner.onGameEnded(this, winningPlayer);
+            darkPieceOwner.onGameEnded(this, winningPlayer);
         } else if (moveFinder.findMoves(
                 board, getOpponent(turnOwner)).isEmpty()) {
             // There turn but have no moves left.
             ended = true;
-            for (final GameObserver observer : getObservers()) {
-                observer.onGameEnded(this, turnOwner);
-            }
+            final Player winningPlayer = turnOwner;
+            lightPieceOwner.onGameEnded(this, winningPlayer);
+            darkPieceOwner.onGameEnded(this, winningPlayer);
         } else {
             turnOwner = getOpponent(turnOwner);
-            for (final GameObserver observer : getObservers()) {
-                observer.onTurnChange(this, turnOwner);
-            }
+            turnOwner.onTurn(this);
         }
     }
     @Override
-    public final PieceOwner getOpponent(final PieceOwner owner) {
+    public final Player getOpponent(final Player owner) {
         if (owner.equals(lightPieceOwner)) {
             return darkPieceOwner;
         } else {

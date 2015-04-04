@@ -9,11 +9,12 @@ import org.junit.Test;
 
 import uk.ac.tees.aia.mullen.draughts.backend.Board;
 import uk.ac.tees.aia.mullen.draughts.backend.BoardPosition;
+import uk.ac.tees.aia.mullen.draughts.backend.Game;
 import uk.ac.tees.aia.mullen.draughts.backend.Jump;
 import uk.ac.tees.aia.mullen.draughts.backend.Move;
 import uk.ac.tees.aia.mullen.draughts.backend.MoveFinder;
 import uk.ac.tees.aia.mullen.draughts.backend.Piece;
-import uk.ac.tees.aia.mullen.draughts.backend.PieceOwner;
+import uk.ac.tees.aia.mullen.draughts.backend.Player;
 import uk.ac.tees.aia.mullen.draughts.backend.Piece.MoveDirection;
 import uk.ac.tees.aia.mullen.draughts.english.EnglishDraughtsMoveFinder;
 
@@ -26,9 +27,9 @@ public class TestEnglishDraughtsMoveFinder {
     /** The move finder to use for each test. */
     private final MoveFinder moveFinder = new EnglishDraughtsMoveFinder();
     /** The dark piece owner used for testing. */
-    private final PieceOwner darkPieceOwner = new EmptyMockPieceOwner();
+    private final Player darkPieceOwner = new EmptyMockPieceOwner();
     /** The light piece owner used for testing. */
-    private final PieceOwner lightPieceOwner = new EmptyMockPieceOwner();
+    private final Player lightPieceOwner = new EmptyMockPieceOwner();
     /** The dark pieces used for testing. */
     private final Piece darkPiece =
             new Piece(darkPieceOwner, MoveDirection.DOWN);
@@ -189,9 +190,14 @@ public class TestEnglishDraughtsMoveFinder {
      *
      * @author  Alex Mullen
      */
-    private static class EmptyMockPieceOwner implements PieceOwner {
-        /*
-         * Nothing to implement.
-         */
+    private static class EmptyMockPieceOwner implements Player {
+        @Override
+        public void onTurn(final Game game) {
+            // Empty.
+        }
+        @Override
+        public void onGameEnded(final Game game, final Player winner) {
+            // Empty.
+        }
     }
 }

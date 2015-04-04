@@ -174,8 +174,8 @@ public class TestPiece {
     @SuppressWarnings("static-method")
     @Test
     public final void testEquals() {
-        final PieceOwner owner1 = new EmptyMockPieceOwner();
-        final PieceOwner owner2 = new EmptyMockPieceOwner();
+        final Player owner1 = new EmptyMockPieceOwner();
+        final Player owner2 = new EmptyMockPieceOwner();
         final Piece piece1 = new Piece(owner1, MoveDirection.DOWN);
         final Piece piece2 = new Piece(owner2, MoveDirection.UP);
         final Piece piece1Copy = new Piece(piece1);
@@ -205,9 +205,14 @@ public class TestPiece {
      *
      * @author  Alex Mullen
      */
-    private static class EmptyMockPieceOwner implements PieceOwner {
-        /*
-         * Nothing to implement.
-         */
+    private static class EmptyMockPieceOwner implements Player {
+        @Override
+        public void onTurn(final Game game) {
+            // Empty.
+        }
+        @Override
+        public void onGameEnded(final Game game, final Player winner) {
+            // Empty.
+        }
     }
 }

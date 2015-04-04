@@ -32,7 +32,7 @@ public final class Loader {
         final MoveSearch searchAlgo1 =
                 new MinimaxMoveSearch(new BasicBoardEvaluator(), 8);
         final MoveSearch searchAlgo2 =
-                new MinimaxMoveSearch(new BasicBoardEvaluator(), 3);
+                new MinimaxMoveSearch(new BasicBoardEvaluator(), 4);
 
         final ExecutorService executor = Executors.newSingleThreadExecutor();
 
@@ -42,8 +42,6 @@ public final class Loader {
                 new ArtificialPlayer(searchAlgo2, executor, "AI-2");
 
         final Game draughtsGame = new EnglishDraughtsGame(ai1, ai2);
-        draughtsGame.addObserver(ai1);
-        draughtsGame.addObserver(ai2);
         draughtsGame.start();
     }
 }

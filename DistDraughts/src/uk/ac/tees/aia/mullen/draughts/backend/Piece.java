@@ -10,7 +10,7 @@ import java.util.Objects;
  */
 public class Piece {
     /** Holds the owner of this piece. */
-    private final PieceOwner pieceOwner;
+    private final Player player;
     /** Holds the movement direction this piece can do. */
     private MoveDirection moveDirection;
     /**
@@ -26,8 +26,8 @@ public class Piece {
      * @throws NullPointerException  if <code>owner</code> or
      *                               <code>direction</code> is <code>null</code>
      */
-    public Piece(final PieceOwner owner, final MoveDirection direction) {
-        pieceOwner = Objects.requireNonNull(owner, "Who owns dis?");
+    public Piece(final Player owner, final MoveDirection direction) {
+        player = Objects.requireNonNull(owner, "Who owns dis?");
         moveDirection = Objects.requireNonNull(direction, "Move nowhere?");
     }
     /**
@@ -36,19 +36,19 @@ public class Piece {
      * @param piece  the piece to copy
      * @throws NullPointerException  if <code>piece</code> is <code>null</code>
      *
-     * @see #Piece(PieceOwner, MoveDirection)
+     * @see #Piece(Player, MoveDirection)
      */
     public Piece(final Piece piece) {
-        pieceOwner = piece.pieceOwner;
+        player = piece.player;
         moveDirection = piece.moveDirection;
     }
     /**
-     * Gets the {@link PieceOwner} instance that this piece belongs to.
+     * Gets the {@link Player} instance that this piece belongs to.
      *
      * @return  the owner
      */
-    public final PieceOwner getOwner() {
-        return pieceOwner;
+    public final Player getOwner() {
+        return player;
     }
     /**
      * Gets the direction this piece is allowed to move in.
@@ -85,7 +85,7 @@ public class Piece {
         final int prime = 31;
         int result = 1;
         result = prime * result + moveDirection.hashCode();
-        result = prime * result + pieceOwner.hashCode();
+        result = prime * result + player.hashCode();
         return result;
     }
     /**
@@ -109,7 +109,7 @@ public class Piece {
         if (moveDirection != other.moveDirection) {
             return false;
         }
-        if (!pieceOwner.equals(other.pieceOwner)) {
+        if (!player.equals(other.player)) {
             return false;
         }
         return true;

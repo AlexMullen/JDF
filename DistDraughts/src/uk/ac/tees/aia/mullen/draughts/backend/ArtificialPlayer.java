@@ -9,7 +9,7 @@ import java.util.concurrent.ExecutorService;
  * @author  Alex Mullen
  *
  */
-public class ArtificialPlayer implements PieceOwner, GameObserver {
+public class ArtificialPlayer implements Player {
     /** The search algorithm implementation to use for finding the best move. */
     private final MoveSearch moveSearch;
     /** The executor to use as a thread. */
@@ -31,26 +31,24 @@ public class ArtificialPlayer implements PieceOwner, GameObserver {
         name = aiName;
     }
     @Override
-    public final void onTurnChange(final Game game, final PieceOwner owner) {
-        if (owner == this) {
-            // Our turn.
-            executor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    final Move bestMoveFound =
-                            moveSearch.search(game, ArtificialPlayer.this,
-                                    game.getOpponent(ArtificialPlayer.this));
-                    if (bestMoveFound == null) {
-                        System.out.println(game.getBoard());
-                        System.out.println(ArtificialPlayer.this);
-                    }
-                    game.performMove(bestMoveFound);
+    public final void onTurn(final Game game) {
+        // Our turn.
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                final Move bestMoveFound =
+                        moveSearch.search(game, ArtificialPlayer.this,
+                                game.getOpponent(ArtificialPlayer.this));
+                if (bestMoveFound == null) {
+                    System.out.println(game.getBoard());
+                    System.out.println(ArtificialPlayer.this);
                 }
-            });
-        }
+                game.performMove(bestMoveFound);
+            }
+        });
     }
     @Override
-    public final void onGameEnded(final Game game, final PieceOwner winner) {
+    public final void onGameEnded(final Game game, final Player winner) {
         System.out.println("Game ended!: " + winner + " won");
         System.out.println(game.getBoard());
         executor.shutdown();

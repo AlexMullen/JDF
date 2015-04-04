@@ -19,7 +19,7 @@ public class BasicBoardEvaluator implements BoardEvaluator {
         // Empty constructor.
     }
     @Override
-    public final int evaluate(final Board board, final PieceOwner owner) {
+    public final int evaluate(final Board board, final Player owner) {
         int ownerScore = 0;
         int opponentScore = 0;
         for (int x = 0; x < board.getWidth(); x++) {
