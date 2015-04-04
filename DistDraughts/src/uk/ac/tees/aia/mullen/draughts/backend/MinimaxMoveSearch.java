@@ -41,7 +41,8 @@ public class MinimaxMoveSearch implements MoveSearch {
         int currentBestScore = Integer.MIN_VALUE;
         Move currentBestMove = null;
         final Board board = game.getBoard();
-        final List<Move> moves = game.getMoveFinder().findMoves(board, owner);
+        final List<Move> moves =
+                game.getMoveGenerator().findMoves(board, owner);
         for (final Move currentMove
                 : moves) {
             final PerformedMove performedMove =
@@ -90,7 +91,7 @@ public class MinimaxMoveSearch implements MoveSearch {
             if (maximisingPlayer) {
                 int currentBestScore = Integer.MIN_VALUE;
                 for (final Move currentMove
-                        : game.getMoveFinder().findMoves(board, owner)) {
+                        : game.getMoveGenerator().findMoves(board, owner)) {
                     final PerformedMove performedMove =
                             game.getMovePerformer().perform(currentMove, board);
                     final int currentMoveValue =
@@ -104,7 +105,7 @@ public class MinimaxMoveSearch implements MoveSearch {
             } else {
                 int currentBestScore = Integer.MAX_VALUE;
                 for (final Move currentMove
-                        : game.getMoveFinder().findMoves(board, opponent)) {
+                        : game.getMoveGenerator().findMoves(board, opponent)) {
                     final PerformedMove performedMove =
                             game.getMovePerformer().perform(currentMove, board);
                     final int currentMoveValue =

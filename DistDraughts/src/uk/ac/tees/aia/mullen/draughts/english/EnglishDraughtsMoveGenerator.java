@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import uk.ac.tees.aia.mullen.draughts.backend.AbstractMoveFinder;
+import uk.ac.tees.aia.mullen.draughts.backend.AbstractMoveGenerator;
 import uk.ac.tees.aia.mullen.draughts.backend.Board;
 import uk.ac.tees.aia.mullen.draughts.backend.BoardPosition;
 import uk.ac.tees.aia.mullen.draughts.backend.Jump;
@@ -15,13 +15,13 @@ import uk.ac.tees.aia.mullen.draughts.backend.Player;
 import uk.ac.tees.aia.mullen.draughts.backend.Piece.MoveDirection;
 
 /**
- * A move finder implementation that takes into account the rules of
+ * A move generator implementation that takes into account the rules of
  * English draughts.
  *
  * @author  Alex Mullen
  *
  */
-public class EnglishDraughtsMoveFinder extends AbstractMoveFinder {
+public class EnglishDraughtsMoveGenerator extends AbstractMoveGenerator {
     @Override
     public final List<Move> findMoves(final Board board,
             final Player owner) {

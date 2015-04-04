@@ -32,7 +32,7 @@ public final class Loader {
         final MoveSearch searchAlgo1 =
                 new MinimaxMoveSearch(new BasicBoardEvaluator(), 8);
         final MoveSearch searchAlgo2 =
-                new MinimaxMoveSearch(new BasicBoardEvaluator(), 4);
+                new MinimaxMoveSearch(new BasicBoardEvaluator(), 3);
 
         final ExecutorService executor = Executors.newSingleThreadExecutor();
 

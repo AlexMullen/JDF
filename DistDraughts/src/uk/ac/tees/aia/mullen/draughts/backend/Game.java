@@ -24,11 +24,11 @@ public abstract class Game {
      */
     public abstract Player getTurnOwner();
     /**
-     * Gets the move finder this game uses.
+     * Gets the move generator this game uses.
      *
-     * @return  the move finder
+     * @return  the move generator
      */
-    public abstract MoveFinder getMoveFinder();
+    public abstract MoveGenerator getMoveGenerator();
     /**
      * Gets the move performer this game uses.
      *

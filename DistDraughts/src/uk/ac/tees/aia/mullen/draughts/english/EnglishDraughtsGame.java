@@ -5,7 +5,7 @@ import java.util.Objects;
 import uk.ac.tees.aia.mullen.draughts.backend.Board;
 import uk.ac.tees.aia.mullen.draughts.backend.Game;
 import uk.ac.tees.aia.mullen.draughts.backend.Move;
-import uk.ac.tees.aia.mullen.draughts.backend.MoveFinder;
+import uk.ac.tees.aia.mullen.draughts.backend.MoveGenerator;
 import uk.ac.tees.aia.mullen.draughts.backend.MovePerformer;
 import uk.ac.tees.aia.mullen.draughts.backend.Piece;
 import uk.ac.tees.aia.mullen.draughts.backend.Player;
@@ -29,7 +29,7 @@ public class EnglishDraughtsGame extends Game {
     /** Holds the board for this game. */
     private final Board board;
     /** The move finder for getting legal moves this uses. */
-    private final MoveFinder moveFinder;
+    private final MoveGenerator moveGenerator;
     /** The move performer for performing moves this uses. */
     private final MovePerformer movePerformer;
     /** Holds whoever's turn it currently is. */
@@ -50,7 +50,7 @@ public class EnglishDraughtsGame extends Game {
         // Dark starts first.
         turnOwner = darkPieceOwner;
         board = new Board(BOARD_WIDTH, BOARD_HEIGHT);
-        moveFinder = new EnglishDraughtsMoveFinder();
+        moveGenerator = new EnglishDraughtsMoveGenerator();
         movePerformer = new EnglishDraughtsMovePerformer();
         initPieces();
     }
@@ -68,8 +68,8 @@ public class EnglishDraughtsGame extends Game {
         return turnOwner;
     }
     @Override
-    public final MoveFinder getMoveFinder() {
-        return moveFinder;
+    public final MoveGenerator getMoveGenerator() {
+        return moveGenerator;
     }
     @Override
     public final MovePerformer getMovePerformer() {
@@ -84,13 +84,13 @@ public class EnglishDraughtsGame extends Game {
             System.out.println(move);
         }
         movePerformer.perform(move, board);
-        if (moveFinder.findMoves(board, turnOwner).isEmpty()) {
+        if (moveGenerator.findMoves(board, turnOwner).isEmpty()) {
             // They moved but have no moves left so the other player wins.
             ended = true;
             final Player winningPlayer = getOpponent(turnOwner);
             lightPieceOwner.onGameEnded(this, winningPlayer);
             darkPieceOwner.onGameEnded(this, winningPlayer);
-        } else if (moveFinder.findMoves(
+        } else if (moveGenerator.findMoves(
                 board, getOpponent(turnOwner)).isEmpty()) {
             // There turn but have no moves left.
             ended = true;

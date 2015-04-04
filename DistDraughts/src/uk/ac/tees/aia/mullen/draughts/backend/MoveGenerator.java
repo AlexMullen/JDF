@@ -3,15 +3,15 @@ package uk.ac.tees.aia.mullen.draughts.backend;
 import java.util.List;
 
 /**
- * An interface for defining a class that retrieves the valid moves for a
+ * An interface for defining a class that generates the valid moves for a
  * specified position on a board.
  *
  * @author     Alex Mullen
  *
  */
-public interface MoveFinder {
+public interface MoveGenerator {
     /**
-     * Finds and returns all the available moves on the specified board for the
+     * Generates all the available moves on the specified board for the
      * specified piece owner.
      *
      * @param board  the board

@@ -9,13 +9,13 @@ import org.junit.Test;
 import uk.ac.tees.aia.mullen.draughts.backend.Board;
 import uk.ac.tees.aia.mullen.draughts.backend.Game;
 import uk.ac.tees.aia.mullen.draughts.backend.Move;
-import uk.ac.tees.aia.mullen.draughts.backend.MoveFinder;
+import uk.ac.tees.aia.mullen.draughts.backend.MoveGenerator;
 import uk.ac.tees.aia.mullen.draughts.backend.MovePerformer;
 import uk.ac.tees.aia.mullen.draughts.backend.MovePerformer.PerformedMove;
 import uk.ac.tees.aia.mullen.draughts.backend.Piece;
 import uk.ac.tees.aia.mullen.draughts.backend.Player;
 import uk.ac.tees.aia.mullen.draughts.backend.Piece.MoveDirection;
-import uk.ac.tees.aia.mullen.draughts.english.EnglishDraughtsMoveFinder;
+import uk.ac.tees.aia.mullen.draughts.english.EnglishDraughtsMoveGenerator;
 import uk.ac.tees.aia.mullen.draughts.english.EnglishDraughtsMovePerformer;
 
 /**
@@ -44,7 +44,8 @@ public class TestEnglishDraughtsMovePerformer {
     private final Piece lightPieceCrowned =
             new Piece(lightPieceOwner, MoveDirection.BOTH);
     /** The move finder to use for getting available moves to perform. */
-    private final MoveFinder moveFinder = new EnglishDraughtsMoveFinder();
+    private final MoveGenerator moveGenerator =
+            new EnglishDraughtsMoveGenerator();
     /**
      * Tests {@link EnglishDraughtsMovePerformer#perform(Move, Board)} works as
      * expected when performing a move then undoing it.
@@ -67,7 +68,7 @@ public class TestEnglishDraughtsMovePerformer {
         board1ExpectedStateAfterMove.setPieceAt(5, 1, lightPiece);
         // Get the move and perform it.
         final List<Move> foundMoves =
-                moveFinder.findMoves(board1, lightPieceOwner);
+                moveGenerator.findMoves(board1, lightPieceOwner);
         // There should be one move found.
         assertEquals(1, foundMoves.size());
         final Move moveToPerform = foundMoves.get(0);
@@ -104,7 +105,7 @@ public class TestEnglishDraughtsMovePerformer {
         board1ExpectedStateAfterMove.setPieceAt(2, 0, lightPieceCrowned);
         // Get the move and perform it.
         final List<Move> foundMoves =
-                moveFinder.findMoves(board1, lightPieceOwner);
+                moveGenerator.findMoves(board1, lightPieceOwner);
         // There should be one move found.
         assertEquals(1, foundMoves.size());
         final Move moveToPerform = foundMoves.get(0);

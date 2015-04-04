@@ -4,15 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * An abstract move finder implementation that provides many primitive helper
- * methods for finding moves so as to minimise the effort required for
+ * An abstract move generator implementation that provides many primitive helper
+ * methods for generating moves so as to minimise the effort required for
  * implementors.
  *
  * @author  Alex Mullen
  *
  */
-public abstract class AbstractMoveFinder implements
-        MoveFinder {
+public abstract class AbstractMoveGenerator implements MoveGenerator {
     /**
      * Gets any potential single move to the above left space of the specified
      * board position.
