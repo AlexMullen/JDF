@@ -1,15 +1,14 @@
 package uk.ac.tees.aia.mullen.draughts.english;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.List;
 
-import uk.ac.tees.aia.mullen.draughts.backend.Board;
-import uk.ac.tees.aia.mullen.draughts.backend.BoardPosition;
-import uk.ac.tees.aia.mullen.draughts.backend.Jump;
-import uk.ac.tees.aia.mullen.draughts.backend.Move;
-import uk.ac.tees.aia.mullen.draughts.backend.MovePerformer;
-import uk.ac.tees.aia.mullen.draughts.backend.Piece;
+import uk.ac.tees.aia.mullen.draughts.common.Board;
+import uk.ac.tees.aia.mullen.draughts.common.BoardPosition;
+import uk.ac.tees.aia.mullen.draughts.common.Jump;
+import uk.ac.tees.aia.mullen.draughts.common.Move;
+import uk.ac.tees.aia.mullen.draughts.common.MovePerformer;
+import uk.ac.tees.aia.mullen.draughts.common.Piece;
 
 /**
  * A move performer implementation for English draughts rules.
@@ -26,31 +25,30 @@ public class EnglishDraughtsMovePerformer implements MovePerformer {
     }
     @Override
     public final PerformedMove perform(final Move move, final Board board) {
-        final Deque<UndoOperation> undoOperations = new ArrayDeque<>();
+        final List<UndoOperation> undoOperations = new ArrayList<>(8);
         final Piece pieceToMove = board.getPieceAt(move.getFrom());
-        undoOperations.addFirst(setPieceAt(board, move.getFrom(), null));
-        undoOperations.addFirst(setPieceAt(board, move.getTo(), pieceToMove));
-        if (move.getJumps() != null) {
-            for (final Jump currentJump : move.getJumps()) {
-                undoOperations.addFirst(
-                        setPieceAt(board, currentJump.getJumped(), null));
-            }
+        undoOperations.add(setPieceAt(board, move.getFrom(), null));
+        undoOperations.add(setPieceAt(board, move.getTo(), pieceToMove));
+        for (final Jump currentJump : move.getJumps()) {
+            undoOperations.add(
+                    setPieceAt(board, currentJump.getJumped(), null));
         }
-        if (!pieceToMove.isCrowned() && board.isKingsRow(move.getTo().getY())) {
+        if (board.isKingsRow(move.getTo().getY()) && !pieceToMove.isCrowned()) {
             /*
              * Create a copy of the uncrowned piece, crown it and then place it
              * into the board whilst saving the original for undoing.
              */
             final Piece pieceToMoveCopy = new Piece(pieceToMove);
             pieceToMoveCopy.crown();
-            undoOperations.addFirst(
+            undoOperations.add(
                     setPieceAt(board, move.getTo(), pieceToMoveCopy));
         }
         return new PerformedMove() {
             @Override
             public void undo() {
-                while (!undoOperations.isEmpty()) {
-                    undoOperations.removeFirst().undo();
+                // Go backwards.
+                for (int i = undoOperations.size() - 1; i >= 0; i--) {
+                    undoOperations.get(i).undo();
                 }
             }
         };
@@ -68,7 +66,7 @@ public class EnglishDraughtsMovePerformer implements MovePerformer {
     private static UndoOperation setPieceAt(final Board board,
             final BoardPosition position, final Piece piece) {
         return new SetUndoOperation(board, position,
-                board.setPieceAt(position, piece));
+                board.setPieceAndGetAt(position, piece));
     }
     /**
      * An interface that represents an operation that will undo a single
@@ -104,8 +102,8 @@ public class EnglishDraughtsMovePerformer implements MovePerformer {
          */
         private SetUndoOperation(final Board board,
                 final BoardPosition position, final Piece piece) {
-            boardToSet = Objects.requireNonNull(board);
-            positionToSet = Objects.requireNonNull(position);
+            boardToSet = board;
+            positionToSet = position;
             pieceToSet = piece;
         }
         @Override

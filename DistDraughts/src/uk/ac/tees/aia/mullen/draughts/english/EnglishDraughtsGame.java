@@ -2,14 +2,14 @@ package uk.ac.tees.aia.mullen.draughts.english;
 
 import java.util.Objects;
 
-import uk.ac.tees.aia.mullen.draughts.backend.Board;
-import uk.ac.tees.aia.mullen.draughts.backend.Game;
-import uk.ac.tees.aia.mullen.draughts.backend.Move;
-import uk.ac.tees.aia.mullen.draughts.backend.MoveGenerator;
-import uk.ac.tees.aia.mullen.draughts.backend.MovePerformer;
-import uk.ac.tees.aia.mullen.draughts.backend.Piece;
-import uk.ac.tees.aia.mullen.draughts.backend.Player;
-import uk.ac.tees.aia.mullen.draughts.backend.Piece.MoveDirection;
+import uk.ac.tees.aia.mullen.draughts.common.Board;
+import uk.ac.tees.aia.mullen.draughts.common.Game;
+import uk.ac.tees.aia.mullen.draughts.common.Move;
+import uk.ac.tees.aia.mullen.draughts.common.MoveGenerator;
+import uk.ac.tees.aia.mullen.draughts.common.MovePerformer;
+import uk.ac.tees.aia.mullen.draughts.common.Piece;
+import uk.ac.tees.aia.mullen.draughts.common.Player;
+import uk.ac.tees.aia.mullen.draughts.common.Piece.MoveDirection;
 
 /**
  * A draughts game that follows the rules and conventions of English Draughts.
@@ -34,8 +34,8 @@ public class EnglishDraughtsGame extends Game {
     private final MovePerformer movePerformer;
     /** Holds whoever's turn it currently is. */
     private Player turnOwner;
-    /** Indicates whether the game has ended or not. */
-    private boolean ended;
+    /** Holds the result of the game when it has ended. */
+    private GameResult result;
     /**
      * Creates a new instance and associates the specified players with the
      * light and dark pieces respectively.
@@ -47,16 +47,15 @@ public class EnglishDraughtsGame extends Game {
         super();
         lightPieceOwner = Objects.requireNonNull(light);
         darkPieceOwner = Objects.requireNonNull(dark);
-        // Dark starts first.
-        turnOwner = darkPieceOwner;
+        if (lightPieceOwner.equals(darkPieceOwner)) {
+            throw new IllegalArgumentException("vs themself?");
+        }
         board = new Board(BOARD_WIDTH, BOARD_HEIGHT);
         moveGenerator = new EnglishDraughtsMoveGenerator();
         movePerformer = new EnglishDraughtsMovePerformer();
+        // Dark starts first.
+        turnOwner = darkPieceOwner;
         initPieces();
-    }
-    @Override
-    public final void start() {
-        turnOwner.onTurn(this);
     }
     @Override
     public final Board getBoard() {
@@ -68,6 +67,14 @@ public class EnglishDraughtsGame extends Game {
         return turnOwner;
     }
     @Override
+    public final Player getDarkPiecesPlayer() {
+        return darkPieceOwner;
+    }
+    @Override
+    public final Player getLightPiecesPlayer() {
+        return lightPieceOwner;
+    }
+    @Override
     public final MoveGenerator getMoveGenerator() {
         return moveGenerator;
     }
@@ -76,30 +83,22 @@ public class EnglishDraughtsGame extends Game {
         return movePerformer;
     }
     @Override
+    public final GameResult getResult() {
+        return result;
+    }
+    @Override
     public final void performMove(final Move move) {
-        if (ended) {
+        // No more moves allowed if game over.
+        if (result != null) {
             throw new IllegalStateException();
         }
-        if (move.getJumps() != null) {
-            System.out.println(move);
-        }
         movePerformer.perform(move, board);
-        if (moveGenerator.findMoves(board, turnOwner).isEmpty()) {
-            // They moved but have no moves left so the other player wins.
-            ended = true;
-            final Player winningPlayer = getOpponent(turnOwner);
-            lightPieceOwner.onGameEnded(this, winningPlayer);
-            darkPieceOwner.onGameEnded(this, winningPlayer);
-        } else if (moveGenerator.findMoves(
-                board, getOpponent(turnOwner)).isEmpty()) {
-            // There turn but have no moves left.
-            ended = true;
-            final Player winningPlayer = turnOwner;
-            lightPieceOwner.onGameEnded(this, winningPlayer);
-            darkPieceOwner.onGameEnded(this, winningPlayer);
-        } else {
-            turnOwner = getOpponent(turnOwner);
-            turnOwner.onTurn(this);
+        // Next player's turn.
+        turnOwner = getOpponent(turnOwner);
+        // Check if the next player has any moves left.
+        if (!moveGenerator.hasAnyMoves(board, turnOwner)) {
+         // There turn but they have no moves left so the opposing player wins.
+            result = new GameResult(getOpponent(turnOwner));
         }
     }
     @Override
@@ -115,6 +114,9 @@ public class EnglishDraughtsGame extends Game {
      * positions.
      */
     private void initPieces() {
+//      board.setPieceAt(7, 4, new Piece(lightPieceOwner, MoveDirection.BOTH));
+//      board.setPieceAt(4, 3, new Piece(darkPieceOwner, MoveDirection.BOTH));
+
         board.setPieceAt(1, 0, new Piece(darkPieceOwner, MoveDirection.DOWN));
         board.setPieceAt(3, 0, new Piece(darkPieceOwner, MoveDirection.DOWN));
         board.setPieceAt(5, 0, new Piece(darkPieceOwner, MoveDirection.DOWN));
