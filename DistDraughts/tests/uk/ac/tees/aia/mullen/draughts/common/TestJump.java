@@ -1,8 +1,6 @@
 package uk.ac.tees.aia.mullen.draughts.common;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-
 import org.junit.Test;
 
 import uk.ac.tees.aia.mullen.draughts.common.BoardPosition;
@@ -29,16 +27,16 @@ public class TestJump {
         assertEquals(toPosition, move.getTo());
         assertEquals(jumpedPosition, move.getJumped());
     }
-    /**
-     * Tests the constructor with the parameter <code>jumpedPosition</code>
-     * being <code>null</code> which should not be allowed.
-     */
-    @SuppressWarnings({ "static-method", "unused" })
-    @Test (expected = NullPointerException.class)
-    public final void testConstructorWithNullJumpedPositionArgument() {
-        final BoardPosition fromPosition = new BoardPosition(5, 3);
-        final BoardPosition toPosition = new BoardPosition(3, 5);
-        new Jump(fromPosition, toPosition, null);
-        fail("NPE should have been thrown!");
-    }
+//    /**
+//     * Tests the constructor with the parameter <code>jumpedPosition</code>
+//     * being <code>null</code> which should not be allowed.
+//     */
+//    @SuppressWarnings({ "static-method", "unused" })
+//    @Test (expected = NullPointerException.class)
+//    public final void testConstructorWithNullJumpedPositionArgument() {
+//        final BoardPosition fromPosition = new BoardPosition(5, 3);
+//        final BoardPosition toPosition = new BoardPosition(3, 5);
+//        new Jump(fromPosition, toPosition, null);
+//        fail("NPE should have been thrown!");
+//    }
 }

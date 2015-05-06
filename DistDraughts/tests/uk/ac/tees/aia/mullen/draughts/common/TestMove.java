@@ -2,8 +2,6 @@ package uk.ac.tees.aia.mullen.draughts.common;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
-
 import org.junit.Test;
 
 import uk.ac.tees.aia.mullen.draughts.common.BoardPosition;
@@ -29,38 +27,38 @@ public class TestMove {
         assertEquals(fromPos, move.getFrom());
         assertEquals(toPos, move.getTo());
     }
-    /**
-     * Tests the constructor with the <code>fromPosition</code> argument being
-     * <code>null</code>.
-     */
-    @SuppressWarnings({ "static-method", "unused" })
-    @Test (expected = NullPointerException.class)
-    public final void testConstructorWithNullFromPosition() {
-        final BoardPosition toPos = new BoardPosition(1, 5);
-        new Move(null, toPos);
-        fail("NPE should have been thrown!");
-    }
-    /**
-     * Tests the constructor with the <code>toPosition</code> argument being
-     * <code>null</code>.
-     */
-    @SuppressWarnings({ "static-method", "unused" })
-    @Test (expected = NullPointerException.class)
-    public final void testConstructorWithNullToPosition() {
-        final BoardPosition fromPos = new BoardPosition(1, 3);
-        new Move(fromPos, null);
-        fail("NPE should have been thrown!");
-    }
-    /**
-     * Tests the constructor with the <code>fromPosition</code> and the
-     * <code>toPosition</code> arguments both being <code>null</code>.
-     */
-    @SuppressWarnings({ "static-method", "unused" })
-    @Test (expected = NullPointerException.class)
-    public final void testConstructorWithNullFromPositionAndToPosition() {
-        new Move(null, null);
-        fail("NPE should have been thrown!");
-    }
+//    /**
+//     * Tests the constructor with the <code>fromPosition</code> argument being
+//     * <code>null</code>.
+//     */
+//    @SuppressWarnings({ "static-method", "unused" })
+//    @Test (expected = NullPointerException.class)
+//    public final void testConstructorWithNullFromPosition() {
+//        final BoardPosition toPos = new BoardPosition(1, 5);
+//        new Move(null, toPos);
+//        fail("NPE should have been thrown!");
+//    }
+//    /**
+//     * Tests the constructor with the <code>toPosition</code> argument being
+//     * <code>null</code>.
+//     */
+//    @SuppressWarnings({ "static-method", "unused" })
+//    @Test (expected = NullPointerException.class)
+//    public final void testConstructorWithNullToPosition() {
+//        final BoardPosition fromPos = new BoardPosition(1, 3);
+//        new Move(fromPos, null);
+//        fail("NPE should have been thrown!");
+//    }
+//    /**
+//     * Tests the constructor with the <code>fromPosition</code> and the
+//     * <code>toPosition</code> arguments both being <code>null</code>.
+//     */
+//    @SuppressWarnings({ "static-method", "unused" })
+//    @Test (expected = NullPointerException.class)
+//    public final void testConstructorWithNullFromPositionAndToPosition() {
+//        new Move(null, null);
+//        fail("NPE should have been thrown!");
+//    }
     /**
      * Tests {@link Move#toString()} does not throw an NPE when attempting to
      * print out a <code>null</code> {@link Move#getJumps()} reference.

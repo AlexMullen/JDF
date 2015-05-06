@@ -3,8 +3,6 @@ package uk.ac.tees.aia.mullen.draughts.common;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import org.junit.Test;
 
 import uk.ac.tees.aia.mullen.draughts.common.BoardPosition;
@@ -27,42 +25,42 @@ public class TestBoardPosition {
         assertEquals(x, boardPosition.getX());
         assertEquals(y, boardPosition.getY());
     }
-    /**
-     * Tests the constructor with the <code>posX</code> argument being
-     * a negative number which should not be allowed.
-     */
-    @SuppressWarnings({ "static-method", "unused" })
-    @Test (expected = IllegalArgumentException.class)
-    public final void testConstructorWithNegativePosXArgument() {
-        final int posX = -1;
-        final int posY = 5;
-        new BoardPosition(posX, posY);
-        fail("Should not allow a negative posX argument!");
-    }
-    /**
-     * Tests the constructor with the <code>posY</code> argument being
-     * a negative number which should not be allowed.
-     */
-    @SuppressWarnings({ "static-method", "unused" })
-    @Test (expected = IllegalArgumentException.class)
-    public final void testConstructorWithNegativePosYArgument() {
-        final int posX = 5;
-        final int posY = -1;
-        new BoardPosition(posX, posY);
-        fail("Should not allow a negative posY argument!");
-    }
-    /**
-     * Tests the constructor with the <code>posX</code> and <code>posY</code>
-     * arguments both being negative which should not be allowed.
-     */
-    @SuppressWarnings({ "static-method", "unused" })
-    @Test (expected = IllegalArgumentException.class)
-    public final void testConstructorWithAllNegativeArgs() {
-        final int posX = -1;
-        final int posY = -1;
-        new BoardPosition(posX, posY);
-        fail("Should not allow a negative posX or posY argument!");
-    }
+//    /**
+//     * Tests the constructor with the <code>posX</code> argument being
+//     * a negative number which should not be allowed.
+//     */
+//    @SuppressWarnings({ "static-method", "unused" })
+//    @Test (expected = IllegalArgumentException.class)
+//    public final void testConstructorWithNegativePosXArgument() {
+//        final int posX = -1;
+//        final int posY = 5;
+//        new BoardPosition(posX, posY);
+//        fail("Should not allow a negative posX argument!");
+//    }
+//    /**
+//     * Tests the constructor with the <code>posY</code> argument being
+//     * a negative number which should not be allowed.
+//     */
+//    @SuppressWarnings({ "static-method", "unused" })
+//    @Test (expected = IllegalArgumentException.class)
+//    public final void testConstructorWithNegativePosYArgument() {
+//        final int posX = 5;
+//        final int posY = -1;
+//        new BoardPosition(posX, posY);
+//        fail("Should not allow a negative posY argument!");
+//    }
+//    /**
+//     * Tests the constructor with the <code>posX</code> and <code>posY</code>
+//     * arguments both being negative which should not be allowed.
+//     */
+//    @SuppressWarnings({ "static-method", "unused" })
+//    @Test (expected = IllegalArgumentException.class)
+//    public final void testConstructorWithAllNegativeArgs() {
+//        final int posX = -1;
+//        final int posY = -1;
+//        new BoardPosition(posX, posY);
+//        fail("Should not allow a negative posX or posY argument!");
+//    }
     /**
      * Tests the constructor with the lowest bound valid argument for the
      * <code>posX</code> argument.

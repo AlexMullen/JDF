@@ -45,26 +45,16 @@ public class TestBasicBoardEvaluator {
     public final void testEvaluate() {
         final Board board = new Board(8, 8);
         // Evaluate an empty board.
-        assertEquals(Integer.MIN_VALUE,
-                evaluator.evaluate(board, lightPieceOwner));
-        assertEquals(Integer.MIN_VALUE,
-                evaluator.evaluate(board, darkPieceOwner));
+        assertEquals(0, evaluator.evaluate(board, lightPieceOwner));
+        assertEquals(0, evaluator.evaluate(board, darkPieceOwner));
         // Place one light piece on the board.
         board.setPieceAndGetAt(3, 7, lightPiece);
-        assertEquals(
-                Integer.MAX_VALUE,
-                evaluator.evaluate(board, lightPieceOwner));
-        assertEquals(
-                Integer.MIN_VALUE,
-                evaluator.evaluate(board, darkPieceOwner));
+        assertEquals(1, evaluator.evaluate(board, lightPieceOwner));
+        assertEquals(-1, evaluator.evaluate(board, darkPieceOwner));
         // Place another light piece on the board.
         board.setPieceAndGetAt(5, 7, lightPiece);
-        assertEquals(
-                Integer.MAX_VALUE,
-                evaluator.evaluate(board, lightPieceOwner));
-        assertEquals(
-                Integer.MIN_VALUE,
-                evaluator.evaluate(board, darkPieceOwner));
+        assertEquals(2, evaluator.evaluate(board, lightPieceOwner));
+        assertEquals(-2, evaluator.evaluate(board, darkPieceOwner));
         // Place one dark king on the board.
         board.setPieceAndGetAt(3, 3, darkPieceCrowned);
         assertEquals(
@@ -82,18 +72,12 @@ public class TestBasicBoardEvaluator {
     public final void testEvaluateOnSmallestBoardPossible() {
         final Board board = new Board(1, 1);
         // Evaluate an empty one-square board.
-        assertEquals(Integer.MIN_VALUE,
-                evaluator.evaluate(board, lightPieceOwner));
-        assertEquals(Integer.MIN_VALUE,
-                evaluator.evaluate(board, darkPieceOwner));
+        assertEquals(0, evaluator.evaluate(board, lightPieceOwner));
+        assertEquals(0, evaluator.evaluate(board, darkPieceOwner));
         // Place one light piece on the square.
         board.setPieceAndGetAt(0, 0, lightPiece);
-        assertEquals(
-                Integer.MAX_VALUE,
-                evaluator.evaluate(board, lightPieceOwner));
-        assertEquals(
-                Integer.MIN_VALUE,
-                evaluator.evaluate(board, darkPieceOwner));
+        assertEquals(1, evaluator.evaluate(board, lightPieceOwner));
+        assertEquals(-1, evaluator.evaluate(board, darkPieceOwner));
     }
     /**
      * An empty mock <code>Player</code> instance used as a place holder

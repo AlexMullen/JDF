@@ -52,7 +52,7 @@ public class TestEnglishDraughtsMoveGenerator {
         assertEquals(1, foundMoves.size());
         final Move foundMove = foundMoves.get(0);
         // There should be no jumps.
-        assertNull(foundMove.getJumps());
+        assertEquals(0, foundMove.getJumps().size());
         // Assert the expected move positions.
         assertEquals(new BoardPosition(3, 7), foundMove.getFrom());
         assertEquals(new BoardPosition(2, 6), foundMove.getTo());
@@ -69,12 +69,14 @@ public class TestEnglishDraughtsMoveGenerator {
         // There should only be two found.
         assertEquals(2, foundMoves.size());
         final Move firstfoundMove = foundMoves.get(0);
-        assertNull(firstfoundMove.getJumps());
+        // There should be no jumps.
+        assertEquals(0, firstfoundMove.getJumps().size());
         assertEquals(new BoardPosition(3, 1), firstfoundMove.getFrom());
         assertEquals(new BoardPosition(2, 0), firstfoundMove.getTo());
         // Check the second move is what we expect.
         final Move secondfoundMove = foundMoves.get(1);
-        assertNull(secondfoundMove.getJumps());
+        // There should be no jumps.
+        assertEquals(0, secondfoundMove.getJumps().size());
         assertEquals(new BoardPosition(3, 1), secondfoundMove.getFrom());
         assertEquals(new BoardPosition(4, 0), secondfoundMove.getTo());
     }
