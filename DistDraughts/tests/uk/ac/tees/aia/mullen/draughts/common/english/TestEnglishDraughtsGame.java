@@ -13,9 +13,9 @@ public class TestEnglishDraughtsGame {
     static long startTime;
     public static void main(final String... args) {
         final MoveSearch searchAlgo1 =
-                new MinimaxAlphaBetaDepthLimited(new BasicBoardEvaluator(), 2);
+                new MinimaxAlphaBetaDepthLimited(new BasicBoardEvaluator(), 2, 0);
         final MoveSearch searchAlgo2 =
-                new MinimaxAlphaBetaDepthLimited(new BasicBoardEvaluator(), 12);
+                new MinimaxAlphaBetaDepthLimited(new BasicBoardEvaluator(), 12, 0);
 
         final ArtificialPlayer ai1 =
                 new ArtificialPlayer(searchAlgo1, "AI-1");

@@ -26,24 +26,30 @@ public class MinimaxAlphaBetaTimeLimited implements MoveSearch {
     private final BoardEvaluator boardEvaluator;
     /** Holds the maximum time allowed to search for in milliseconds. */
     private final long searchTime;
+    /** The threshold to use for alpha-beta pruning. */
+    private final int threshold;
     /**
      * Creates a new instance that uses the specified board evaluator
      * and searches for the specified amount of time in milliseconds.
+     * <p>
+     * A threshold for alpha-beta pruning can also be specified.
      *
-     * @param evaluator  the board evaluator to use
-     * @param time       the time allowed for searches
+     * @param evaluator    the board evaluator to use
+     * @param time         the time allowed for searches
+     * @param abThreshold  the threshold to use for alpha-beta pruning
      *
      * @throws IllegalArgumentException  if <code>time</code> < 1
      * @throws NullPointerException      if <code>evaluator</code> is
      *                                   <code>null</code>
      */
     public MinimaxAlphaBetaTimeLimited(final BoardEvaluator evaluator,
-            final long time) {
+            final long time, final int abThreshold) {
         boardEvaluator = Objects.requireNonNull(evaluator);
         if (time < 1) {
             throw new IllegalArgumentException("time(" + time + ") < 1");
         }
         searchTime = time;
+        threshold = abThreshold;
     }
     @Override
     public final Move search(final Game game, final Player owner,
@@ -60,7 +66,7 @@ public class MinimaxAlphaBetaTimeLimited implements MoveSearch {
         final long timeToStopAt = System.currentTimeMillis() + searchTime;
         for (int depth = 1; System.currentTimeMillis() < timeToStopAt;
                 depth++) {
-            System.out.println("depth = " + depth);
+            //System.out.println("depth = " + depth);
             for (final Move currentMove : moves) {
                 final PerformedMove performedMove =
                         game.getMovePerformer().perform(currentMove, board);
@@ -116,7 +122,7 @@ public class MinimaxAlphaBetaTimeLimited implements MoveSearch {
                     currentBestScore =
                             Math.max(currentBestScore, currentMoveValue);
                     performedMove.undo();
-                    if (beta <= alpha) {
+                    if (beta + threshold <= alpha) {
                         // Prune.
 //                        break;
                         return Integer.MAX_VALUE;
@@ -136,7 +142,7 @@ public class MinimaxAlphaBetaTimeLimited implements MoveSearch {
                             Math.min(currentBestScore, currentMoveValue);
                     performedMove.undo();
                 }
-                if (beta <= alpha) {
+                if (beta + threshold <= alpha) {
                     // Prune.
 //                    break;
                     return Integer.MAX_VALUE;

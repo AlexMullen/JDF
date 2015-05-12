@@ -119,7 +119,7 @@ public class NewGameDialog {
                             new ArtificialPlayer(
                                     new MinimaxAlphaBetaTimeLimited(
                                             new BasicBoardEvaluator(),
-                                            lightPlayerDifficultySlider.getValue() * 100),
+                                            lightPlayerDifficultySlider.getValue() * 100, 0),
                                     "AI-Light") {
                                 // Empty.
                     });
@@ -136,7 +136,7 @@ public class NewGameDialog {
                             new ArtificialPlayer(
                                     new MinimaxAlphaBetaTimeLimited(
                                             new BasicBoardEvaluator(),
-                                            darkPlayerDifficultySlider.getValue() * 100),
+                                            darkPlayerDifficultySlider.getValue() * 100, 0),
                                     "AI-Dark") {
                                 // Empty.
                     });

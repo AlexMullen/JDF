@@ -24,24 +24,30 @@ public class MinimaxAlphaBetaDepthLimited implements MoveSearch {
     private final BoardEvaluator boardEvaluator;
     /** Holds the maximum depth to search to. */
     private final int maxSearchDepth;
+    /** The threshold to use for alpha-beta pruning. */
+    private final int threshold;
     /**
      * Creates a new instance that uses the specified board evaluator
      * and searches to the specified depth.
+     * <p>
+     * A threshold for alpha-beta pruning can also be specified.
      *
-     * @param evaluator  the board evaluator to use
-     * @param depth      the depth to search
+     * @param evaluator    the board evaluator to use
+     * @param depth        the depth to search
+     * @param abThreshold  the threshold to use for alpha-beta pruning
      *
      * @throws IllegalArgumentException  if <code>depth</code> < 1
      * @throws NullPointerException      if <code>evaluator</code> is
      *                                   <code>null</code>
      */
     public MinimaxAlphaBetaDepthLimited(final BoardEvaluator evaluator,
-            final int depth) {
+            final int depth, final int abThreshold) {
         boardEvaluator = Objects.requireNonNull(evaluator);
         if (depth < 1) {
             throw new IllegalArgumentException("depth(" + depth + ") < 1");
         }
         maxSearchDepth = depth;
+        threshold = abThreshold;
     }
     @Override
     public final Move search(final Game game, final Player owner,
@@ -114,7 +120,7 @@ public class MinimaxAlphaBetaDepthLimited implements MoveSearch {
                                     opponent, alpha, beta));
                     performedMove.undo();
                     alpha = Math.max(alpha, currentBestValue);
-                    if (beta <= alpha) {
+                    if (beta + threshold <= alpha) {
                         // Prune.
 //                        break;
                         return Integer.MAX_VALUE;
@@ -133,7 +139,7 @@ public class MinimaxAlphaBetaDepthLimited implements MoveSearch {
                                     opponent, alpha, beta));
                     performedMove.undo();
                     beta = Math.min(beta, currentBestValue);
-                    if (beta <= alpha) {
+                    if (beta + threshold <= alpha) {
                         // Prune.
 //                        break;
                         return Integer.MIN_VALUE;
