@@ -42,6 +42,7 @@ public class ArtificialPlayer implements Player {
     }
     @Override
     public final String toString() {
-        return "ArtificialPlayer [name=" + name + "]";
+        return "ArtificialPlayer [name=" + name + ", search="
+                + moveSearch + "]";
     }
 }

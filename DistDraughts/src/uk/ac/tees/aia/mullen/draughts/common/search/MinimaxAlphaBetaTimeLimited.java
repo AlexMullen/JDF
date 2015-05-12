@@ -13,34 +13,37 @@ import uk.ac.tees.aia.mullen.draughts.common.Player;
 import uk.ac.tees.aia.mullen.draughts.common.MovePerformer.PerformedMove;
 
 /**
- * A move search that uses a Minimax search algorithm that is depth limited.
+ * A move iterative deepening depth first search that uses a Minimax search
+ * algorithm that stops the search after a specified amount of time has
+ * elapsed. Alpha-Beta pruning is also used to prune branches that need not be
+ * explored.
  *
  * @author  Alex Mullen
  *
  */
-public class MinimaxDepthLimited implements MoveSearch {
-    /** The board evaluator to use for evaluating board states. */
+public class MinimaxAlphaBetaTimeLimited implements MoveSearch {
+    /** The board evaluator to use for evaluating board state. */
     private final BoardEvaluator boardEvaluator;
-    /** Holds the maximum depth to search to. */
-    private final int maxSearchDepth;
+    /** Holds the maximum time allowed to search for in milliseconds. */
+    private final long searchTime;
     /**
      * Creates a new instance that uses the specified board evaluator
-     * and searches to the specified depth.
+     * and searches for the specified amount of time in milliseconds.
      *
      * @param evaluator  the board evaluator to use
-     * @param depth      the depth to search
+     * @param time       the time allowed for searches
      *
-     * @throws IllegalArgumentException  if <code>depth</code> < 1
+     * @throws IllegalArgumentException  if <code>time</code> < 1
      * @throws NullPointerException      if <code>evaluator</code> is
      *                                   <code>null</code>
      */
-    public MinimaxDepthLimited(final BoardEvaluator evaluator,
-            final int depth) {
+    public MinimaxAlphaBetaTimeLimited(final BoardEvaluator evaluator,
+            final long time) {
         boardEvaluator = Objects.requireNonNull(evaluator);
-        if (depth < 1) {
-            throw new IllegalArgumentException("depth(" + depth + ") < 1");
+        if (time < 1) {
+            throw new IllegalArgumentException("time(" + time + ") < 1");
         }
-        maxSearchDepth = depth;
+        searchTime = time;
     }
     @Override
     public final Move search(final Game game, final Player owner,
@@ -54,20 +57,26 @@ public class MinimaxDepthLimited implements MoveSearch {
         if (moves.size() == 1) {
             return moves.get(0);
         }
-        for (final Move currentMove : moves) {
-            final PerformedMove performedMove =
-                    game.getMovePerformer().perform(currentMove, board);
-            // This is depth 0, so call min at depth 1.
-            final int currentMoveValue =
-                    minimax(board, 1, false, game, owner, opponent);
-            if (currentBestScore < currentMoveValue) {
-                currentBestScore = currentMoveValue;
-                bestMoves.clear();
-                bestMoves.add(currentMove);
-            } else if (currentBestScore == currentMoveValue) {
-                bestMoves.add(currentMove);
+        final long timeToStopAt = System.currentTimeMillis() + searchTime;
+        for (int depth = 1; System.currentTimeMillis() < timeToStopAt;
+                depth++) {
+//            System.out.println("depth = " + depth);
+            for (final Move currentMove : moves) {
+                final PerformedMove performedMove =
+                        game.getMovePerformer().perform(currentMove, board);
+                // This is depth 0, so call min at depth 1.
+                final int currentMoveValue =
+                        minimax(board, depth, timeToStopAt, false, game, owner,
+                                opponent);
+                if (currentBestScore < currentMoveValue) {
+                    currentBestScore = currentMoveValue;
+                    bestMoves.clear();
+                    bestMoves.add(currentMove);
+                } else if (currentBestScore == currentMoveValue) {
+                    bestMoves.add(currentMove);
+                }
+                performedMove.undo();
             }
-            performedMove.undo();
         }
         return bestMoves.get(new Random().nextInt(bestMoves.size()));
     }
@@ -76,8 +85,8 @@ public class MinimaxDepthLimited implements MoveSearch {
      * current board state.
      *
      * @param board             the current board state
-     * @param currentDepth      holds the value of the current depth the search
-     *                          is at
+     * @param depth             holds the value of the depth of the search
+     * @param timeToStopAt      holds the to stop searching at
      * @param maximisingPlayer  set to <code>true</code> if the current
      *                          level is the maximising player's (this)
      *                          turn; <code>false</code> if it is the opponents
@@ -88,10 +97,11 @@ public class MinimaxDepthLimited implements MoveSearch {
      * @return                  the value of the current board state N moves
      *                          ahead
      */
-    private int minimax(final Board board, final int currentDepth,
+    private int minimax(final Board board, final int depth,
+            final long timeToStopAt,
             final boolean maximisingPlayer, final Game game,
             final Player owner, final Player opponent) {
-        if (currentDepth == maxSearchDepth) {
+        if (depth == 0 || System.currentTimeMillis() > timeToStopAt) {
             return boardEvaluator.evaluate(board, owner);
         } else {
             if (maximisingPlayer) {
@@ -101,8 +111,8 @@ public class MinimaxDepthLimited implements MoveSearch {
                     final PerformedMove performedMove =
                             game.getMovePerformer().perform(currentMove, board);
                     final int currentMoveValue =
-                            minimax(board, currentDepth + 1, false, game, owner,
-                                    opponent);
+                            minimax(board, depth - 1, timeToStopAt, false, game,
+                                    owner, opponent);
                     currentBestScore =
                             Math.max(currentBestScore, currentMoveValue);
                     performedMove.undo();
@@ -115,8 +125,8 @@ public class MinimaxDepthLimited implements MoveSearch {
                     final PerformedMove performedMove =
                             game.getMovePerformer().perform(currentMove, board);
                     final int currentMoveValue =
-                            minimax(board, currentDepth + 1, true, game, owner,
-                                    opponent);
+                            minimax(board, depth - 1, timeToStopAt, true, game,
+                                    owner, opponent);
                     currentBestScore =
                             Math.min(currentBestScore, currentMoveValue);
                     performedMove.undo();
@@ -127,6 +137,6 @@ public class MinimaxDepthLimited implements MoveSearch {
     }
     @Override
     public final String toString() {
-        return "MinimaxDepthLimited [maxSearchDepth=" + maxSearchDepth + "]";
+        return "MinimaxAlphaBetaTimeLimited [searchTime=" + searchTime + "]";
     }
 }

@@ -61,7 +61,7 @@ public class MinimaxAlphaBetaDepthLimited implements MoveSearch {
             final int currentMoveValue =
                     minimax(board, 1, false, game, owner, opponent,
                             alpha, Integer.MAX_VALUE);
-            System.out.println(currentMove + " = " + currentMoveValue);
+//            System.out.println(currentMove + " = " + currentMoveValue);
             performedMove.undo();
             if (currentMoveValue > alpha) {
                 alpha = currentMoveValue;
@@ -72,8 +72,8 @@ public class MinimaxAlphaBetaDepthLimited implements MoveSearch {
             }
         }
 
-        System.out.println(bestMoves.size() + " / " + moves.size()
-                + "[" + alpha + "]");
+//        System.out.println(bestMoves.size() + " / " + moves.size()
+//                + "[" + alpha + "]");
 //        return bestMoves.get(0);
         return bestMoves.get(new Random().nextInt(bestMoves.size()));
     }
@@ -142,5 +142,10 @@ public class MinimaxAlphaBetaDepthLimited implements MoveSearch {
                 return currentBestValue;
             }
         }
+    }
+    @Override
+    public final String toString() {
+        return "MinimaxAlphaBetaDepthLimited [maxSearchDepth="
+                + maxSearchDepth + "]";
     }
 }

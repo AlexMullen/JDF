@@ -58,7 +58,7 @@ public class MinimaxTimeLimited implements MoveSearch {
         final long timeToStopAt = System.currentTimeMillis() + searchTime;
         for (int depth = 1; System.currentTimeMillis() < timeToStopAt;
                 depth++) {
-            System.out.println("depth = " + depth);
+//            System.out.println("depth = " + depth);
             for (final Move currentMove : moves) {
                 final PerformedMove performedMove =
                         game.getMovePerformer().perform(currentMove, board);
@@ -132,5 +132,9 @@ public class MinimaxTimeLimited implements MoveSearch {
                 return currentBestScore;
             }
         }
+    }
+    @Override
+    public final String toString() {
+        return "MinimaxTimeLimited [searchTime=" + searchTime + "]";
     }
 }

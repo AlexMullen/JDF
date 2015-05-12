@@ -52,4 +52,8 @@ public class BasicBoardEvaluator implements BoardEvaluator {
 //                + (ownerScore - opponentScore));
         return ownerScore - opponentScore;
     }
+    @Override
+    public final String toString() {
+        return "BasicBoardEvaluator []";
+    }
 }
