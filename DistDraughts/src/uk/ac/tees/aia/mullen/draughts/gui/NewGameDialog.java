@@ -28,6 +28,7 @@ import uk.ac.tees.aia.mullen.draughts.common.GameBuilder;
 import uk.ac.tees.aia.mullen.draughts.common.GameBuilderFactory;
 import uk.ac.tees.aia.mullen.draughts.common.Player;
 import uk.ac.tees.aia.mullen.draughts.common.search.MinimaxAlphaBetaDepthLimited;
+import uk.ac.tees.aia.mullen.draughts.common.search.MinimaxAlphaBetaTimeLimited;
 
 /**
  * A dialog for allowing a user to configure a new game.
@@ -116,9 +117,9 @@ public class NewGameDialog {
                 } else {
                     gameConfig.setLightPlayer(
                             new ArtificialPlayer(
-                                    new MinimaxAlphaBetaDepthLimited(
+                                    new MinimaxAlphaBetaTimeLimited(
                                             new BasicBoardEvaluator(),
-                                            lightPlayerDifficultySlider.getValue()),
+                                            lightPlayerDifficultySlider.getValue() * 100),
                                     "AI-Light") {
                                 // Empty.
                     });
@@ -133,9 +134,9 @@ public class NewGameDialog {
                 } else {
                     gameConfig.setDarkPlayer(
                             new ArtificialPlayer(
-                                    new MinimaxAlphaBetaDepthLimited(
+                                    new MinimaxAlphaBetaTimeLimited(
                                             new BasicBoardEvaluator(),
-                                            darkPlayerDifficultySlider.getValue()),
+                                            darkPlayerDifficultySlider.getValue() * 100),
                                     "AI-Dark") {
                                 // Empty.
                     });
