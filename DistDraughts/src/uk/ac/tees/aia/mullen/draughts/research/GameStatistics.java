@@ -9,6 +9,8 @@ import uk.ac.tees.aia.mullen.draughts.common.Player;
  *
  */
 public class GameStatistics {
+	/** Indicates whether the game was a draw. */
+	private boolean draw;
     /** Holds the game ID. */
     private final int gameId;
     /** Holds the time in milliseconds of the game duration. */
@@ -17,8 +19,12 @@ public class GameStatistics {
     private int movesMade;
     /** Holds the winner of the game. */
     private Player winner;
+    /** Holds the final board score of the winner. */
+    private int winnerScore;
     /** Holds the loser of the game. */
     private Player loser;
+    /** Holds the final board score of the loser. */
+    private int loserScore;
     /**
      * Creates a new instance for the specified game iteration ID.
      *
@@ -34,6 +40,20 @@ public class GameStatistics {
     public final int getGameID() {
         return gameId;
     }
+    /**
+     * Gets whether the game was a draw or not.
+     * @return  <code>true</code> if the game was a draw; else <code>false</code>
+     */
+	public boolean isDraw() {
+		return draw;
+	}
+	/**
+	 * Sets whether the game was a draw or not.
+	 * @param value  <code>true</code> if the game was a draw; else <code>false</code>
+	 */
+	public void setDraw(boolean value) {
+		draw = value;
+	}
     /**
      * Gets the game time.
      * @return  the time in milliseconds
@@ -90,6 +110,18 @@ public class GameStatistics {
     public final void setLoser(final Player losingPlayer) {
         loser = losingPlayer;
     }
+	public final int getWinnerScore() {
+		return winnerScore;
+	}
+	public final void setWinnerScore(final int score) {
+		winnerScore = score;
+	}
+	public final int getLoserScore() {
+		return loserScore;
+	}
+	public final void setLoserScore(final int score) {
+		loserScore = score;
+	}
     @Override
     public final String toString() {
         return "GameStatistics [gameId=" + gameId + ", gameTime=" + gameTime

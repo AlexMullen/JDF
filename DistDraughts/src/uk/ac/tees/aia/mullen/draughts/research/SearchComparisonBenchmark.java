@@ -24,6 +24,8 @@ import uk.ac.tees.aia.mullen.draughts.english.EnglishDraughtsGame;
 public final class SearchComparisonBenchmark {
     /** Holds the number of games to play in the benchmark. */
     private static final int GAME_ITERATIONS_COUNT = 100;
+    /** Holds the maximum number of moves allowed in a game. */
+    private static final int MAX_TURNS = 100;
     /**
      * Creates a new instance.
      */
@@ -38,10 +40,10 @@ public final class SearchComparisonBenchmark {
     public static void main(final String... args) {
         final MoveSearch searchAlgo1 =
                 new MinimaxAlphaBetaDepthLimited(
-                		new BasicBoardEvaluator(), 4, 0);
+                		new BasicBoardEvaluator(), 1, 0);
         final MoveSearch searchAlgo2 =
                 new MinimaxAlphaBetaTimeLimited(
-                		new BasicBoardEvaluator(), 250, 0);
+                		new BasicBoardEvaluator(), 10, 0);
 
         final ArtificialPlayer ai1 =
                 new ArtificialPlayer(searchAlgo1, "AI-1");
@@ -67,7 +69,8 @@ public final class SearchComparisonBenchmark {
             final long gameStartTime = System.currentTimeMillis();
 
             // Play it until it finishes.
-            while (gameContext.getResult() == null) {
+            int gameTurn = 0;
+            while (gameContext.getResult() == null && gameTurn++ < MAX_TURNS) {
                 /*
                  * Ask the current AI player for its move then input it into
                  * the game.
@@ -79,13 +82,16 @@ public final class SearchComparisonBenchmark {
                 // Increment the number of moves made.
                 stats.setMovesMade(stats.getMovesMade() + 1);
             }
-            // The game has ended so print the result.
-            final GameResult result = gameContext.getResult();
-
             stats.setGameTime(System.currentTimeMillis() - gameStartTime);
-            stats.setWinner(result.getWinner());
-            stats.setLoser(gameContext.getOpponent(result.getWinner()));
-
+            // Check if it was a draw
+            if (gameContext.getResult() == null) {
+            	stats.setDraw(true);
+            } else {
+                // The game has ended so print the result.
+                final GameResult result = gameContext.getResult();
+                stats.setWinner(result.getWinner());
+                stats.setLoser(gameContext.getOpponent(result.getWinner()));
+            }
             System.out.println(stats);
         }
     }
