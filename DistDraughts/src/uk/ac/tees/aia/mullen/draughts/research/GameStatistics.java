@@ -9,22 +9,18 @@ import uk.ac.tees.aia.mullen.draughts.common.Player;
  *
  */
 public class GameStatistics {
-	/** Indicates whether the game was a draw. */
-	private boolean draw;
+    /** Indicates whether the game was a draw. */
+    private boolean draw;
     /** Holds the game ID. */
     private final int gameId;
-    /** Holds the time in milliseconds of the game duration. */
-    private long gameTime;
-    /** Holds the total number of moves made in the game. */
-    private int movesMade;
+    public int player1_moves_made;
+    public int player2_moves_made;
+    public int player1_move_time;
+    public int player2_move_time;
     /** Holds the winner of the game. */
     private Player winner;
-    /** Holds the final board score of the winner. */
-    private int winnerScore;
     /** Holds the loser of the game. */
     private Player loser;
-    /** Holds the final board score of the loser. */
-    private int loserScore;
     /**
      * Creates a new instance for the specified game iteration ID.
      *
@@ -42,45 +38,19 @@ public class GameStatistics {
     }
     /**
      * Gets whether the game was a draw or not.
-     * @return  <code>true</code> if the game was a draw; else <code>false</code>
+     * @return  <code>true</code> if the game was a draw; else
+     *          <code>false</code>
      */
-	public boolean isDraw() {
-		return draw;
-	}
-	/**
-	 * Sets whether the game was a draw or not.
-	 * @param value  <code>true</code> if the game was a draw; else <code>false</code>
-	 */
-	public void setDraw(boolean value) {
-		draw = value;
-	}
-    /**
-     * Gets the game time.
-     * @return  the time in milliseconds
-     */
-    public final long getGameTime() {
-        return gameTime;
+    public final boolean isDraw() {
+        return draw;
     }
     /**
-     * Sets the game time.
-     * @param time  the game time in milliseconds
+     * Sets whether the game was a draw or not.
+     * @param value  <code>true</code> if the game was a draw; else
+     * <code>false</code>
      */
-    public final void setGameTime(final long time) {
-        gameTime = time;
-    }
-    /**
-     * Gets the number of moves made.
-     * @return  the number of moves
-     */
-    public final int getMovesMade() {
-        return movesMade;
-    }
-    /**
-     * Sets the number of moves made.
-     * @param moveCount  number of moves made
-     */
-    public final void setMovesMade(final int moveCount) {
-        movesMade = moveCount;
+    public final void setDraw(final boolean value) {
+        draw = value;
     }
     /**
      * Gets the winner of the game.
@@ -103,29 +73,16 @@ public class GameStatistics {
     public final Player getLoser() {
         return loser;
     }
-    /**
-     * Sets the losing player.
-     * @param losingPlayer  the losing player
-     */
     public final void setLoser(final Player losingPlayer) {
         loser = losingPlayer;
     }
-	public final int getWinnerScore() {
-		return winnerScore;
-	}
-	public final void setWinnerScore(final int score) {
-		winnerScore = score;
-	}
-	public final int getLoserScore() {
-		return loserScore;
-	}
-	public final void setLoserScore(final int score) {
-		loserScore = score;
-	}
     @Override
-    public final String toString() {
-        return "GameStatistics [gameId=" + gameId + ", gameTime=" + gameTime
-                + ", movesMade=" + movesMade + ", winner=" + winner
-                + ", loser=" + loser + "]";
+    public String toString() {
+        return "GameStatistics [draw=" + draw + ", gameId=" + gameId
+                + ", player1_moves_made=" + player1_moves_made
+                + ", player2_moves_made=" + player2_moves_made
+                + ", player1_move_time=" + player1_move_time
+                + ", player2_move_time=" + player2_move_time + ", winner="
+                + winner + ", loser=" + loser + "]";
     }
 }
