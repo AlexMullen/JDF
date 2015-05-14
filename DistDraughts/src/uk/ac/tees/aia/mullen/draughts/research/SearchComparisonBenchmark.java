@@ -12,6 +12,7 @@ import uk.ac.tees.aia.mullen.draughts.common.Player;
 import uk.ac.tees.aia.mullen.draughts.common.search.
                                             MinimaxAlphaBetaDepthLimited;
 import uk.ac.tees.aia.mullen.draughts.common.search.MinimaxAlphaBetaTimeLimited;
+import uk.ac.tees.aia.mullen.draughts.common.search.MinimaxDepthLimited;
 import uk.ac.tees.aia.mullen.draughts.common.search.MoveSearch;
 import uk.ac.tees.aia.mullen.draughts.english.EnglishDraughtsGame;
 
@@ -40,11 +41,11 @@ public final class SearchComparisonBenchmark {
      */
     public static void main(final String... args) {
         final MoveSearch searchAlgo1 =
+                new MinimaxDepthLimited(
+                        new BasicBoardEvaluator(), 10);
+        final MoveSearch searchAlgo2 =
                 new MinimaxAlphaBetaDepthLimited(
                         new BasicBoardEvaluator(), 1, 0);
-        final MoveSearch searchAlgo2 =
-                new MinimaxAlphaBetaTimeLimited(
-                        new BasicBoardEvaluator(), 10, 0);
 
         final ArtificialPlayer ai1 =
                 new ArtificialPlayer(searchAlgo1, "AI-1");
