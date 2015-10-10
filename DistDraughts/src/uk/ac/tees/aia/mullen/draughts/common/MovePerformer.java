@@ -24,7 +24,7 @@ public interface MovePerformer {
      */
     public interface PerformedMove {
         /**
-         * Undoes the performed move.
+         * Undoes the performed move on the board the move was performed on.
          */
         void undo();
     }

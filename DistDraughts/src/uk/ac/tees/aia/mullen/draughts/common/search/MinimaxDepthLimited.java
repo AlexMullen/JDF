@@ -6,11 +6,11 @@ import java.util.Objects;
 import java.util.Random;
 
 import uk.ac.tees.aia.mullen.draughts.common.Board;
-import uk.ac.tees.aia.mullen.draughts.common.BoardEvaluator;
 import uk.ac.tees.aia.mullen.draughts.common.Game;
 import uk.ac.tees.aia.mullen.draughts.common.Move;
 import uk.ac.tees.aia.mullen.draughts.common.Player;
 import uk.ac.tees.aia.mullen.draughts.common.MovePerformer.PerformedMove;
+import uk.ac.tees.aia.mullen.draughts.common.evaluation.BoardEvaluator;
 
 /**
  * A move search that uses a Minimax search algorithm that is depth limited.
@@ -45,7 +45,7 @@ public class MinimaxDepthLimited implements MoveSearch {
     @Override
     public final Move search(final Game game, final Player owner,
             final Player opponent) {
-        int currentBestScore = Integer.MIN_VALUE;
+        float currentBestScore = Integer.MIN_VALUE;
         final List<Move> bestMoves = new ArrayList<>();
         final Board board = game.getBoard();
         final List<Move> moves =
@@ -58,7 +58,7 @@ public class MinimaxDepthLimited implements MoveSearch {
             final PerformedMove performedMove =
                     game.getMovePerformer().perform(currentMove, board);
             // This is depth 0, so call min at depth 1.
-            final int currentMoveValue =
+            final float currentMoveValue =
                     minimax(board, 1, false, game, owner, opponent);
             if (currentBestScore < currentMoveValue) {
                 currentBestScore = currentMoveValue;
@@ -88,19 +88,19 @@ public class MinimaxDepthLimited implements MoveSearch {
      * @return                  the value of the current board state N moves
      *                          ahead
      */
-    private int minimax(final Board board, final int currentDepth,
+    private float minimax(final Board board, final int currentDepth,
             final boolean maximisingPlayer, final Game game,
             final Player owner, final Player opponent) {
         if (currentDepth == maxSearchDepth) {
             return boardEvaluator.evaluate(board, owner);
         } else {
             if (maximisingPlayer) {
-                int currentBestScore = Integer.MIN_VALUE;
+                float currentBestScore = Integer.MIN_VALUE;
                 for (final Move currentMove
                         : game.getMoveGenerator().findMoves(board, owner)) {
                     final PerformedMove performedMove =
                             game.getMovePerformer().perform(currentMove, board);
-                    final int currentMoveValue =
+                    final float currentMoveValue =
                             minimax(board, currentDepth + 1, false, game, owner,
                                     opponent);
                     currentBestScore =
@@ -109,12 +109,12 @@ public class MinimaxDepthLimited implements MoveSearch {
                 }
                 return currentBestScore;
             } else {
-                int currentBestScore = Integer.MAX_VALUE;
+                float currentBestScore = Integer.MAX_VALUE;
                 for (final Move currentMove
                         : game.getMoveGenerator().findMoves(board, opponent)) {
                     final PerformedMove performedMove =
                             game.getMovePerformer().perform(currentMove, board);
-                    final int currentMoveValue =
+                    final float currentMoveValue =
                             minimax(board, currentDepth + 1, true, game, owner,
                                     opponent);
                     currentBestScore =

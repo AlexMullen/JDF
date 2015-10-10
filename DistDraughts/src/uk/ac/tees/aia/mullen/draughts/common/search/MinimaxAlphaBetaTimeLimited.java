@@ -6,11 +6,11 @@ import java.util.Objects;
 import java.util.Random;
 
 import uk.ac.tees.aia.mullen.draughts.common.Board;
-import uk.ac.tees.aia.mullen.draughts.common.BoardEvaluator;
 import uk.ac.tees.aia.mullen.draughts.common.Game;
 import uk.ac.tees.aia.mullen.draughts.common.Move;
 import uk.ac.tees.aia.mullen.draughts.common.Player;
 import uk.ac.tees.aia.mullen.draughts.common.MovePerformer.PerformedMove;
+import uk.ac.tees.aia.mullen.draughts.common.evaluation.BoardEvaluator;
 
 /**
  * A move iterative deepening depth first search that uses a Minimax search
@@ -54,7 +54,7 @@ public class MinimaxAlphaBetaTimeLimited implements MoveSearch {
     @Override
     public final Move search(final Game game, final Player owner,
             final Player opponent) {
-        int alpha = Integer.MIN_VALUE;
+        float alpha = Float.MIN_VALUE;
         final List<Move> bestMoves = new ArrayList<>();
         final Board board = game.getBoard();
         final List<Move> moves =
@@ -71,9 +71,9 @@ public class MinimaxAlphaBetaTimeLimited implements MoveSearch {
                 final PerformedMove performedMove =
                         game.getMovePerformer().perform(currentMove, board);
                 // This is depth 0, so call min at depth 1.
-                final int currentMoveValue =
+                final float currentMoveValue =
                         minimax(board, depth, timeToStopAt, false, game, owner,
-                                opponent, alpha, Integer.MAX_VALUE);
+                                opponent, alpha, Float.MAX_VALUE);
                 if (currentMoveValue > alpha) {
                     alpha = currentMoveValue;
                     bestMoves.clear();
@@ -103,20 +103,20 @@ public class MinimaxAlphaBetaTimeLimited implements MoveSearch {
      * @return                  the value of the current board state N moves
      *                          ahead
      */
-    private int minimax(final Board board, final int depth,
+    private float minimax(final Board board, final int depth,
             final long timeToStopAt,
             final boolean maximisingPlayer, final Game game,
-            final Player owner, final Player opponent, int alpha, int beta) {
+            final Player owner, final Player opponent, float alpha, float beta) {
         if (depth == 0 || System.currentTimeMillis() > timeToStopAt) {
             return boardEvaluator.evaluate(board, owner);
         } else {
             if (maximisingPlayer) {
-                int currentBestScore = Integer.MIN_VALUE;
+                float currentBestScore = Float.MIN_VALUE;
                 for (final Move currentMove
                         : game.getMoveGenerator().findMoves(board, owner)) {
                     final PerformedMove performedMove =
                             game.getMovePerformer().perform(currentMove, board);
-                    final int currentMoveValue =
+                    final float currentMoveValue =
                             minimax(board, depth - 1, timeToStopAt, false, game,
                                     owner, opponent, alpha, beta);
                     currentBestScore =
@@ -125,17 +125,17 @@ public class MinimaxAlphaBetaTimeLimited implements MoveSearch {
                     if (beta + threshold <= alpha) {
                         // Prune.
 //                        break;
-                        return Integer.MAX_VALUE;
+                        return Float.MAX_VALUE;
                     }
                 }
                 return currentBestScore;
             } else {
-                int currentBestScore = Integer.MAX_VALUE;
+                float currentBestScore = Float.MAX_VALUE;
                 for (final Move currentMove
                         : game.getMoveGenerator().findMoves(board, opponent)) {
                     final PerformedMove performedMove =
                             game.getMovePerformer().perform(currentMove, board);
-                    final int currentMoveValue =
+                    final float currentMoveValue =
                             minimax(board, depth - 1, timeToStopAt, true, game,
                                     owner, opponent, alpha, beta);
                     currentBestScore =

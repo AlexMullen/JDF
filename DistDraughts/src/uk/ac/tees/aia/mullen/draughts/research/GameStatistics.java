@@ -13,10 +13,13 @@ public class GameStatistics {
     private boolean draw;
     /** Holds the game ID. */
     private final int gameId;
-    public int player1_moves_made;
-    public int player2_moves_made;
-    public int player1_move_time;
-    public int player2_move_time;
+    
+    public int white_moves_made;
+    public int dark_moves_made;
+    
+    public int white_move_time;
+    public int dark_move_time;
+    
     /** Holds the winner of the game. */
     private Player winner;
     /** Holds the loser of the game. */
@@ -79,10 +82,10 @@ public class GameStatistics {
     @Override
     public String toString() {
         return "GameStatistics [draw=" + draw + ", gameId=" + gameId
-                + ", player1_moves_made=" + player1_moves_made
-                + ", player2_moves_made=" + player2_moves_made
-                + ", player1_move_time=" + player1_move_time
-                + ", player2_move_time=" + player2_move_time + ", winner="
+                + ", player1_moves_made=" + white_moves_made
+                + ", player2_moves_made=" + dark_moves_made
+                + ", player1_move_time=" + white_move_time
+                + ", player2_move_time=" + dark_move_time + ", winner="
                 + winner + ", loser=" + loser + "]";
     }
 }

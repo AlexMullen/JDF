@@ -4,16 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uk.ac.tees.aia.mullen.draughts.common.ArtificialPlayer;
-import uk.ac.tees.aia.mullen.draughts.common.BasicBoardEvaluator;
 import uk.ac.tees.aia.mullen.draughts.common.Game;
 import uk.ac.tees.aia.mullen.draughts.common.Move;
 import uk.ac.tees.aia.mullen.draughts.common.Game.GameResult;
 import uk.ac.tees.aia.mullen.draughts.common.Player;
+import uk.ac.tees.aia.mullen.draughts.common.evaluation.BasicBoardEvaluator;
 import uk.ac.tees.aia.mullen.draughts.common.search.
                                             MinimaxAlphaBetaDepthLimited;
 import uk.ac.tees.aia.mullen.draughts.common.search.MinimaxAlphaBetaTimeLimited;
 import uk.ac.tees.aia.mullen.draughts.common.search.MinimaxDepthLimited;
 import uk.ac.tees.aia.mullen.draughts.common.search.MoveSearch;
+import uk.ac.tees.aia.mullen.draughts.common.search.NegamaxDepthLimited;
 import uk.ac.tees.aia.mullen.draughts.english.EnglishDraughtsGame;
 
 /**
@@ -42,10 +43,10 @@ public final class SearchComparisonBenchmark {
     public static void main(final String... args) {
         final MoveSearch searchAlgo1 =
                 new MinimaxDepthLimited(
-                        new BasicBoardEvaluator(), 10);
+                        new BasicBoardEvaluator(), 5);
         final MoveSearch searchAlgo2 =
-                new MinimaxAlphaBetaDepthLimited(
-                        new BasicBoardEvaluator(), 1, 0);
+                new NegamaxDepthLimited(
+                        new BasicBoardEvaluator(), 5);
 
         final ArtificialPlayer ai1 =
                 new ArtificialPlayer(searchAlgo1, "AI-1");
@@ -81,11 +82,11 @@ public final class SearchComparisonBenchmark {
                 final Move aiMove = aiTurnOwner.getMove(gameContext);
                 // Increment the number of moves made.
                 if (gameContext.getTurnOwner() == ai1) {
-                    stats.player1_moves_made++;
-                    stats.player1_move_time += System.currentTimeMillis() - gameStartTime;
+                    stats.white_moves_made++;
+                    stats.white_move_time += System.currentTimeMillis() - gameStartTime;
                 } else {
-                    stats.player2_moves_made++;
-                    stats.player2_move_time += System.currentTimeMillis() - gameStartTime;
+                    stats.dark_moves_made++;
+                    stats.dark_move_time += System.currentTimeMillis() - gameStartTime;
                 }
                 gameContext.performMove(aiMove);
             }
@@ -104,10 +105,10 @@ public final class SearchComparisonBenchmark {
     }
     
     private static void calculateAndPrintStats(final List<GameStatistics> statsList,
-            final Player p1, final Player p2) {
-        int p1_games_won = 0, p2_games_won = 0;
-        int p1_moves_in_won_games = 0, p2_moves_in_won_games = 0;
-        int p1_moves_total_time_in_won_games = 0, p2_moves_total_time_in_won_games = 0;
+            final Player whitePlayer, final Player darkPlayer) {
+        int white_games_won = 0, dark_games_won = 0;
+        int white_moves_in_won_games = 0, dark_moves_in_won_games = 0;
+        int white_moves_total_time_in_won_games = 0, dark_moves_total_time_in_won_games = 0;
         int games_drew = 0;
         for (final GameStatistics gameStats : statsList) {
             // Check for draw.
@@ -115,30 +116,30 @@ public final class SearchComparisonBenchmark {
                 games_drew++;
             } else {
                 // Check who won.
-                if (gameStats.getWinner() == p1) {
-                    p1_games_won++;
-                    p1_moves_in_won_games += gameStats.player1_moves_made;
-                    p1_moves_total_time_in_won_games += gameStats.player1_move_time;
-                } else {
-                    p2_games_won++;
-                    p2_moves_in_won_games += gameStats.player2_moves_made;
-                    p2_moves_total_time_in_won_games += gameStats.player2_move_time;
+                if (gameStats.getWinner() == whitePlayer) {
+                    white_games_won++;
+                    white_moves_in_won_games += gameStats.white_moves_made;
+                    white_moves_total_time_in_won_games += gameStats.white_move_time;
+                } else if (gameStats.getWinner() == darkPlayer){
+                    dark_games_won++;
+                    dark_moves_in_won_games += gameStats.dark_moves_made;
+                    dark_moves_total_time_in_won_games += gameStats.dark_move_time;
                 }
             }
         }
         
-        final double p1_avg_moves_in_won_games = p1_moves_in_won_games / (double) p1_games_won;
-        final double p2_avg_moves_in_won_games = p2_moves_in_won_games / (double) p2_games_won;
+        final double white_avg_moves_in_won_games = white_moves_in_won_games / (double) white_games_won;
+        final double dark_avg_moves_in_won_games = dark_moves_in_won_games / (double) dark_games_won;
         
         System.out.println("=================================================");
         System.out.println("Total Games drew: " + games_drew);
         System.out.println("=================================================");
-        System.out.println("Player 1 games won: " + p1_games_won);
-        System.out.println("Player 1 avg moves in won games: " + p1_avg_moves_in_won_games);
-        System.out.println("Player 1 avg move time in won games: " + p1_moves_total_time_in_won_games / p1_avg_moves_in_won_games);
+        System.out.println("Player (white) games won: " + white_games_won);
+        System.out.println("Player (white) avg moves in won games: " + white_avg_moves_in_won_games);
+        System.out.println("Player (white) avg move time in won games: " + white_moves_total_time_in_won_games / white_avg_moves_in_won_games);
         System.out.println("=================================================");
-        System.out.println("Player 2 games won: " + p2_games_won);
-        System.out.println("Player 2 avg moves in won games: " + p2_avg_moves_in_won_games);
-        System.out.println("Player 2 avg move time in won games: " + p2_moves_total_time_in_won_games / p2_avg_moves_in_won_games);
+        System.out.println("Player (dark) games won: " + dark_games_won);
+        System.out.println("Player (dark) avg moves in won games: " + dark_avg_moves_in_won_games);
+        System.out.println("Player (dark) avg move time in won games: " + dark_moves_total_time_in_won_games / dark_avg_moves_in_won_games);
     }
 }

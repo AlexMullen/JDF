@@ -26,7 +26,7 @@ public interface MoveGenerator {
      * <p>
      * Using this for checking if there are any moves is preferable than
      * invoking {@link #findMoves(Board, Player)} for efficiency as this can
-     * stop once one move is found.
+     * stop searching when at least one move is found.
      *
      * @param board   the board
      * @param player  the player

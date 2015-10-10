@@ -22,13 +22,15 @@ import javax.swing.JSlider;
 import javax.swing.LayoutStyle;
 
 import uk.ac.tees.aia.mullen.draughts.common.ArtificialPlayer;
-import uk.ac.tees.aia.mullen.draughts.common.BasicBoardEvaluator;
 import uk.ac.tees.aia.mullen.draughts.common.Game;
 import uk.ac.tees.aia.mullen.draughts.common.GameBuilder;
 import uk.ac.tees.aia.mullen.draughts.common.GameBuilderFactory;
 import uk.ac.tees.aia.mullen.draughts.common.Player;
+import uk.ac.tees.aia.mullen.draughts.common.evaluation.BasicBoardEvaluator;
 import uk.ac.tees.aia.mullen.draughts.common.search.MinimaxAlphaBetaDepthLimited;
 import uk.ac.tees.aia.mullen.draughts.common.search.MinimaxAlphaBetaTimeLimited;
+import uk.ac.tees.aia.mullen.draughts.common.search.MinimaxDepthLimited;
+import uk.ac.tees.aia.mullen.draughts.common.search.NegamaxDepthLimited;
 
 /**
  * A dialog for allowing a user to configure a new game.
@@ -106,6 +108,25 @@ public class NewGameDialog {
             public void actionPerformed(final ActionEvent e) {
                 // Handle the start button being pressed.
                 final GameBuilder.Config gameConfig = new GameBuilder.Config();
+
+                if (darkPlayerHumanOption.isSelected()) {
+                    gameConfig.setDarkPlayer(new Player() {
+                        @Override
+                        public boolean isArtificial() {
+                            return false;
+                        }
+                    });
+                } else {
+                    gameConfig.setDarkPlayer(
+                            new ArtificialPlayer(
+//                                  new MinimaxAlphaBetaDepthLimited(
+                                    new NegamaxDepthLimited(
+                                            new BasicBoardEvaluator(),
+                                            darkPlayerDifficultySlider.getValue()),
+                                    "AI-Dark") {
+                                // Empty.
+                    });
+                }
                 
                 if (lightPlayerHumanOption.isSelected()) {
                     gameConfig.setLightPlayer(new Player() {
@@ -117,30 +138,15 @@ public class NewGameDialog {
                 } else {
                     gameConfig.setLightPlayer(
                             new ArtificialPlayer(
-                                    new MinimaxAlphaBetaTimeLimited(
+//                                    new MinimaxAlphaBetaDepthLimited(
+                                    new NegamaxDepthLimited(
                                             new BasicBoardEvaluator(),
-                                            lightPlayerDifficultySlider.getValue() * 100, 0),
+                                            lightPlayerDifficultySlider.getValue()),
                                     "AI-Light") {
                                 // Empty.
                     });
                 }
-                if (darkPlayerHumanOption.isSelected()) {
-                    gameConfig.setDarkPlayer(new Player() {
-                        @Override
-                        public boolean isArtificial() {
-                            return false;
-                        }
-                    });
-                } else {
-                    gameConfig.setDarkPlayer(
-                            new ArtificialPlayer(
-                                    new MinimaxAlphaBetaTimeLimited(
-                                            new BasicBoardEvaluator(),
-                                            darkPlayerDifficultySlider.getValue() * 100, 0),
-                                    "AI-Dark") {
-                                // Empty.
-                    });
-                }
+                
                 gameToReturn = gameBuilderFactory.getBuilder(
                         ((GameBuilder)variationComboBox.getSelectedItem())
                         .getName()).build(gameConfig);

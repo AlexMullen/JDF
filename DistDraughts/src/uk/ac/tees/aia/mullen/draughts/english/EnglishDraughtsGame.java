@@ -115,7 +115,9 @@ public class EnglishDraughtsGame extends Game {
      */
     private void initPieces() {
 //      board.setPieceAt(7, 4, new Piece(lightPieceOwner, MoveDirection.BOTH));
-//      board.setPieceAt(4, 3, new Piece(darkPieceOwner, MoveDirection.BOTH));
+//      
+//      board.setPieceAt(0, 3, new Piece(darkPieceOwner, MoveDirection.BOTH));
+//      board.setPieceAt(0, 5, new Piece(darkPieceOwner, MoveDirection.BOTH));
 
         board.setPieceAt(1, 0, new Piece(darkPieceOwner, MoveDirection.DOWN));
         board.setPieceAt(3, 0, new Piece(darkPieceOwner, MoveDirection.DOWN));

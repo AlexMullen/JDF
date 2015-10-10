@@ -77,7 +77,7 @@ public class Piece {
         // Micro-optimization - this is not needed except when debugging.
 //        if (isCrowned()) {
 //            throw new IllegalStateException(
-//                    "Crowning an already crowned piece? owwway");
+//                    "Crowning an already crowned piece?");
 //        }
         moveDirection = MoveDirection.BOTH;
     }

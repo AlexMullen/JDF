@@ -6,11 +6,11 @@ import java.util.Objects;
 import java.util.Random;
 
 import uk.ac.tees.aia.mullen.draughts.common.Board;
-import uk.ac.tees.aia.mullen.draughts.common.BoardEvaluator;
 import uk.ac.tees.aia.mullen.draughts.common.Game;
 import uk.ac.tees.aia.mullen.draughts.common.Move;
 import uk.ac.tees.aia.mullen.draughts.common.Player;
 import uk.ac.tees.aia.mullen.draughts.common.MovePerformer.PerformedMove;
+import uk.ac.tees.aia.mullen.draughts.common.evaluation.BoardEvaluator;
 
 /**
  * A move search that uses a Minimax search algorithm with Alpha-Beta pruning
@@ -52,22 +52,24 @@ public class MinimaxAlphaBetaDepthLimited implements MoveSearch {
     @Override
     public final Move search(final Game game, final Player owner,
             final Player opponent) {
-        int alpha = Integer.MIN_VALUE;
+        System.out.println("------------------------------------------------------------------------------------------------------");
+        float alpha = -1000.0f;
         final Board board = game.getBoard();
         final List<Move> bestMoves = new ArrayList<>();
         final List<Move> moves =
                 game.getMoveGenerator().findMoves(board, owner);
-        // No point evaluating only one move.
         if (moves.size() == 1) {
+            // No point evaluating only one move.
+            System.out.println(moves.get(0));
             return moves.get(0);
         }
         for (final Move currentMove : moves) {
             final PerformedMove performedMove =
                     game.getMovePerformer().perform(currentMove, board);
-            final int currentMoveValue =
+            final float currentMoveValue =
                     minimax(board, 1, false, game, owner, opponent,
-                            alpha, Integer.MAX_VALUE);
-//            System.out.println(currentMove + " = " + currentMoveValue);
+                            alpha, 1000.0f);
+            System.out.println(currentMove + " = " + currentMoveValue);
             performedMove.undo();
             if (currentMoveValue > alpha) {
                 alpha = currentMoveValue;
@@ -77,9 +79,6 @@ public class MinimaxAlphaBetaDepthLimited implements MoveSearch {
                 bestMoves.add(currentMove);
             }
         }
-
-//        System.out.println(bestMoves.size() + " / " + moves.size()
-//                + "[" + alpha + "]");
 //        return bestMoves.get(0);
         return bestMoves.get(new Random().nextInt(bestMoves.size()));
     }
@@ -102,14 +101,14 @@ public class MinimaxAlphaBetaDepthLimited implements MoveSearch {
      * @return                  the value of the current board state N moves
      *                          ahead
      */
-    private int minimax(final Board board, final int currentDepth,
+    private float minimax(final Board board, final int currentDepth,
             final boolean maximisingPlayer, final Game game,
-            final Player owner, final Player opponent, int alpha, int beta) {
+            final Player owner, final Player opponent, float alpha, float beta) {
         if (currentDepth == maxSearchDepth) {
             return boardEvaluator.evaluate(board, owner);
         } else {
             if (maximisingPlayer) {
-                int currentBestValue = Integer.MIN_VALUE;
+                float currentBestValue = -1000.0f;
                 final List<Move> moves =
                         game.getMoveGenerator().findMoves(board, owner);
                 for (final Move currentMove : moves) {
@@ -122,13 +121,13 @@ public class MinimaxAlphaBetaDepthLimited implements MoveSearch {
                     alpha = Math.max(alpha, currentBestValue);
                     if (beta + threshold <= alpha) {
                         // Prune.
-//                        break;
-                        return Integer.MAX_VALUE;
+                        break;
                     }
                 }
                 return currentBestValue;
             } else {
-                int currentBestValue = Integer.MAX_VALUE;
+                // Minimising player.
+                float currentBestValue = 1000.0f;
                 final List<Move> moves =
                         game.getMoveGenerator().findMoves(board, opponent);
                 for (final Move currentMove : moves) {
@@ -141,8 +140,7 @@ public class MinimaxAlphaBetaDepthLimited implements MoveSearch {
                     beta = Math.min(beta, currentBestValue);
                     if (beta + threshold <= alpha) {
                         // Prune.
-//                        break;
-                        return Integer.MIN_VALUE;
+                        break;
                     }
                 }
                 return currentBestValue;
