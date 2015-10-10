@@ -105,7 +105,7 @@ public class GamePanel extends JPanel implements MouseInputListener {
                 if (foundPiece != null) {
                     Color pieceColour;
                     if (foundPiece.getOwner()
-                            == gameModel.getDarkPiecesPlayer()) {
+                            == gameModel.getDarkPlayer()) {
                         pieceColour = Color.BLACK;
                     } else {
                         pieceColour = Color.WHITE;

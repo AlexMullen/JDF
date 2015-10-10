@@ -24,13 +24,13 @@ public abstract class Game {
      *
      * @return  the player
      */
-    public abstract Player getDarkPiecesPlayer();
+    public abstract Player getDarkPlayer();
     /**
      * Gets the player who is playing the light pieces.
      *
      * @return  the player
      */
-    public abstract Player getLightPiecesPlayer();
+    public abstract Player getLightPlayer();
     /**
      * Gets the move generator this game uses.
      *

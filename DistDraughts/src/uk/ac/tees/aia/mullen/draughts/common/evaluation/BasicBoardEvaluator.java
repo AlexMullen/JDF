@@ -1,10 +1,6 @@
 package uk.ac.tees.aia.mullen.draughts.common.evaluation;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import uk.ac.tees.aia.mullen.draughts.common.Board;
-import uk.ac.tees.aia.mullen.draughts.common.BoardPosition;
 import uk.ac.tees.aia.mullen.draughts.common.Piece;
 import uk.ac.tees.aia.mullen.draughts.common.Player;
 

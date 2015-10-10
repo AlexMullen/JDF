@@ -41,7 +41,7 @@ public interface GameBuilder {
      *
      * @author  Alex Mullen
      */
-    public class Config {
+    class Config {
         /** Holds the value for whether forced captures is on or off. */
         private boolean forcedCaptures;
         /** Holds the player who will play the dark pieces. */

@@ -67,11 +67,11 @@ public class EnglishDraughtsGame extends Game {
         return turnOwner;
     }
     @Override
-    public final Player getDarkPiecesPlayer() {
+    public final Player getDarkPlayer() {
         return darkPieceOwner;
     }
     @Override
-    public final Player getLightPiecesPlayer() {
+    public final Player getLightPlayer() {
         return lightPieceOwner;
     }
     @Override
@@ -97,7 +97,7 @@ public class EnglishDraughtsGame extends Game {
         turnOwner = getOpponent(turnOwner);
         // Check if the next player has any moves left.
         if (!moveGenerator.hasAnyMoves(board, turnOwner)) {
-         // There turn but they have no moves left so the opposing player wins.
+         // Their turn but they have no moves left so the opposing player wins.
             result = new GameResult(getOpponent(turnOwner));
         }
     }

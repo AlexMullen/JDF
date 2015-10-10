@@ -36,8 +36,7 @@ public class Move {
      *
      * @param fromPosition     the source position of the move
      * @param toPosition       the destination position of the move
-     * @param jumpedPositions  the list of any jumps to be made - can be
-     *                         <code>null</code> if there are no jumps
+     * @param jumpedPositions  the list of any jumps to be made
      *
      * @see #Move(BoardPosition, BoardPosition)
      */
@@ -66,8 +65,7 @@ public class Move {
     /**
      * Gets the jumps for this move.
      *
-     * @return  the list of jumps in sequence order or <code>null</code> if
-     *          there are no jumps for this move
+     * @return  the list of jumps in sequence order
      */
     public final List<Jump> getJumps() {
         return jumps;
