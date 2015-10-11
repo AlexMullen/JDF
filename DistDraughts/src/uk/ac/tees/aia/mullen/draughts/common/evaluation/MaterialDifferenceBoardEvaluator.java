@@ -11,15 +11,11 @@ import uk.ac.tees.aia.mullen.draughts.common.Player;
  * @author  Alex Mullen
  *
  */
-public class BasicBoardEvaluator implements BoardEvaluator {
-    /** The number of points given for each piece. */
-    static final int POINTS_FOR_PIECE = 1;
-    /** The number of points given for each crowned piece. */
-    static final int POINTS_FOR_PIECE_CROWNED = 2;
+public class MaterialDifferenceBoardEvaluator implements BoardEvaluator {
     /**
      * Creates a new instance.
      */
-    public BasicBoardEvaluator() {
+    public MaterialDifferenceBoardEvaluator() {
         // Empty constructor.
     }
     @Override

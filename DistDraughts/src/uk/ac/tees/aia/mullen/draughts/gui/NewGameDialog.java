@@ -26,7 +26,7 @@ import uk.ac.tees.aia.mullen.draughts.common.Game;
 import uk.ac.tees.aia.mullen.draughts.common.GameBuilder;
 import uk.ac.tees.aia.mullen.draughts.common.GameBuilderFactory;
 import uk.ac.tees.aia.mullen.draughts.common.Player;
-import uk.ac.tees.aia.mullen.draughts.common.evaluation.BasicBoardEvaluator;
+import uk.ac.tees.aia.mullen.draughts.common.evaluation.MaterialDifferenceBoardEvaluator;
 import uk.ac.tees.aia.mullen.draughts.common.search.NegamaxDepthLimited;
 
 /**
@@ -118,7 +118,7 @@ public class NewGameDialog {
                             new ArtificialPlayer(
 //                                  new MinimaxAlphaBetaDepthLimited(
                                     new NegamaxDepthLimited(
-                                            new BasicBoardEvaluator(),
+                                            new MaterialDifferenceBoardEvaluator(),
                                             darkPlayerDifficultySlider.getValue()),
                                     "AI-Dark") {
                                 // Empty.
@@ -137,7 +137,7 @@ public class NewGameDialog {
                             new ArtificialPlayer(
 //                                    new MinimaxAlphaBetaDepthLimited(
                                     new NegamaxDepthLimited(
-                                            new BasicBoardEvaluator(),
+                                            new MaterialDifferenceBoardEvaluator(),
                                             lightPlayerDifficultySlider.getValue()),
                                     "AI-Light") {
                                 // Empty.

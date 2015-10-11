@@ -3,7 +3,7 @@ package uk.ac.tees.aia.mullen.draughts.common.english;
 import uk.ac.tees.aia.mullen.draughts.common.ArtificialPlayer;
 import uk.ac.tees.aia.mullen.draughts.common.Move;
 import uk.ac.tees.aia.mullen.draughts.common.Game.GameResult;
-import uk.ac.tees.aia.mullen.draughts.common.evaluation.BasicBoardEvaluator;
+import uk.ac.tees.aia.mullen.draughts.common.evaluation.MaterialDifferenceBoardEvaluator;
 import uk.ac.tees.aia.mullen.draughts.common.search.MinimaxAlphaBetaDepthLimited;
 import uk.ac.tees.aia.mullen.draughts.common.search.MoveSearch;
 import uk.ac.tees.aia.mullen.draughts.english.EnglishDraughtsGame;
@@ -13,9 +13,9 @@ public class TestEnglishDraughtsGame {
     static long startTime;
     public static void main(final String... args) {
         final MoveSearch searchAlgo1 =
-                new MinimaxAlphaBetaDepthLimited(new BasicBoardEvaluator(), 2, 0);
+                new MinimaxAlphaBetaDepthLimited(new MaterialDifferenceBoardEvaluator(), 2, 0);
         final MoveSearch searchAlgo2 =
-                new MinimaxAlphaBetaDepthLimited(new BasicBoardEvaluator(), 12, 0);
+                new MinimaxAlphaBetaDepthLimited(new MaterialDifferenceBoardEvaluator(), 12, 0);
 
         final ArtificialPlayer ai1 =
                 new ArtificialPlayer(searchAlgo1, "AI-1");

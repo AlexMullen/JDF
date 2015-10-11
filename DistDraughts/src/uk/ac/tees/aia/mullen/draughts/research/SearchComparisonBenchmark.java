@@ -8,7 +8,7 @@ import uk.ac.tees.aia.mullen.draughts.common.Game;
 import uk.ac.tees.aia.mullen.draughts.common.Move;
 import uk.ac.tees.aia.mullen.draughts.common.Game.GameResult;
 import uk.ac.tees.aia.mullen.draughts.common.Player;
-import uk.ac.tees.aia.mullen.draughts.common.evaluation.BasicBoardEvaluator;
+import uk.ac.tees.aia.mullen.draughts.common.evaluation.MaterialDifferenceBoardEvaluator;
 import uk.ac.tees.aia.mullen.draughts.common.search.MinimaxDepthLimited;
 import uk.ac.tees.aia.mullen.draughts.common.search.MoveSearch;
 import uk.ac.tees.aia.mullen.draughts.common.search.NegamaxDepthLimited;
@@ -40,10 +40,10 @@ public final class SearchComparisonBenchmark {
     public static void main(final String... args) {
         final MoveSearch searchAlgo1 =
                 new MinimaxDepthLimited(
-                        new BasicBoardEvaluator(), 5);
+                        new MaterialDifferenceBoardEvaluator(), 5);
         final MoveSearch searchAlgo2 =
                 new NegamaxDepthLimited(
-                        new BasicBoardEvaluator(), 5);
+                        new MaterialDifferenceBoardEvaluator(), 5);
 
         final ArtificialPlayer ai1 =
                 new ArtificialPlayer(searchAlgo1, "AI-1");
