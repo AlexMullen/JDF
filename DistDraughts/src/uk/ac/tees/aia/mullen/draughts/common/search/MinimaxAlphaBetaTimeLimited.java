@@ -22,6 +22,8 @@ import uk.ac.tees.aia.mullen.draughts.common.evaluation.BoardEvaluator;
  *
  */
 public class MinimaxAlphaBetaTimeLimited implements MoveSearch {
+    /** Holds the maximum absolute range that alpha or beta can be. */
+    private static final float MAX_ABS_AB_RANGE = 1000.0f;
     /** The board evaluator to use for evaluating board state. */
     private final BoardEvaluator boardEvaluator;
     /** Holds the maximum time allowed to search for in milliseconds. */
@@ -54,7 +56,7 @@ public class MinimaxAlphaBetaTimeLimited implements MoveSearch {
     @Override
     public final Move search(final Game game, final Player owner,
             final Player opponent) {
-        float alpha = Float.MIN_VALUE;
+        float alpha = -MAX_ABS_AB_RANGE;
         final List<Move> bestMoves = new ArrayList<>();
         final Board board = game.getBoard();
         final List<Move> moves =
@@ -73,7 +75,7 @@ public class MinimaxAlphaBetaTimeLimited implements MoveSearch {
                 // This is depth 0, so call min at depth 1.
                 final float currentMoveValue =
                         minimax(board, depth, timeToStopAt, false, game, owner,
-                                opponent, alpha, Float.MAX_VALUE);
+                                opponent, alpha, MAX_ABS_AB_RANGE);
                 if (currentMoveValue > alpha) {
                     alpha = currentMoveValue;
                     bestMoves.clear();
@@ -100,18 +102,21 @@ public class MinimaxAlphaBetaTimeLimited implements MoveSearch {
      * @param game              the game context
      * @param owner             the maximising player
      * @param opponent          the opponent (minimising player)
+     * @param alpha             the current alpha value
+     * @param beta              the current beta value
      * @return                  the value of the current board state N moves
      *                          ahead
      */
     private float minimax(final Board board, final int depth,
             final long timeToStopAt,
             final boolean maximisingPlayer, final Game game,
-            final Player owner, final Player opponent, float alpha, float beta) {
+            final Player owner, final Player opponent, float alpha,
+            float beta) {
         if (depth == 0 || System.currentTimeMillis() > timeToStopAt) {
             return boardEvaluator.evaluate(board, owner);
         } else {
             if (maximisingPlayer) {
-                float currentBestScore = Float.MIN_VALUE;
+                float currentBestScore = -MAX_ABS_AB_RANGE;
                 for (final Move currentMove
                         : game.getMoveGenerator().findMoves(board, owner)) {
                     final PerformedMove performedMove =
@@ -125,12 +130,12 @@ public class MinimaxAlphaBetaTimeLimited implements MoveSearch {
                     if (beta + threshold <= alpha) {
                         // Prune.
 //                        break;
-                        return Float.MAX_VALUE;
+                        return MAX_ABS_AB_RANGE;
                     }
                 }
                 return currentBestScore;
             } else {
-                float currentBestScore = Float.MAX_VALUE;
+                float currentBestScore = MAX_ABS_AB_RANGE;
                 for (final Move currentMove
                         : game.getMoveGenerator().findMoves(board, opponent)) {
                     final PerformedMove performedMove =
@@ -145,7 +150,7 @@ public class MinimaxAlphaBetaTimeLimited implements MoveSearch {
                 if (beta + threshold <= alpha) {
                     // Prune.
 //                    break;
-                    return Integer.MAX_VALUE;
+                    return MAX_ABS_AB_RANGE;
                 }
                 return currentBestScore;
             }

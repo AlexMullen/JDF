@@ -24,66 +24,38 @@ public class BasicBoardEvaluator implements BoardEvaluator {
     }
     @Override
     public final float evaluate(final Board board, final Player owner) {
-//        final List<BoardPosition> piecePositions = new ArrayList<>();
-        int owner_pieceCount = 0;
-        int owner_pieceCrownedCount = 0;
-        
-        int opponent_pieceCount = 0;
-        int opponent_pieceCrownedCount = 0;
-
-
+        int ownerPieceCrownedCount = 0;
+        int ownerPieceNonCrownedCount = 0;
+        int opponentPieceCrownedCount = 0;
+        int opponentNonCrownedPieceCount = 0;
+        // Go through each square and count the pieces.
         for (int x = 0; x < board.getWidth(); x++) {
             for (int y = 0; y < board.getHeight(); y++) {
                 final Piece foundPiece = board.getPieceAt(x, y);
                 if (foundPiece != null) {
-                    
-//                    piecePositions.add(new BoardPosition(x, y));
-                    
                     if (foundPiece.getOwner().equals(owner)) {
                         // Owner piece.
                         if (foundPiece.isCrowned()) {
-                            owner_pieceCrownedCount++;
+                            ownerPieceCrownedCount++;
                         } else {
-                            owner_pieceCount++;
+                            ownerPieceNonCrownedCount++;
                         }
                     } else {
                         // Opponent piece.
                         if (foundPiece.isCrowned()) {
-                            opponent_pieceCrownedCount++;
+                            opponentPieceCrownedCount++;
                         } else {
-                            opponent_pieceCount++;
+                            opponentNonCrownedPieceCount++;
                         }
                     }
                 }
             }
         }
-        
-        
-//        float totalX = 0, totalY = 0;
-//        // Calculate the total X and Y positions.
-//        for (final BoardPosition position : piecePositions) {
-//            totalX += position.getX();
-//            totalY += position.getY();
-//        }
-//        
-//        // Calculate the mean of the X and Y positions.
-//        float averageX = totalX / piecePositions.size();
-//        float averageY = totalY / piecePositions.size();
-//        
-//        float absDeviationX = 0.0f, absDeviationY = 0.0f;
-//        // Calculate the absolute deviation of X and Y.
-//        for (final BoardPosition position : piecePositions) {
-//            absDeviationX += Math.abs(position.getX() - averageX);
-//            absDeviationY += Math.abs(position.getY() - averageY);
-//        }
-//
-//        float totalAbsDeviation = absDeviationX + absDeviationY;
-////        System.out.println(totalAbsDeviation);
-        return ((owner_pieceCount + owner_pieceCrownedCount) - (opponent_pieceCount + opponent_pieceCrownedCount)) * 0.95f;
-//        return ((owner_pieceCount + owner_pieceCrownedCount) - (opponent_pieceCount + opponent_pieceCrownedCount)) * 0.95f - (totalAbsDeviation * 0.05f);
+        return ((ownerPieceNonCrownedCount + ownerPieceCrownedCount)
+                - (opponentNonCrownedPieceCount + opponentPieceCrownedCount));
     }
     @Override
     public final String toString() {
-        return "BasicBoardEvaluator []";
+        return getClass().getSimpleName() + " []";
     }
 }

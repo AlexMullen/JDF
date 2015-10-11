@@ -13,13 +13,15 @@ public class GameStatistics {
     private boolean draw;
     /** Holds the game ID. */
     private final int gameId;
-    
-    public int white_moves_made;
+
+    /** Holds the number of moves the light player has currently made. */
+    public int light_moves_made;
+    /** Holds the number of moves the dark player has currently made. */
     public int dark_moves_made;
-    
+
     public int white_move_time;
     public int dark_move_time;
-    
+
     /** Holds the winner of the game. */
     private Player winner;
     /** Holds the loser of the game. */
@@ -76,13 +78,17 @@ public class GameStatistics {
     public final Player getLoser() {
         return loser;
     }
+    /**
+     * Sets the losing player.
+     * @param losingPlayer  the losing player
+     */
     public final void setLoser(final Player losingPlayer) {
         loser = losingPlayer;
     }
     @Override
-    public String toString() {
+    public final String toString() {
         return "GameStatistics [draw=" + draw + ", gameId=" + gameId
-                + ", player1_moves_made=" + white_moves_made
+                + ", player1_moves_made=" + light_moves_made
                 + ", player2_moves_made=" + dark_moves_made
                 + ", player1_move_time=" + white_move_time
                 + ", player2_move_time=" + dark_move_time + ", winner="

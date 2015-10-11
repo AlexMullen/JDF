@@ -19,6 +19,8 @@ import uk.ac.tees.aia.mullen.draughts.common.evaluation.BoardEvaluator;
  *
  */
 public class NegamaxDepthLimited implements MoveSearch {
+    /** Holds the maximum absolute range that alpha or beta can be. */
+    private static final float MAX_ABS_AB_RANGE = 1000.0f;
     /** The board evaluator to use for evaluating board states. */
     private final BoardEvaluator boardEvaluator;
     /** Holds the maximum depth to search to. */
@@ -29,7 +31,7 @@ public class NegamaxDepthLimited implements MoveSearch {
      *
      * @param evaluator  the board evaluator to use
      * @param depth      the depth to search
-     * 
+     *
      * @throws IllegalArgumentException  if <code>depth</code> < 1
      * @throws NullPointerException      if <code>evaluator</code> is
      *                                   <code>null</code>
@@ -45,8 +47,9 @@ public class NegamaxDepthLimited implements MoveSearch {
     @Override
     public final Move search(final Game game, final Player owner,
             final Player opponent) {
-        System.out.println("------------------------------------------------------------------------------------------------------");
-        float alpha = -1000.0f;
+        System.out.println("---------------------------------------------------"
+                + "---------------------------------------------------");
+        float alpha = -MAX_ABS_AB_RANGE;
         final Board board = game.getBoard();
         final List<Move> bestMoves = new ArrayList<>();
         final List<Move> moves =
@@ -59,7 +62,8 @@ public class NegamaxDepthLimited implements MoveSearch {
         for (final Move currentMove : moves) {
             final PerformedMove performedMove =
                     game.getMovePerformer().perform(currentMove, board);
-            final float currentMoveValue = -negamax(board, game, owner, opponent, 1, false);
+            final float currentMoveValue =
+                    -negamax(board, game, owner, opponent, 1, false);
             System.out.println(currentMove + " = " + currentMoveValue);
             performedMove.undo();
             if (currentMoveValue > alpha) {
@@ -76,7 +80,7 @@ public class NegamaxDepthLimited implements MoveSearch {
     private float negamax(final Board board, final Game game,
             final Player owner, final Player opponent,
             final int currentDepth, final boolean isOwner) {
-        float bestScore = -1000f;
+        float bestScore = -MAX_ABS_AB_RANGE;
         if (currentDepth == maxSearchDepth) {
             if (isOwner) {
                 return boardEvaluator.evaluate(board, owner);
@@ -91,8 +95,10 @@ public class NegamaxDepthLimited implements MoveSearch {
             moves = game.getMoveGenerator().findMoves(board, opponent);
         }
         for (final Move currentMove : moves) {
-            final PerformedMove performedMove = game.getMovePerformer().perform(currentMove, board);
-            final float moveVal = -negamax(board, game, owner, opponent, currentDepth + 1, !isOwner);
+            final PerformedMove performedMove =
+                    game.getMovePerformer().perform(currentMove, board);
+            final float moveVal = -negamax(board, game, owner, opponent,
+                    currentDepth + 1, !isOwner);
             performedMove.undo();
             if (moveVal > bestScore) {
                 bestScore = moveVal;

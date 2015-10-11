@@ -18,7 +18,7 @@ public class PieceJumpAnimation implements Animator, ActionListener {
     private final BoardPiece movingPiece;
     private final AnimatorContinuation continuationRunnable;
     private final Queue<Point> positionsToLandAt;
-    
+
     public PieceJumpAnimation(final GamePanel panel,
             final BoardPiece piece, final List<Point> landPositions,
             final AnimatorContinuation continuation) {

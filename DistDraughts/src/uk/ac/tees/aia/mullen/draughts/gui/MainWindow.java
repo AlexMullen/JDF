@@ -33,7 +33,6 @@ public class MainWindow extends JFrame {
     private static final int MINIMUM_WINDOW_WIDTH = 350;
     /** The minimum height the window is allowed to be in pixels. */
     private static final int MINIMUM_WINDOW_HEIGHT = 350;
-    final NewGameDialog newGameDialog;
     /** Holds the current game panel frame if any. */
     private GamePanel currentGamePanel;
     /**
@@ -45,7 +44,8 @@ public class MainWindow extends JFrame {
 
         gameBuilderFactory.registerBuilder(new EnglishDraughtsGameBuilder());
 
-        newGameDialog = new NewGameDialog(MainWindow.this, gameBuilderFactory);
+        final NewGameDialog newGameDialog =
+                new NewGameDialog(MainWindow.this, gameBuilderFactory);
 
         // Window options.
         setTitle(WINDOW_TITLE);

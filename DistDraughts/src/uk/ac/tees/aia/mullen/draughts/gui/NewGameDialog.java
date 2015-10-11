@@ -27,9 +27,6 @@ import uk.ac.tees.aia.mullen.draughts.common.GameBuilder;
 import uk.ac.tees.aia.mullen.draughts.common.GameBuilderFactory;
 import uk.ac.tees.aia.mullen.draughts.common.Player;
 import uk.ac.tees.aia.mullen.draughts.common.evaluation.BasicBoardEvaluator;
-import uk.ac.tees.aia.mullen.draughts.common.search.MinimaxAlphaBetaDepthLimited;
-import uk.ac.tees.aia.mullen.draughts.common.search.MinimaxAlphaBetaTimeLimited;
-import uk.ac.tees.aia.mullen.draughts.common.search.MinimaxDepthLimited;
 import uk.ac.tees.aia.mullen.draughts.common.search.NegamaxDepthLimited;
 
 /**
@@ -38,12 +35,12 @@ import uk.ac.tees.aia.mullen.draughts.common.search.NegamaxDepthLimited;
  * @author  Alex Mullen
  *
  */
-public class NewGameDialog {   
+public class NewGameDialog {
     private javax.swing.JLabel variationLabel;
     private javax.swing.JLabel whoMovesFirstLabel;
     private javax.swing.JLabel lightPlayerConfigDifficultyLabel;
     private javax.swing.JLabel darkPlayerConfigDifficultyLabel;
-    private javax.swing.JLabel forcedCapturesLabel;               
+    private javax.swing.JLabel forcedCapturesLabel;
     private javax.swing.JRadioButton darkPlayerAiOption;
     private javax.swing.JPanel darkPlayerConfigPanel;
     private javax.swing.JSlider darkPlayerDifficultySlider;
@@ -62,12 +59,12 @@ public class NewGameDialog {
     private javax.swing.JRadioButton moveFirstLightOption;
     private javax.swing.JButton startButton;
     private javax.swing.JComboBox<GameBuilder> variationComboBox;
-    
+
     private final JDialog dialog;
     private final GameBuilderFactory gameBuilderFactory;
-    
+
     private Game gameToReturn;
-    
+
     /**
      * Creates a new instance that belongs to the specified Frame and uses the
      * given game builder factory.
@@ -81,7 +78,7 @@ public class NewGameDialog {
         dialog.setResizable(false);
         dialog.setModalityType(ModalityType.APPLICATION_MODAL);
         initComponents();
-    }                       
+    }
     private void initComponents() {
         moveFirstButtonGroup = new ButtonGroup();
         forcedCapturesButtonGroup = new ButtonGroup();
@@ -127,7 +124,7 @@ public class NewGameDialog {
                                 // Empty.
                     });
                 }
-                
+
                 if (lightPlayerHumanOption.isSelected()) {
                     gameConfig.setLightPlayer(new Player() {
                         @Override
@@ -146,7 +143,7 @@ public class NewGameDialog {
                                 // Empty.
                     });
                 }
-                
+
                 gameToReturn = gameBuilderFactory.getBuilder(
                         ((GameBuilder)variationComboBox.getSelectedItem())
                         .getName()).build(gameConfig);
@@ -172,15 +169,14 @@ public class NewGameDialog {
         });
         handleGameVariationSelected(
                 (GameBuilder) variationComboBox.getSelectedItem());
-        
-        
+
         whoMovesFirstLabel.setText("Who moves first:");
         moveFirstButtonGroup.add(moveFirstDarkOption);
         moveFirstButtonGroup.add(moveFirstLightOption);
         lightPlayerConfigPanel.setBorder(BorderFactory.createTitledBorder("Light player"));
-        
 
-        
+
+
         lightPlayerButtonGroup.add(lightPlayerHumanOption);
         lightPlayerHumanOption.addActionListener(new ActionListener() {
             @Override
@@ -189,7 +185,7 @@ public class NewGameDialog {
                 lightPlayerDifficultySlider.setEnabled(false);
             }
         });
-        
+
         lightPlayerButtonGroup.add(lightPlayerAiOption);
         lightPlayerAiOption.addActionListener(new ActionListener() {
             @Override
@@ -198,7 +194,7 @@ public class NewGameDialog {
                 lightPlayerDifficultySlider.setEnabled(true);
             }
         });
-        
+
         lightPlayerDifficultySlider.setMajorTickSpacing(5);
         lightPlayerDifficultySlider.setMinimum(1);
         lightPlayerDifficultySlider.setMaximum(20);
@@ -229,7 +225,7 @@ public class NewGameDialog {
                 darkPlayerDifficultySlider.setEnabled(true);
             }
         });
-        
+
         darkPlayerDifficultySlider.setMajorTickSpacing(5);
         darkPlayerDifficultySlider.setMinimum(1);
         darkPlayerDifficultySlider.setMaximum(20);
@@ -243,7 +239,7 @@ public class NewGameDialog {
 
         forcedCapturesButtonGroup.add(forcedCapturesYesOption);
         forcedCapturesButtonGroup.add(forcedCapturesNoOption);
-        
+
         GroupLayout lightPlayerConfigPanelLayout = new GroupLayout(lightPlayerConfigPanel);
         lightPlayerConfigPanel.setLayout(lightPlayerConfigPanelLayout);
         lightPlayerConfigPanelLayout.setHorizontalGroup(
@@ -334,7 +330,7 @@ public class NewGameDialog {
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
-        
+
         layout.setVerticalGroup(
             layout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
@@ -362,7 +358,7 @@ public class NewGameDialog {
         );
 
         dialog.pack();
-    }          
+    }
     private void handleGameVariationSelected(final GameBuilder builder) {
         if (builder.isFirstTurnConfigurable()) {
             moveFirstDarkOption.setEnabled(true);
@@ -388,7 +384,7 @@ public class NewGameDialog {
      * @return           a created {@link Game} instance or <code>null</code>
      *                   if the dialog was cancelled
      */
-    public Game showDialog(final Component component) {
+    public final Game showDialog(final Component component) {
         /*
          * Make sure we do not return the previously created game by this panel
          * in the event this is reused then cancelled.

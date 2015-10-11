@@ -34,8 +34,8 @@ public class EnglishDraughtsMoveGenerator extends AbstractMoveGenerator {
          */
         for (int x = 0; x < board.getWidth(); x++) {
             // Check every 2 squares as pointless checking unused ones.
-//            for (int y = (x % 2 == 0 ? 1 : 0); y < board.getHeight(); y += 2) {
-        	for (int y = 0; y < board.getHeight(); y++) {
+//           for (int y = (x % 2 == 0 ? 1 : 0); y < board.getHeight(); y += 2) {
+            for (int y = 0; y < board.getHeight(); y++) {
                 final Piece foundPiece = board.getPieceAt(x, y);
                 if (foundPiece != null
                         && foundPiece.getOwner() == player) {
@@ -68,7 +68,7 @@ public class EnglishDraughtsMoveGenerator extends AbstractMoveGenerator {
         for (int x = 0; x < board.getWidth(); x++) {
             // Check every 2 squares as pointless checking unused ones.
 //            for (int y = (x % 2 == 0 ? 1 : 0); y < board.getHeight(); y+=2) {
-        	for (int y = 0; y < board.getHeight(); y++) {
+            for (int y = 0; y < board.getHeight(); y++) {
                 final Piece foundPiece = board.getPieceAt(x, y);
                 if (foundPiece != null
                         && foundPiece.getOwner().equals(player)) {

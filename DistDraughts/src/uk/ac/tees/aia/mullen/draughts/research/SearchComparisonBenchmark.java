@@ -9,9 +9,6 @@ import uk.ac.tees.aia.mullen.draughts.common.Move;
 import uk.ac.tees.aia.mullen.draughts.common.Game.GameResult;
 import uk.ac.tees.aia.mullen.draughts.common.Player;
 import uk.ac.tees.aia.mullen.draughts.common.evaluation.BasicBoardEvaluator;
-import uk.ac.tees.aia.mullen.draughts.common.search.
-                                            MinimaxAlphaBetaDepthLimited;
-import uk.ac.tees.aia.mullen.draughts.common.search.MinimaxAlphaBetaTimeLimited;
 import uk.ac.tees.aia.mullen.draughts.common.search.MinimaxDepthLimited;
 import uk.ac.tees.aia.mullen.draughts.common.search.MoveSearch;
 import uk.ac.tees.aia.mullen.draughts.common.search.NegamaxDepthLimited;
@@ -82,11 +79,13 @@ public final class SearchComparisonBenchmark {
                 final Move aiMove = aiTurnOwner.getMove(gameContext);
                 // Increment the number of moves made.
                 if (gameContext.getTurnOwner() == ai1) {
-                    stats.white_moves_made++;
-                    stats.white_move_time += System.currentTimeMillis() - gameStartTime;
+                    stats.light_moves_made++;
+                    stats.white_move_time +=
+                            System.currentTimeMillis() - gameStartTime;
                 } else {
                     stats.dark_moves_made++;
-                    stats.dark_move_time += System.currentTimeMillis() - gameStartTime;
+                    stats.dark_move_time +=
+                            System.currentTimeMillis() - gameStartTime;
                 }
                 gameContext.performMove(aiMove);
             }
@@ -103,7 +102,7 @@ public final class SearchComparisonBenchmark {
         }
         calculateAndPrintStats(gameStatsList, ai1, ai2);
     }
-    
+
     private static void calculateAndPrintStats(final List<GameStatistics> statsList,
             final Player whitePlayer, final Player darkPlayer) {
         int white_games_won = 0, dark_games_won = 0;
@@ -118,7 +117,7 @@ public final class SearchComparisonBenchmark {
                 // Check who won.
                 if (gameStats.getWinner() == whitePlayer) {
                     white_games_won++;
-                    white_moves_in_won_games += gameStats.white_moves_made;
+                    white_moves_in_won_games += gameStats.light_moves_made;
                     white_moves_total_time_in_won_games += gameStats.white_move_time;
                 } else if (gameStats.getWinner() == darkPlayer){
                     dark_games_won++;
@@ -127,10 +126,10 @@ public final class SearchComparisonBenchmark {
                 }
             }
         }
-        
+
         final double white_avg_moves_in_won_games = white_moves_in_won_games / (double) white_games_won;
         final double dark_avg_moves_in_won_games = dark_moves_in_won_games / (double) dark_games_won;
-        
+
         System.out.println("=================================================");
         System.out.println("Total Games drew: " + games_drew);
         System.out.println("=================================================");
