@@ -14,6 +14,7 @@ import javax.swing.JMenuItem;
 import mullen.alex.draughts.common.Game;
 import mullen.alex.draughts.common.GameBuilderFactory;
 import mullen.alex.draughts.english.EnglishDraughtsGameBuilder;
+import mullen.alex.draughts.international.InternationalDraughtsGameBuilder;
 
 /**
  * Represents the main program window.
@@ -43,6 +44,8 @@ public class MainWindow extends JFrame {
                 new GameBuilderFactory();
 
         gameBuilderFactory.registerBuilder(new EnglishDraughtsGameBuilder());
+        gameBuilderFactory.registerBuilder(
+                new InternationalDraughtsGameBuilder());
 
         final NewGameDialog newGameDialog =
                 new NewGameDialog(MainWindow.this, gameBuilderFactory);
