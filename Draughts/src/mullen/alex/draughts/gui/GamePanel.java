@@ -98,7 +98,8 @@ public class GamePanel extends JPanel implements MouseInputListener {
         final Board board = gameModel.getBoard();
         boardWorld = new BoardWorld(BOARDWORLD_SQUARE_SIZE, board.getWidth(),
                 board.getHeight());
-        Color currentColour = Color.WHITE;
+        Color currentColour =
+                board.isNearRightSquareLight() ? Color.WHITE : Color.BLACK;
         for (int x = 0; x < board.getWidth(); x++) {
             for (int y = 0; y < board.getHeight(); y++) {
                 final Piece foundPiece = board.getPieceAt(x, y);

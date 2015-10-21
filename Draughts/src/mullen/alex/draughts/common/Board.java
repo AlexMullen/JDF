@@ -14,24 +14,30 @@ public class Board {
     private final int width;
     /** Holds the height of the board. */
     private final int height;
+    /** Holds whether the near right square of either player is light. */
+    private final boolean nearRightSquareLight;
     /** The board represented by a two-dimensional array. */
     private final Piece[][] board;
     /**
      * Creates a new draughts board that is of the specified dimensions.
      *
-     * @param boardWidth   the width of the board (left-to-right)
-     * @param boardHeight  the height of the board (top-to-bottom)
+     * @param boardWidth              the width of the board (left-to-right)
+     * @param boardHeight             the height of the board (top-to-bottom)
+     * @param isNearRightSquareLight  whether the near right square of either
+     *                                player is marked as the light square
      *
      * @throws IllegalArgumentException  if <code>boardWidth</code> or
      *                                   <code>boardHeight</code> is less than
      *                                   <code>1</code>
      */
-    public Board(final int boardWidth, final int boardHeight) {
+    public Board(final int boardWidth, final int boardHeight,
+            final boolean isNearRightSquareLight) {
         if (boardWidth < 1 || boardHeight < 1) {
             throw new IllegalArgumentException("eesshh");
         }
         width = boardWidth;
         height = boardHeight;
+        nearRightSquareLight = isNearRightSquareLight;
         board = new Piece[width][height];
     }
     /**
@@ -45,6 +51,7 @@ public class Board {
     public Board(final Board boardToCopy) {
         width = boardToCopy.width;
         height = boardToCopy.height;
+        nearRightSquareLight = boardToCopy.nearRightSquareLight;
         board = new Piece[width][height];
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
@@ -206,6 +213,18 @@ public class Board {
             return false;
         }
         return true;
+    }
+    /**
+     * Gets whether the near-right square of either player
+     * (top left and bottom right) is marked as a light square.
+     * <p>
+     * Note that an even board width is required for both near-right corners to
+     * be the same.
+     *
+     * @return  <code>true</code> or <code>false</code>
+     */
+    public final boolean isNearRightSquareLight() {
+        return nearRightSquareLight;
     }
     /**
      * Gets whether the specified Y position is a kings row.

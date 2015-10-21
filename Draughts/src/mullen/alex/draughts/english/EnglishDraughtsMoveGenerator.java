@@ -270,7 +270,7 @@ public class EnglishDraughtsMoveGenerator extends AbstractMoveGenerator {
      * A helper method for pruning jumps that are not possible because a jump
      * has already been performed over the position.
      *
-     * @param jumps          the found jumps
+     * @param jumps          the found jumps that could be pruned
      * @param previousJumps  previous jumps
      */
     private static void removeAlreadyJumpedPositionMoves(

@@ -119,7 +119,7 @@ public final class SearchComparisonBenchmark {
                     white_games_won++;
                     white_moves_in_won_games += gameStats.light_moves_made;
                     white_moves_total_time_in_won_games += gameStats.white_move_time;
-                } else if (gameStats.getWinner() == darkPlayer){
+                } else if (gameStats.getWinner() == darkPlayer) {
                     dark_games_won++;
                     dark_moves_in_won_games += gameStats.dark_moves_made;
                     dark_moves_total_time_in_won_games += gameStats.dark_move_time;

@@ -53,7 +53,7 @@ public class InternationalDraughtsGame extends Game {
         if (lightPieceOwner.equals(darkPieceOwner)) {
             throw new IllegalArgumentException("vs themself?");
         }
-        board = new Board(BOARD_WIDTH, BOARD_HEIGHT);
+        board = new Board(BOARD_WIDTH, BOARD_HEIGHT, true);
         moveGenerator = new EnglishDraughtsMoveGenerator();
         movePerformer = new EnglishDraughtsMovePerformer();
         // Light moves first.

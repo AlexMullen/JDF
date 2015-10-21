@@ -41,7 +41,7 @@ public class TestEnglishDraughtsMoveGenerator {
      */
     @Test
     public final void testFindMovesWithNoJumps1() {
-        final Board board = new Board(8, 8);
+        final Board board = new Board(8, 8, true);
         assertNull(board.setPieceAndGetAt(3, 7, lightPiece));
         assertNull(board.setPieceAndGetAt(4, 6, darkPiece));
         assertNull(board.setPieceAndGetAt(5, 5, darkPiece));
@@ -62,7 +62,7 @@ public class TestEnglishDraughtsMoveGenerator {
      */
     @Test
     public final void testFindMovesWithNoJumps2() {
-        final Board board = new Board(8, 8);
+        final Board board = new Board(8, 8, true);
         assertNull(board.setPieceAndGetAt(3, 1, lightPiece));
         final List<Move> foundMoves =
                 moveGenerator.findMoves(board, lightPieceOwner);
@@ -85,7 +85,7 @@ public class TestEnglishDraughtsMoveGenerator {
      */
     @Test
     public final void testFindMovesWithNoMovesOrJumps1() {
-        final Board board = new Board(8, 8);
+        final Board board = new Board(8, 8, true);
         assertNull(board.setPieceAndGetAt(0, 1, lightPiece));
         assertNull(board.setPieceAndGetAt(1, 0, lightPiece));
         final List<Move> foundMoves =
@@ -102,7 +102,7 @@ public class TestEnglishDraughtsMoveGenerator {
      */
     @Test
     public final void testFindMovesWithSingleJump1() {
-        final Board board = new Board(8, 8);
+        final Board board = new Board(8, 8, true);
         assertNull(board.setPieceAndGetAt(3, 7, lightPiece));
         assertNull(board.setPieceAndGetAt(2, 6, darkPiece));
         final List<Move> foundMoves =
@@ -130,7 +130,7 @@ public class TestEnglishDraughtsMoveGenerator {
      */
     @Test
     public final void testFindMovesWithDoubleJumpSameDirection1() {
-        final Board board = new Board(8, 8);
+        final Board board = new Board(8, 8, true);
         assertNull(board.setPieceAndGetAt(0, 7, lightPiece));
         assertNull(board.setPieceAndGetAt(1, 6, darkPiece));
         assertNull(board.setPieceAndGetAt(3, 4, darkPiece));
@@ -158,7 +158,7 @@ public class TestEnglishDraughtsMoveGenerator {
      */
     @Test
     public final void testFindMovesWithTripleJumpSameDirection1() {
-        final Board board = new Board(8, 8);
+        final Board board = new Board(8, 8, true);
         assertNull(board.setPieceAndGetAt(0, 7, lightPiece));
         assertNull(board.setPieceAndGetAt(1, 6, darkPiece));
         assertNull(board.setPieceAndGetAt(3, 4, darkPiece));

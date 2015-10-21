@@ -29,7 +29,7 @@ public class TestBoard {
     public final void testBoard() {
         final int width = 8;
         final int height = 8;
-        final Board board = new Board(width, height);
+        final Board board = new Board(width, height, true);
         assertEquals(width, board.getWidth());
         assertEquals(height, board.getHeight());
     }
@@ -42,7 +42,7 @@ public class TestBoard {
     @Test
     public final void testBoardCopyConstructor() {
         // Check an empty board copy is the same.
-        final Board board1 = new Board(7, 8);
+        final Board board1 = new Board(7, 8, true);
         final Board board1Copy = new Board(board1);
         assertEquals(board1, board1Copy);
         /*
@@ -51,7 +51,7 @@ public class TestBoard {
          */
         final Piece piece1 = new Piece(
                 new EmptyMockPieceOwner(), MoveDirection.DOWN);
-        final Board board2 = new Board(5, 8);
+        final Board board2 = new Board(5, 8, true);
         final int piecePosX = 2;
         final int piecePosY = 3;
         assertNull(board2.setPieceAndGetAt(piecePosX, piecePosY, piece1));
@@ -93,19 +93,19 @@ public class TestBoard {
         // Test lower width.
         int width = 1;
         int height = 8;
-        Board board = new Board(width, height);
+        Board board = new Board(width, height, true);
         assertEquals(width, board.getWidth());
         assertEquals(height, board.getHeight());
         // Test lower height.
         width = 8;
         height = 1;
-        board = new Board(width, height);
+        board = new Board(width, height, true);
         assertEquals(width, board.getWidth());
         assertEquals(height, board.getHeight());
         // Test lower width and height.
         width = 1;
         height = 1;
-        board = new Board(width, height);
+        board = new Board(width, height, true);
         assertEquals(width, board.getWidth());
         assertEquals(height, board.getHeight());
     }
@@ -118,7 +118,7 @@ public class TestBoard {
     public final void testBoardWithFirstLowestDisallowedWidth() {
         final int width = 0;
         final int height = 8;
-        final Board board = new Board(width, height);
+        final Board board = new Board(width, height, true);
         assertEquals(width, board.getWidth());
         assertEquals(height, board.getHeight());
     }
@@ -131,7 +131,7 @@ public class TestBoard {
     public final void testBoardWithFirstLowestDisallowedHeight() {
         final int width = 8;
         final int height = 0;
-        final Board board = new Board(width, height);
+        final Board board = new Board(width, height, true);
         assertEquals(width, board.getWidth());
         assertEquals(height, board.getHeight());
     }
@@ -144,7 +144,7 @@ public class TestBoard {
     public final void testBoardWithFirstLowestDisallowedWidthAndHeight() {
         final int width = 0;
         final int height = 0;
-        final Board board = new Board(width, height);
+        final Board board = new Board(width, height, true);
         assertEquals(width, board.getWidth());
         assertEquals(height, board.getHeight());
     }
@@ -158,7 +158,7 @@ public class TestBoard {
     public final void testGetWidth() {
         final int width = 24;
         final int height = 8;
-        final Board board = new Board(width, height);
+        final Board board = new Board(width, height, true);
         assertEquals(width, board.getWidth());
     }
     /**
@@ -171,7 +171,7 @@ public class TestBoard {
     public final void testGetHeight() {
         final int width = 8;
         final int height = 645;
-        final Board board = new Board(width, height);
+        final Board board = new Board(width, height, true);
         assertEquals(height, board.getHeight());
     }
     /**
@@ -184,7 +184,7 @@ public class TestBoard {
         final int height = 8;
         final int positionPlacedX = 4;
         final int positionPlacedY = 3;
-        final Board board = new Board(width, height);
+        final Board board = new Board(width, height, true);
         final Piece piece = new Piece(
                 new EmptyMockPieceOwner(), MoveDirection.DOWN);
         Piece retrievedPiece =
@@ -206,7 +206,7 @@ public class TestBoard {
         final int height = 8;
         final int positionPlacedX = 0;
         final int positionPlacedY = 3;
-        final Board board = new Board(width, height);
+        final Board board = new Board(width, height, true);
         final Piece piece = new Piece(
                 new EmptyMockPieceOwner(), MoveDirection.DOWN);
         Piece retrievedPiece =
@@ -228,7 +228,7 @@ public class TestBoard {
         final int height = 8;
         final int positionPlacedX = 4;
         final int positionPlacedY = 0;
-        final Board board = new Board(width, height);
+        final Board board = new Board(width, height, true);
         final Piece piece = new Piece(
                 new EmptyMockPieceOwner(), MoveDirection.DOWN);
         Piece retrievedPiece =
@@ -250,7 +250,7 @@ public class TestBoard {
         final int height = 8;
         final int positionPlacedX = (width - 1);
         final int positionPlacedY = 3;
-        final Board board = new Board(width, height);
+        final Board board = new Board(width, height, true);
         final Piece piece = new Piece(
                 new EmptyMockPieceOwner(), MoveDirection.DOWN);
         Piece retrievedPiece =
@@ -272,7 +272,7 @@ public class TestBoard {
         final int height = 8;
         final int positionPlacedX = 4;
         final int positionPlacedY = (height - 1);
-        final Board board = new Board(width, height);
+        final Board board = new Board(width, height, true);
         final Piece piece = new Piece(
                 new EmptyMockPieceOwner(), MoveDirection.DOWN);
         Piece retrievedPiece =
@@ -294,7 +294,7 @@ public class TestBoard {
         final int height = 8;
         final int positionPlacedX = -1;
         final int positionPlacedY = 5;
-        final Board board = new Board(width, height);
+        final Board board = new Board(width, height, true);
         final Piece piece = new Piece(
                 new EmptyMockPieceOwner(), MoveDirection.DOWN);
         board.setPieceAndGetAt(positionPlacedX, positionPlacedY, piece);
@@ -311,7 +311,7 @@ public class TestBoard {
         final int height = 8;
         final int positionPlacedX = 3;
         final int positionPlacedY = -1;
-        final Board board = new Board(width, height);
+        final Board board = new Board(width, height, true);
         final Piece piece = new Piece(
                 new EmptyMockPieceOwner(), MoveDirection.DOWN);
         board.setPieceAndGetAt(positionPlacedX, positionPlacedY, piece);
@@ -328,7 +328,7 @@ public class TestBoard {
         final int height = 8;
         final int positionPlacedX = width;
         final int positionPlacedY = 5;
-        final Board board = new Board(width, height);
+        final Board board = new Board(width, height, true);
         final Piece piece = new Piece(
                 new EmptyMockPieceOwner(), MoveDirection.DOWN);
         board.setPieceAndGetAt(positionPlacedX, positionPlacedY, piece);
@@ -345,7 +345,7 @@ public class TestBoard {
         final int height = 8;
         final int positionPlacedX = 3;
         final int positionPlacedY = height;
-        final Board board = new Board(width, height);
+        final Board board = new Board(width, height, true);
         final Piece piece = new Piece(
                 new EmptyMockPieceOwner(), MoveDirection.DOWN);
         board.setPieceAndGetAt(positionPlacedX, positionPlacedY, piece);
@@ -361,7 +361,7 @@ public class TestBoard {
         final int height = 8;
         final int positionPlacedX = 4;
         final int positionPlacedY = 3;
-        final Board board = new Board(width, height);
+        final Board board = new Board(width, height, true);
         final Piece piece = new Piece(
                 new EmptyMockPieceOwner(), MoveDirection.DOWN);
         Piece retrievedPiece =
@@ -384,7 +384,7 @@ public class TestBoard {
         final int height = 8;
         final int positionPlacedX = 4;
         final int positionPlacedY = 3;
-        final Board board = new Board(width, height);
+        final Board board = new Board(width, height, true);
         final Piece piece = new Piece(
                 new EmptyMockPieceOwner(), MoveDirection.DOWN);
         Piece retrievedPiece =
@@ -405,14 +405,14 @@ public class TestBoard {
         final int height = 8;
         final int positionPlacedX = (width + 1);
         final int positionPlacedY = (height + 1);
-        final Board board = new Board(width, height);
+        final Board board = new Board(width, height, true);
         assertNull(board.getPieceAt(
                 new BoardPosition(positionPlacedX, positionPlacedY)));
         fail("The Y value should not be accepted!");
     }
     /**
-     * Tests {@link Board#setPieceAndGetAt(int, int, Piece)} behaves as expected when
-     * setting and clearing positions.
+     * Tests {@link Board#setPieceAndGetAt(int, int, Piece)} behaves as
+     * expected when setting and clearing positions.
      */
     @SuppressWarnings("static-method")
     @Test
@@ -421,7 +421,7 @@ public class TestBoard {
         final int height = 8;
         final int positionPlacedX = 7;
         final int positionPlacedY = 2;
-        final Board board = new Board(width, height);
+        final Board board = new Board(width, height, true);
         final Piece piece = new Piece(
                 new EmptyMockPieceOwner(), MoveDirection.DOWN);
         board.setPieceAndGetAt(positionPlacedX, positionPlacedY, piece);
@@ -441,7 +441,7 @@ public class TestBoard {
         final int height = 8;
         final int positionPlacedX = 7;
         final int positionPlacedY = 2;
-        final Board board = new Board(width, height);
+        final Board board = new Board(width, height, true);
         final Piece piece = new Piece(
                 new EmptyMockPieceOwner(), MoveDirection.DOWN);
         assertNull(board.setPieceAndGetAt(
@@ -460,7 +460,7 @@ public class TestBoard {
     public final void testSetPieceAtNullBoardPosition() {
         final int width = 8;
         final int height = 8;
-        final Board board = new Board(width, height);
+        final Board board = new Board(width, height, true);
         final Piece piece = new Piece(
                 new EmptyMockPieceOwner(), MoveDirection.DOWN);
         board.setPieceAndGetAt(null, piece);
@@ -477,7 +477,7 @@ public class TestBoard {
         final int height = 8;
         final int positionPlacedX = -1;
         final int positionPlacedY = 8;
-        final Board board = new Board(width, height);
+        final Board board = new Board(width, height, true);
         final Piece piece = new Piece(
                 new EmptyMockPieceOwner(), MoveDirection.DOWN);
         board.setPieceAndGetAt(positionPlacedX, positionPlacedY, piece);
@@ -494,7 +494,7 @@ public class TestBoard {
         final int height = 8;
         final int positionPlacedX = 7;
         final int positionPlacedY = 2;
-        final Board board = new Board(width, height);
+        final Board board = new Board(width, height, true);
         final Piece piece = new Piece(
                 new EmptyMockPieceOwner(), MoveDirection.DOWN);
         Piece retrievedPiece;
@@ -522,7 +522,7 @@ public class TestBoard {
     public final void testIsPositionValid() {
         final int width = 8;
         final int height = 8;
-        final Board board = new Board(width, height);
+        final Board board = new Board(width, height, true);
         // Check all valid positions.
         for (int x = 0; x < board.getWidth(); x++) {
             for (int y = 0; y < board.getHeight(); y++) {
@@ -546,7 +546,7 @@ public class TestBoard {
     public final void testIsKingsRow() {
         final int width = 8;
         final int height = 13;
-        final Board board = new Board(width, height);
+        final Board board = new Board(width, height, true);
         // All these rows in between the bottom and top should not be king rows.
         for (int y = 1; y < (height - 1); y++) {
             assertFalse(board.isKingsRow(y));
@@ -562,8 +562,8 @@ public class TestBoard {
     @SuppressWarnings("static-method")
     @Test
     public final void testEquals() {
-        final Board board1 = new Board(8, 8);
-        final Board board2 = new Board(8, 8);
+        final Board board1 = new Board(8, 8, true);
+        final Board board2 = new Board(8, 8, true);
         // Test null.
         assertFalse(board1.equals(null));
         assertFalse(board2.equals(null));
@@ -614,9 +614,9 @@ public class TestBoard {
     @SuppressWarnings("static-method")
     @Test
     public final void testEqualsWithDifferentSizeBoard() {
-        final Board board88 = new Board(8, 8);
-        final Board board78 = new Board(7, 8);
-        final Board board87 = new Board(8, 7);
+        final Board board88 = new Board(8, 8, true);
+        final Board board78 = new Board(7, 8, true);
+        final Board board87 = new Board(8, 7, true);
         // They should all not be equal to each other.
         assertFalse(board88.equals(board78));
         assertFalse(board88.equals(board87));
