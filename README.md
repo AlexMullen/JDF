@@ -1,2 +1,2 @@
-# Draughts
-A Draughts game written in Java for a University project that will be used for testing different search algorithms.
+# Java Draughts Framework
+A Draughts framework written in Java to be used as a backend.
