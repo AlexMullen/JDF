@@ -42,7 +42,7 @@ public class TestEnglishDraughtsMovePerformer {
     /** The light crowned pieces used for testing. */
     private final Piece lightPieceCrowned =
             new Piece(lightPieceOwner, MoveDirection.BOTH);
-    /** The move finder to use for getting available moves to perform. */
+    /** The move generator to use for getting available moves to perform. */
     private final MoveGenerator moveGenerator =
             new EnglishDraughtsMoveGenerator();
     /**

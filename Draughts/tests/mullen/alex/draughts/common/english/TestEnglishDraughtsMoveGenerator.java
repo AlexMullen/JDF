@@ -23,7 +23,7 @@ import org.junit.Test;
  * @author  Alex Mullen
  */
 public class TestEnglishDraughtsMoveGenerator {
-    /** The move finder to use for each test. */
+    /** The move generator to use for each test. */
     private final MoveGenerator moveGenerator =
             new EnglishDraughtsMoveGenerator();
     /** The dark piece owner used for testing. */

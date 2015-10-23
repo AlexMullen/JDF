@@ -387,7 +387,8 @@ public class TestBoard {
                 board.setPieceAndGetAt(positionPlacedX, positionPlacedY, piece);
         // This should be null as there should not be a piece there yet.
         assertNull(retrievedPiece);
-        assertNull(board.getPieceAt(null));
+        // This should throw an NPE.
+        board.getPieceAt(null);
         fail("NPE should have been thrown!");
     }
     /**
@@ -402,8 +403,7 @@ public class TestBoard {
         final int positionPlacedX = (width + 1);
         final int positionPlacedY = (height + 1);
         final Board board = new Board(width, height, true);
-        assertNull(board.getPieceAt(
-                new BoardPosition(positionPlacedX, positionPlacedY)));
+        board.getPieceAt(new BoardPosition(positionPlacedX, positionPlacedY));
         fail("The Y value should not be accepted!");
     }
     /**

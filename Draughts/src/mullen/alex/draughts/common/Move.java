@@ -28,7 +28,9 @@ public class Move {
      */
     public Move(final BoardPosition fromPosition,
             final BoardPosition toPosition) {
-        this(fromPosition, toPosition, Collections.emptyList());
+        from = fromPosition;
+        to = toPosition;
+        jumps = Collections.emptyList();
     }
     /**
      * Creates a new instance using the specified source, destination
@@ -45,8 +47,8 @@ public class Move {
         from = fromPosition;
         to = toPosition;
         // If the move has no jumps then assign an empty list.
-        jumps = (jumpedPositions == null ?
-                Collections.emptyList() : jumpedPositions);
+        jumps = (jumpedPositions == null
+                ? Collections.emptyList() : jumpedPositions);
     }
     /**
      * Gets the source position before the move.
