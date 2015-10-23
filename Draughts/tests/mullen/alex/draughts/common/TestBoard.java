@@ -7,10 +7,6 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import mullen.alex.draughts.common.Board;
-import mullen.alex.draughts.common.BoardPosition;
-import mullen.alex.draughts.common.Piece;
-import mullen.alex.draughts.common.Player;
 import mullen.alex.draughts.common.Piece.MoveDirection;
 
 import org.junit.Test;

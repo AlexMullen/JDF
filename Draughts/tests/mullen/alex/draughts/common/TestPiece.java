@@ -5,8 +5,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import mullen.alex.draughts.common.Piece;
-import mullen.alex.draughts.common.Player;
 import mullen.alex.draughts.common.Piece.MoveDirection;
 
 import org.junit.Test;
@@ -142,33 +140,6 @@ public class TestPiece {
         // A piece that is crowned should be able to move in both directions.
         assertEquals(MoveDirection.BOTH, piece.getMoveDirection());
     }
-//    /**
-//     * Tests that calling {@link Piece#crown()} twice throws an
-//     * exception as it does not make sense to crown an already crowned piece
-//     * which may be due to a logic error.
-//     */
-//    @SuppressWarnings("static-method")
-//    @Test (expected = IllegalStateException.class)
-//    public final void testCrownTwice() {
-//        final Piece piece = new Piece(
-//                new EmptyMockPieceOwner(), MoveDirection.DOWN);
-//        piece.crown();
-//        piece.crown();
-//        fail("Should not allow a piece to crowned more than once.");
-//    }
-//    /**
-//     * Tests that calling {@link Piece#crown()} twice throws an
-//     * exception as it does not make sense to crown an already crowned piece
-//     * which may be due to a logic error.
-//     */
-//    @SuppressWarnings("static-method")
-//    @Test (expected = IllegalStateException.class)
-//    public final void testCrownAfterCrownedInConstructor() {
-//        final Piece piece = new Piece(
-//                new EmptyMockPieceOwner(), MoveDirection.BOTH);
-//        piece.crown();
-//        fail("Should not allow a piece to crowned if it already is crowned.");
-//    }
     /**
      * Tests that {@link Piece#equals(Object)} tests for equality correctly.
      */

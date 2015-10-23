@@ -44,7 +44,9 @@ public class Move {
             final BoardPosition toPosition, final List<Jump> jumpedPositions) {
         from = fromPosition;
         to = toPosition;
-        jumps = jumpedPositions;
+        // If the move has no jumps then assign an empty list.
+        jumps = (jumpedPositions == null ?
+                Collections.emptyList() : jumpedPositions);
     }
     /**
      * Gets the source position before the move.
@@ -64,6 +66,9 @@ public class Move {
     }
     /**
      * Gets the jumps for this move.
+     * <p>
+     * If there are no jumps, this method is guaranteed to return an empty list
+     * rather than <code>null</code>.
      *
      * @return  the list of jumps in sequence order
      */

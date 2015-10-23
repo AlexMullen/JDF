@@ -1,8 +1,6 @@
 package mullen.alex.draughts.common;
 
 import static org.junit.Assert.assertEquals;
-import mullen.alex.draughts.common.BoardPosition;
-import mullen.alex.draughts.common.Jump;
 
 import org.junit.Test;
 
@@ -17,7 +15,7 @@ public class TestJump {
      */
     @SuppressWarnings({ "static-method" })
     @Test
-    public final void testWithValidArgs() {
+    public final void testWithTypicalArgs() {
         final BoardPosition fromPosition = new BoardPosition(5, 3);
         final BoardPosition toPosition = new BoardPosition(3, 5);
         final BoardPosition jumpedPosition = new BoardPosition(3, 7);
@@ -27,16 +25,4 @@ public class TestJump {
         assertEquals(toPosition, move.getTo());
         assertEquals(jumpedPosition, move.getJumped());
     }
-//    /**
-//     * Tests the constructor with the parameter <code>jumpedPosition</code>
-//     * being <code>null</code> which should not be allowed.
-//     */
-//    @SuppressWarnings({ "static-method", "unused" })
-//    @Test (expected = NullPointerException.class)
-//    public final void testConstructorWithNullJumpedPositionArgument() {
-//        final BoardPosition fromPosition = new BoardPosition(5, 3);
-//        final BoardPosition toPosition = new BoardPosition(3, 5);
-//        new Jump(fromPosition, toPosition, null);
-//        fail("NPE should have been thrown!");
-//    }
 }
