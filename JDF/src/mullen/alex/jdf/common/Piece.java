@@ -110,10 +110,7 @@ public class Piece {
         if (moveDirection != other.moveDirection) {
             return false;
         }
-        if (!player.equals(other.player)) {
-            return false;
-        }
-        return true;
+        return player.equals(other.player);
     }
     @Override
     public final String toString() {

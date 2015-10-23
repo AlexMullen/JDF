@@ -63,10 +63,7 @@ public class BoardPosition {
             return false;
         }
         final BoardPosition other = (BoardPosition) obj;
-        if (x != other.x || y != other.y) {
-            return false;
-        }
-        return true;
+        return (x == other.x && y == other.y);
     }
     @Override
     public final int hashCode() {

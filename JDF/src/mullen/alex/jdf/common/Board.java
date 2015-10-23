@@ -209,10 +209,7 @@ public class Board {
      *           if it is not valid
      */
     public final boolean isPositionValid(final int x, final int y) {
-        if (x < 0 || y < 0 || x >= width || y >= height) {
-            return false;
-        }
-        return true;
+        return (x >= 0 && y >= 0 && x < width && y < height);
     }
     /**
      * Gets whether the near-right square of either player
@@ -269,14 +266,11 @@ public class Board {
         if (height != other.height) {
             return false;
         }
-        if (!Arrays.deepEquals(board, other.board)) {
-            return false;
-        }
-        return true;
+        return Arrays.deepEquals(board, other.board);
     }
     @Override
     public final String toString() {
-        final StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder(64);
         sb.append("Board [width=").append(width).append(", height=")
           .append(height).append("]");
         for (int x = 0; x < width; x++) {

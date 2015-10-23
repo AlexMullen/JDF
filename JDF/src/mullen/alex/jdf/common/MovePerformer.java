@@ -22,7 +22,7 @@ public interface MovePerformer {
      *
      * @author  Alex Mullen
      */
-    public interface PerformedMove {
+    interface PerformedMove {
         /**
          * Undoes the performed move on the board the move was performed on.
          */
