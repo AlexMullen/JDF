@@ -1,4 +1,4 @@
-package mullen.alex.jdf.variant.common.english;
+package mullen.alex.jdf.variant.english;
 
 import mullen.alex.jdf.common.ArtificialPlayer;
 import mullen.alex.jdf.common.Move;

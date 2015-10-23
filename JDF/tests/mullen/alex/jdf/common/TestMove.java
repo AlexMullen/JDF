@@ -1,4 +1,4 @@
-package mullen.alex.jdf.variant.common;
+package mullen.alex.jdf.common;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
