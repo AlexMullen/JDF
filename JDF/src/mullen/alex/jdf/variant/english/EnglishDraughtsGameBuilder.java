@@ -10,12 +10,6 @@ import mullen.alex.jdf.common.GameBuilder;
  *
  */
 public class EnglishDraughtsGameBuilder implements GameBuilder {
-    /**
-     * Creates a new instance.
-     */
-    public EnglishDraughtsGameBuilder() {
-        // Empty.
-    }
     @Override
     public final String getName() {
         return "English";

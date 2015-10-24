@@ -56,9 +56,7 @@ public class MinimaxAlphaBetaDepthLimited implements MoveSearch {
             final Player opponent) {
         System.out.println("---------------------------------------------------"
                 + "---------------------------------------------------");
-        float alpha = -MAX_ABS_AB_RANGE;
         final Board board = game.getBoard();
-        final List<Move> bestMoves = new ArrayList<>();
         final List<Move> moves =
                 game.getMoveGenerator().findMoves(board, owner);
         if (moves.size() == 1) {
@@ -66,6 +64,8 @@ public class MinimaxAlphaBetaDepthLimited implements MoveSearch {
             System.out.println(moves.get(0));
             return moves.get(0);
         }
+        float alpha = -MAX_ABS_AB_RANGE;
+        final List<Move> bestMoves = new ArrayList<>();
         for (final Move currentMove : moves) {
             final PerformedMove performedMove =
                     game.getMovePerformer().perform(currentMove, board);

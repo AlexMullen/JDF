@@ -45,8 +45,6 @@ public class MinimaxDepthLimited implements MoveSearch {
     @Override
     public final Move search(final Game game, final Player owner,
             final Player opponent) {
-        float currentBestScore = Integer.MIN_VALUE;
-        final List<Move> bestMoves = new ArrayList<>();
         final Board board = game.getBoard();
         final List<Move> moves =
                 game.getMoveGenerator().findMoves(board, owner);
@@ -54,6 +52,8 @@ public class MinimaxDepthLimited implements MoveSearch {
         if (moves.size() == 1) {
             return moves.get(0);
         }
+        float currentBestScore = Integer.MIN_VALUE;
+        final List<Move> bestMoves = new ArrayList<>();
         for (final Move currentMove : moves) {
             final PerformedMove performedMove =
                     game.getMovePerformer().perform(currentMove, board);

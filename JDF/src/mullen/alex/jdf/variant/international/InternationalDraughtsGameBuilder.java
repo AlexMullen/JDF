@@ -10,12 +10,6 @@ import mullen.alex.jdf.common.GameBuilder;
  *
  */
 public class InternationalDraughtsGameBuilder implements GameBuilder {
-    /**
-     * Creates a new instance.
-     */
-    public InternationalDraughtsGameBuilder() {
-        // Empty.
-    }
     @Override
     public final String getName() {
         return "International";

@@ -12,12 +12,6 @@ import mullen.alex.jdf.common.Player;
  *
  */
 public class MaterialDifferenceBoardEvaluator implements BoardEvaluator {
-    /**
-     * Creates a new instance.
-     */
-    public MaterialDifferenceBoardEvaluator() {
-        // Empty constructor.
-    }
     @Override
     public final float evaluate(final Board board, final Player owner) {
         int ownerPieceCrownedCount = 0;
@@ -47,8 +41,8 @@ public class MaterialDifferenceBoardEvaluator implements BoardEvaluator {
                 }
             }
         }
-        return ((ownerPieceNonCrownedCount + ownerPieceCrownedCount)
-                - (opponentNonCrownedPieceCount + opponentPieceCrownedCount));
+        return (float) ownerPieceNonCrownedCount + ownerPieceCrownedCount
+                - opponentNonCrownedPieceCount + opponentPieceCrownedCount;
     }
     @Override
     public final String toString() {

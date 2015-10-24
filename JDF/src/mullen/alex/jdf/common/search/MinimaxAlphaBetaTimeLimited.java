@@ -56,8 +56,6 @@ public class MinimaxAlphaBetaTimeLimited implements MoveSearch {
     @Override
     public final Move search(final Game game, final Player owner,
             final Player opponent) {
-        float alpha = -MAX_ABS_AB_RANGE;
-        final List<Move> bestMoves = new ArrayList<>();
         final Board board = game.getBoard();
         final List<Move> moves =
                 game.getMoveGenerator().findMoves(board, owner);
@@ -65,6 +63,8 @@ public class MinimaxAlphaBetaTimeLimited implements MoveSearch {
         if (moves.size() == 1) {
             return moves.get(0);
         }
+        float alpha = -MAX_ABS_AB_RANGE;
+        final List<Move> bestMoves = new ArrayList<>();
         final long timeToStopAt = System.currentTimeMillis() + searchTime;
         for (int depth = 1; System.currentTimeMillis() < timeToStopAt;
                 depth++) {
@@ -110,8 +110,8 @@ public class MinimaxAlphaBetaTimeLimited implements MoveSearch {
     private float minimax(final Board board, final int depth,
             final long timeToStopAt,
             final boolean maximisingPlayer, final Game game,
-            final Player owner, final Player opponent, float alpha,
-            float beta) {
+            final Player owner, final Player opponent, final float alpha,
+            final float beta) {
         if (depth == 0 || System.currentTimeMillis() > timeToStopAt) {
             return boardEvaluator.evaluate(board, owner);
         } else {

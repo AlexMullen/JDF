@@ -17,12 +17,6 @@ import mullen.alex.jdf.common.Piece;
  *
  */
 public class EnglishDraughtsMovePerformer implements MovePerformer {
-    /**
-     * Creates a new instance.
-     */
-    public EnglishDraughtsMovePerformer() {
-        // Empty constructor.
-    }
     @Override
     public final PerformedMove perform(final Move move, final Board board) {
         final List<UndoOperation> undoOperations = new ArrayList<>(8);
@@ -100,7 +94,7 @@ public class EnglishDraughtsMovePerformer implements MovePerformer {
          * @param position  the position to set at
          * @param piece     the piece to set
          */
-        private SetUndoOperation(final Board board,
+        protected SetUndoOperation(final Board board,
                 final BoardPosition position, final Piece piece) {
             boardToSet = board;
             positionToSet = position;

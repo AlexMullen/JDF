@@ -46,8 +46,6 @@ public class MinimaxTimeLimited implements MoveSearch {
     @Override
     public final Move search(final Game game, final Player owner,
             final Player opponent) {
-        float currentBestScore = Float.MIN_VALUE;
-        final List<Move> bestMoves = new ArrayList<>();
         final Board board = game.getBoard();
         final List<Move> moves =
                 game.getMoveGenerator().findMoves(board, owner);
@@ -55,6 +53,8 @@ public class MinimaxTimeLimited implements MoveSearch {
         if (moves.size() == 1) {
             return moves.get(0);
         }
+        float currentBestScore = Float.MIN_VALUE;
+        final List<Move> bestMoves = new ArrayList<>();
         final long timeToStopAt = System.currentTimeMillis() + searchTime;
         for (int depth = 1; System.currentTimeMillis() < timeToStopAt;
                 depth++) {

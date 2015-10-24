@@ -10,6 +10,12 @@ package mullen.alex.jdf.common;
  */
 public abstract class AbstractMoveGenerator implements MoveGenerator {
     /**
+     * Constructor.
+     */
+    protected AbstractMoveGenerator() {
+        // Intentionally empty.
+    }
+    /**
      * Gets any potential single move to the above left space of the specified
      * board position.
      *

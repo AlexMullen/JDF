@@ -56,14 +56,11 @@ public class BoardPosition {
         if (this == obj) {
             return true;
         }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
+        if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
         final BoardPosition other = (BoardPosition) obj;
-        return (x == other.x && y == other.y);
+        return x == other.x && y == other.y;
     }
     @Override
     public final int hashCode() {

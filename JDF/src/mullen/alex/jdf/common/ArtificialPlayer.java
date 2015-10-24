@@ -31,14 +31,29 @@ public class ArtificialPlayer implements Player {
         return true;
     }
     /**
-     * Gets the move to be performed by this artificial player.
+     * Gets the name assigned to this.
+     *
+     * @return  the name
+     */
+    public final String getName() {
+        return name;
+    }
+    /**
+     * Gets the {@link MoveSearch} this uses.
+     *
+     * @return  the <code>MoveSearch</code> instance
+     */
+    public final MoveSearch getMoveSearch() {
+        return moveSearch;
+    }
+    /**
+     * Requests the move to be performed by this artificial player.
      *
      * @param game  the game context
      * @return      the move to perform for this player
      */
-    public final Move getMove(final Game game) {
-        return moveSearch.search(game, ArtificialPlayer.this,
-                        game.getOpponent(ArtificialPlayer.this));
+    public final Move requestMove(final Game game) {
+        return moveSearch.search(game, this, game.getOpponent(this));
     }
     @Override
     public final String toString() {

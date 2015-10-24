@@ -24,7 +24,7 @@ public class TestBoard {
     /**
      * Tests the constructor with some typical expected arguments.
      */
-    @SuppressWarnings({ "static-method" })
+    @SuppressWarnings("static-method")
     @Test
     public final void testBoard() {
         final int width = 8;
@@ -248,7 +248,7 @@ public class TestBoard {
     public final void testGetPieceAtIntIntWithHighestAllowedX() {
         final int width = 8;
         final int height = 8;
-        final int positionPlacedX = (width - 1);
+        final int positionPlacedX = width - 1;
         final int positionPlacedY = 3;
         final Board board = new Board(width, height, true);
         final Piece piece = new Piece(
@@ -271,7 +271,7 @@ public class TestBoard {
         final int width = 8;
         final int height = 8;
         final int positionPlacedX = 4;
-        final int positionPlacedY = (height - 1);
+        final int positionPlacedY = height - 1;
         final Board board = new Board(width, height, true);
         final Piece piece = new Piece(
                 new EmptyMockPieceOwner(), MoveDirection.DOWN);
@@ -404,8 +404,8 @@ public class TestBoard {
     public final void testGetPieceAtNullBoardPositionWithOutOfBoundPosition() {
         final int width = 8;
         final int height = 8;
-        final int positionPlacedX = (width + 1);
-        final int positionPlacedY = (height + 1);
+        final int positionPlacedX = width + 1;
+        final int positionPlacedY = height + 1;
         final Board board = new Board(width, height, true);
         // This should throw an exception.
         assertNull(board.getPieceAt(

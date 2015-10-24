@@ -209,7 +209,7 @@ public class Board {
      *           if it is not valid
      */
     public final boolean isPositionValid(final int x, final int y) {
-        return (x >= 0 && y >= 0 && x < width && y < height);
+        return x >= 0 && y >= 0 && x < width && y < height;
     }
     /**
      * Gets whether the near-right square of either player
@@ -253,17 +253,11 @@ public class Board {
         if (this == obj) {
             return true;
         }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
+        if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
         final Board other = (Board) obj;
-        if (width != other.width) {
-            return false;
-        }
-        if (height != other.height) {
+        if (width != other.width || height != other.height) {
             return false;
         }
         return Arrays.deepEquals(board, other.board);
@@ -272,12 +266,12 @@ public class Board {
     public final String toString() {
         final StringBuilder sb = new StringBuilder(64);
         sb.append("Board [width=").append(width).append(", height=")
-          .append(height).append("]");
+          .append(height).append(']');
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 final Piece foundPiece = board[x][y];
                 if (foundPiece != null) {
-                    sb.append("\n    (").append(x).append(",")
+                    sb.append("\n    (").append(x).append(',')
                       .append(y).append(") = ").append(foundPiece);
                 }
             }

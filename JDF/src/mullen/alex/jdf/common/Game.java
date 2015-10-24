@@ -8,6 +8,12 @@ package mullen.alex.jdf.common;
  */
 public abstract class Game {
     /**
+     * Constructor.
+     */
+    protected Game() {
+        // Intentionally empty.
+    }
+    /**
      * Gets the current game board state.
      *
      * @return  the board
