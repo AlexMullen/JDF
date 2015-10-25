@@ -20,6 +20,12 @@ public abstract class Game {
      */
     public abstract Board getBoard();
     /**
+     * Gets the board pattern for this game type.
+     *
+     * @return  the pattern
+     */
+    public abstract BoardPattern getBoardPattern();
+    /**
      * Gets whoever turn it currently is.
      *
      * @return  the owner of the turn

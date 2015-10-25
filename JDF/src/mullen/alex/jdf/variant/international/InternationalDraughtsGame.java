@@ -3,6 +3,8 @@ package mullen.alex.jdf.variant.international;
 import java.util.Objects;
 
 import mullen.alex.jdf.common.Board;
+import mullen.alex.jdf.common.BoardPattern;
+import mullen.alex.jdf.common.CheckeredBoardPattern;
 import mullen.alex.jdf.common.Game;
 import mullen.alex.jdf.common.Move;
 import mullen.alex.jdf.common.MoveGenerator;
@@ -31,6 +33,8 @@ public class InternationalDraughtsGame extends Game {
     private final Player lightPieceOwner;
     /** Holds the board for this game. */
     private final Board board;
+    /** Holds the board pattern for this game. */
+    private final BoardPattern boardPattern;
     /** The move generator for getting legal moves this uses. */
     private final MoveGenerator moveGenerator;
     /** The move performer for performing moves this uses. */
@@ -53,7 +57,9 @@ public class InternationalDraughtsGame extends Game {
         if (lightPieceOwner.equals(darkPieceOwner)) {
             throw new IllegalArgumentException("vs themself?");
         }
-        board = new Board(BOARD_WIDTH, BOARD_HEIGHT, true);
+        board = new Board(BOARD_WIDTH, BOARD_HEIGHT);
+        boardPattern = new CheckeredBoardPattern(BoardPattern.BLACK_SQUARE,
+                BOARD_WIDTH, BOARD_HEIGHT);
         moveGenerator = new EnglishDraughtsMoveGenerator();
         movePerformer = new EnglishDraughtsMovePerformer();
         // Light moves first.
@@ -64,6 +70,10 @@ public class InternationalDraughtsGame extends Game {
     public final Board getBoard() {
         // Returns a copy.
         return new Board(board);
+    }
+    @Override
+    public final BoardPattern getBoardPattern() {
+        return boardPattern;
     }
     @Override
     public final Player getTurnOwner() {

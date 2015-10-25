@@ -27,7 +27,8 @@ public class EnglishDraughtsMovePerformer implements MovePerformer {
             undoOperations.add(
                     setPieceAt(board, currentJump.getJumped(), null));
         }
-        if (board.isKingsRow(move.getTo().getY()) && !pieceToMove.isCrowned()) {
+        if (isKingsRow(board, move.getTo().getY())
+                && !pieceToMove.isCrowned()) {
             /*
              * Create a copy of the uncrowned piece, crown it and then place it
              * into the board whilst saving the original for undoing.
@@ -46,6 +47,17 @@ public class EnglishDraughtsMovePerformer implements MovePerformer {
                 }
             }
         };
+    }
+    /**
+     * Gets whether the specified Y position is a kings row.
+     *
+     * @param board  the board to check on
+     * @param y      the Y position (top-to-bottom)
+     * @return       <code>true</code> if the specified value is a kings row;
+     *               <code>false</code> if it is not
+     */
+    public static final boolean isKingsRow(final Board board, final int y) {
+        return y == 0 || y == (board.getHeight() - 1);
     }
     /**
      * Sets the piece at the specified position on the given board and returns

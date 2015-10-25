@@ -12,8 +12,6 @@ import mullen.alex.jdf.common.Piece;
 import mullen.alex.jdf.common.Player;
 import mullen.alex.jdf.common.MovePerformer.PerformedMove;
 import mullen.alex.jdf.common.Piece.MoveDirection;
-import mullen.alex.jdf.variant.english.EnglishDraughtsMoveGenerator;
-import mullen.alex.jdf.variant.english.EnglishDraughtsMovePerformer;
 
 import org.junit.Test;
 
@@ -52,7 +50,7 @@ public class TestEnglishDraughtsMovePerformer {
     @Test
     public final void testPerform1() {
         // Create a board and place some pieces.
-        final Board board1 = new Board(10, 8, true);
+        final Board board1 = new Board(10, 8);
         board1.setPieceAndGetAt(3, 7, lightPiece);
         board1.setPieceAndGetAt(4, 6, darkPiece);
         board1.setPieceAndGetAt(4, 4, darkPiece);
@@ -63,7 +61,7 @@ public class TestEnglishDraughtsMovePerformer {
          * Create an expected board state for the board to look like after
          * performing the move.
          */
-        final Board board1ExpectedStateAfterMove = new Board(10, 8, true);
+        final Board board1ExpectedStateAfterMove = new Board(10, 8);
         board1ExpectedStateAfterMove.setPieceAndGetAt(5, 1, lightPiece);
         // Get the move and perform it.
         final List<Move> foundMoves =
@@ -89,7 +87,7 @@ public class TestEnglishDraughtsMovePerformer {
     @Test
     public final void testPerform2() {
         // Create a board and place some pieces.
-        final Board board1 = new Board(8, 8, true);
+        final Board board1 = new Board(8, 8);
         board1.setPieceAndGetAt(4, 6, lightPiece);
         board1.setPieceAndGetAt(5, 5, darkPiece);
         board1.setPieceAndGetAt(5, 3, darkPiece);
@@ -100,7 +98,7 @@ public class TestEnglishDraughtsMovePerformer {
          * Create an expected board state for the board to look like after
          * performing the move.
          */
-        final Board board1ExpectedStateAfterMove = new Board(8, 8, true);
+        final Board board1ExpectedStateAfterMove = new Board(8, 8);
         board1ExpectedStateAfterMove.setPieceAndGetAt(2, 0, lightPieceCrowned);
         // Get the move and perform it.
         final List<Move> foundMoves =

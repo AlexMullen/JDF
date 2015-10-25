@@ -29,7 +29,7 @@ public abstract class AbstractMoveGenerator implements MoveGenerator {
         final int spaceX = position.getX() - 1;
         final int spaceY = position.getY() - 1;
         // First check if the top-left position exists and is vacant.
-        if (board.isPositionValid(spaceX, spaceY)
+        if (board.isPositionWithinBounds(spaceX, spaceY)
                 && !board.isPieceAt(spaceX, spaceY)) {
             return new Move(position, new BoardPosition(spaceX, spaceY));
         }
@@ -50,7 +50,7 @@ public abstract class AbstractMoveGenerator implements MoveGenerator {
         final int spaceX = position.getX() + 1;
         final int spaceY = position.getY() - 1;
         // First check if the top-left position exists and is vacant.
-        if (board.isPositionValid(spaceX, spaceY)
+        if (board.isPositionWithinBounds(spaceX, spaceY)
                 && !board.isPieceAt(spaceX, spaceY)) {
             return new Move(position, new BoardPosition(spaceX, spaceY));
         }
@@ -71,7 +71,7 @@ public abstract class AbstractMoveGenerator implements MoveGenerator {
         final int spaceX = position.getX() - 1;
         final int spaceY = position.getY() + 1;
         // First check if the top-left position exists and is vacant.
-        if (board.isPositionValid(spaceX, spaceY)
+        if (board.isPositionWithinBounds(spaceX, spaceY)
                 && !board.isPieceAt(spaceX, spaceY)) {
             return new Move(position, new BoardPosition(spaceX, spaceY));
         }
@@ -92,7 +92,7 @@ public abstract class AbstractMoveGenerator implements MoveGenerator {
         final int spaceX = position.getX() + 1;
         final int spaceY = position.getY() + 1;
         // First check if the top-left position exists and is vacant.
-        if (board.isPositionValid(spaceX, spaceY)
+        if (board.isPositionWithinBounds(spaceX, spaceY)
                 && !board.isPieceAt(spaceX, spaceY)) {
             return new Move(position, new BoardPosition(spaceX, spaceY));
         }
@@ -119,7 +119,7 @@ public abstract class AbstractMoveGenerator implements MoveGenerator {
          * Make sure the landing position exists and is vacant. If this exists
          * then the jumped position must also exist.
          */
-        if (board.isPositionValid(landPosX, landPosY)
+        if (board.isPositionWithinBounds(landPosX, landPosY)
                 && !board.isPieceAt(landPosX, landPosY)) {
             final int jumpedPosX = fromPosition.getX() - 1;
             final int jumpedPosY = fromPosition.getY() - 1;
@@ -157,7 +157,7 @@ public abstract class AbstractMoveGenerator implements MoveGenerator {
          * Make sure the landing position exists and is vacant. If this exists
          * then the jumped position must also exist.
          */
-        if (board.isPositionValid(landPosX, landPosY)
+        if (board.isPositionWithinBounds(landPosX, landPosY)
                 && !board.isPieceAt(landPosX, landPosY)) {
             final int jumpedPosX = fromPosition.getX() + 1;
             final int jumpedPosY = fromPosition.getY() - 1;
@@ -195,7 +195,7 @@ public abstract class AbstractMoveGenerator implements MoveGenerator {
          * Make sure the landing position exists and is vacant. If this exists
          * then the jumped position must also exist.
          */
-        if (board.isPositionValid(landPosX, landPosY)
+        if (board.isPositionWithinBounds(landPosX, landPosY)
                 && !board.isPieceAt(landPosX, landPosY)) {
             final int jumpedPosX = fromPosition.getX() - 1;
             final int jumpedPosY = fromPosition.getY() + 1;
@@ -233,7 +233,7 @@ public abstract class AbstractMoveGenerator implements MoveGenerator {
          * Make sure the landing position exists and is vacant. If this exists
          * then the jumped position must also exist.
          */
-        if (board.isPositionValid(landPosX, landPosY)
+        if (board.isPositionWithinBounds(landPosX, landPosY)
                 && !board.isPieceAt(landPosX, landPosY)) {
             final int jumpedPosX = fromPosition.getX() + 1;
             final int jumpedPosY = fromPosition.getY() + 1;
