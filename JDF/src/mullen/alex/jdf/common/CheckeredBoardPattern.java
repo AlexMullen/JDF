@@ -17,6 +17,9 @@ public class CheckeredBoardPattern implements BoardPattern {
     /**
      * Creates a new instance that starts with the specified colour and is of
      * the specified dimensions.
+     * <p>
+     * The first square is deemed as coordinates (0,0) on a {@link Board}. This
+     * is often displayed on the top-left.
      *
      * @param firstColour    either {@link BoardPattern#WHITE_SQUARE} or
      *                       {@link BoardPattern#BLACK_SQUARE}
@@ -41,50 +44,24 @@ public class CheckeredBoardPattern implements BoardPattern {
         height = patternHeight;
     }
     @Override
-    public final int getWidth() {
-        return width;
-    }
-    @Override
-    public final int getHeight() {
-        return height;
-    }
-    @Override
     public final int getColourAt(final int x, final int y) {
-        // TODO: Clean this up.
         if (x < 0 || y < 0 || x >= width || y >= height) {
+            // The coordinates are out of range so return white by default.
             return BoardPattern.WHITE_SQUARE;
         } else if (initialColour == BoardPattern.WHITE_SQUARE) {
-            if (y % 2 == 0) { // If Y is even.
-                // and if X is even.
-                if (x % 2 == 0) {
-                    return BoardPattern.WHITE_SQUARE;
-                } else {
-                    return BoardPattern.BLACK_SQUARE;
-                }
-            } else { // Y is odd.
-                if (x % 2 == 0) {
-                    return BoardPattern.BLACK_SQUARE;
-                } else {
-                    return BoardPattern.WHITE_SQUARE;
-                }
+            if ((x + y) % 2 == 0) {
+                return BoardPattern.WHITE_SQUARE;
+            } else {
+                return BoardPattern.BLACK_SQUARE;
             }
         } else if (initialColour == BoardPattern.BLACK_SQUARE) {
-            // If Y is even.
-            if (y % 2 == 0) {
-                if (x % 2 == 0) {
-                    return BoardPattern.BLACK_SQUARE;
-                } else {
-                    return BoardPattern.WHITE_SQUARE;
-                }
+            if ((x + y) % 2 == 0) {
+                return BoardPattern.BLACK_SQUARE;
             } else {
-                // Y is odd.
-                if (x % 2 == 0) {
-                    return BoardPattern.WHITE_SQUARE;
-                } else {
-                    return BoardPattern.BLACK_SQUARE;
-                }
+                return BoardPattern.WHITE_SQUARE;
             }
         } else {
+            // Should not happen.
             throw new IllegalStateException("Unknown board colour!");
         }
     }

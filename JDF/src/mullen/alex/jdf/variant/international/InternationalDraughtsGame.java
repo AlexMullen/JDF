@@ -1,5 +1,7 @@
 package mullen.alex.jdf.variant.international;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.Objects;
 
 import mullen.alex.jdf.common.Board;
@@ -12,7 +14,6 @@ import mullen.alex.jdf.common.MovePerformer;
 import mullen.alex.jdf.common.Piece;
 import mullen.alex.jdf.common.Player;
 import mullen.alex.jdf.common.Piece.MoveDirection;
-import mullen.alex.jdf.variant.english.EnglishDraughtsMoveGenerator;
 import mullen.alex.jdf.variant.english.EnglishDraughtsMovePerformer;
 
 /**
@@ -39,6 +40,8 @@ public class InternationalDraughtsGame extends Game {
     private final MoveGenerator moveGenerator;
     /** The move performer for performing moves this uses. */
     private final MovePerformer movePerformer;
+    /** Holds all the previous moves. */
+    private final Deque<MovePerformer.PerformedMove> moveHistory;
     /** Holds whoever's turn it currently is. */
     private Player turnOwner;
     /** Holds the result of the game when it has ended. */
@@ -64,6 +67,7 @@ public class InternationalDraughtsGame extends Game {
         movePerformer = new EnglishDraughtsMovePerformer();
         // Light moves first.
         turnOwner = lightPieceOwner;
+        moveHistory = new ArrayDeque<>();
         initPieces();
     }
     @Override
@@ -113,7 +117,7 @@ public class InternationalDraughtsGame extends Game {
         if (result != null) {
             throw new IllegalStateException();
         }
-        movePerformer.perform(move, board);
+        moveHistory.addFirst(movePerformer.perform(move, board));
         // Next player's turn.
         turnOwner = getOpponent(turnOwner);
         // Check if the next player has any moves left.
@@ -121,6 +125,15 @@ public class InternationalDraughtsGame extends Game {
          // Their turn but they have no moves left so the opposing player wins.
             result = new GameResult(getOpponent(turnOwner));
         }
+    }
+    @Override
+    public final void undoMove() {
+        if (moveHistory.isEmpty()) {
+            return;
+        }
+        moveHistory.removeFirst().undo();
+        // Next player's turn.
+        turnOwner = getOpponent(turnOwner);
     }
     /**
      * Initialises the pieces and places them into their correct starting

@@ -1,5 +1,7 @@
 package mullen.alex.jdf.variant.english;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.Objects;
 
 import mullen.alex.jdf.common.Board;
@@ -36,6 +38,8 @@ public class EnglishDraughtsGame extends Game {
     private final MoveGenerator moveGenerator;
     /** The move performer for performing moves this uses. */
     private final MovePerformer movePerformer;
+    /** Holds all the previous moves. */
+    private final Deque<MovePerformer.PerformedMove> moveHistory;
     /** Holds whoever's turn it currently is. */
     private Player turnOwner;
     /** Holds the result of the game when it has ended. */
@@ -61,6 +65,7 @@ public class EnglishDraughtsGame extends Game {
         movePerformer = new EnglishDraughtsMovePerformer();
         // Dark moves first.
         turnOwner = darkPieceOwner;
+        moveHistory = new ArrayDeque<>();
         initPieces();
     }
     @Override
@@ -110,7 +115,7 @@ public class EnglishDraughtsGame extends Game {
         if (result != null) {
             throw new IllegalStateException();
         }
-        movePerformer.perform(move, board);
+        moveHistory.addFirst(movePerformer.perform(move, board));
         // Next player's turn.
         turnOwner = getOpponent(turnOwner);
         // Check if the next player has any moves left.
@@ -118,6 +123,15 @@ public class EnglishDraughtsGame extends Game {
          // Their turn but they have no moves left so the opposing player wins.
             result = new GameResult(getOpponent(turnOwner));
         }
+    }
+    @Override
+    public final void undoMove() {
+        if (moveHistory.isEmpty()) {
+            return;
+        }
+        moveHistory.removeFirst().undo();
+        // Next player's turn.
+        turnOwner = getOpponent(turnOwner);
     }
     /**
      * Initialises the pieces and places them into their correct starting

@@ -75,6 +75,10 @@ public abstract class Game {
      */
     public abstract void performMove(Move move);
     /**
+     * Undoes the last move.
+     */
+    public abstract void undoMove();
+    /**
      * Represents the result of a game.
      *
      * @author  Alex Mullen

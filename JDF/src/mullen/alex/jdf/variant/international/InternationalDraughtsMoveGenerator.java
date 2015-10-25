@@ -211,21 +211,6 @@ public class InternationalDraughtsMoveGenerator extends AbstractMoveGenerator {
                         singleJump,
                         new ArrayList<>(),
                         jumpSequences);
-            // TODO: Experimental!
-            int currentLongestJump = 0;
-            final List<Move> jumpsToKeep = new ArrayList<>();
-            for (final Move jumpSequence : jumpSequences) {
-                if (jumpSequence.getJumps().size() > currentLongestJump) {
-                    // We found a longer jump.
-                    jumpsToKeep.clear();
-                    jumpsToKeep.add(jumpSequence);
-                    currentLongestJump = jumpSequence.getJumps().size();
-                } else {
-                    System.out.println("Dumping jump...");
-                }
-            }
-            jumpSequences.clear();
-            jumpSequences.addAll(jumpsToKeep);
         }
         return jumpSequences;
     }

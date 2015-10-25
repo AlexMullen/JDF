@@ -12,18 +12,6 @@ public interface BoardPattern {
     /** Represents a black square on a board. */
     int BLACK_SQUARE = 1;
     /**
-     * Gets the width of the pattern.
-     *
-     * @return  the width
-     */
-    int getWidth();
-    /**
-     * Gets the height of the pattern.
-     *
-     * @return  the height
-     */
-    int getHeight();
-    /**
      * Gets the colour of the square at the specified coordinates.
      * <p>
      * If the coordinate specified is out of bounds for the pattern then
