@@ -58,9 +58,9 @@ public class InternationalDraughtsGame extends Game {
             throw new IllegalArgumentException("vs themself?");
         }
         board = new Board(BOARD_WIDTH, BOARD_HEIGHT);
-        boardPattern = new CheckeredBoardPattern(BoardPattern.BLACK_SQUARE,
+        boardPattern = new CheckeredBoardPattern(BoardPattern.WHITE_SQUARE,
                 BOARD_WIDTH, BOARD_HEIGHT);
-        moveGenerator = new EnglishDraughtsMoveGenerator();
+        moveGenerator = new InternationalDraughtsMoveGenerator();
         movePerformer = new EnglishDraughtsMovePerformer();
         // Light moves first.
         turnOwner = lightPieceOwner;

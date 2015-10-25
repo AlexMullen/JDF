@@ -46,23 +46,22 @@ public class CheckeredBoardPattern implements BoardPattern {
     }
     @Override
     public final int getHeight() {
-        // TODO Auto-generated method stub
         return height;
     }
     @Override
     public final int getColourAt(final int x, final int y) {
+        // TODO: Clean this up.
         if (x < 0 || y < 0 || x >= width || y >= height) {
             return BoardPattern.WHITE_SQUARE;
         } else if (initialColour == BoardPattern.WHITE_SQUARE) {
-            // If Y is even.
-            if (y % 2 == 0) {
+            if (y % 2 == 0) { // If Y is even.
+                // and if X is even.
                 if (x % 2 == 0) {
                     return BoardPattern.WHITE_SQUARE;
                 } else {
                     return BoardPattern.BLACK_SQUARE;
                 }
-            } else {
-                // Y is odd.
+            } else { // Y is odd.
                 if (x % 2 == 0) {
                     return BoardPattern.BLACK_SQUARE;
                 } else {
