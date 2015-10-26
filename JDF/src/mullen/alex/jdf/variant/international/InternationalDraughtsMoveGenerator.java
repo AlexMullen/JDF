@@ -101,8 +101,13 @@ public class InternationalDraughtsMoveGenerator extends AbstractMoveGenerator {
             final Collection<Jump> jumps) {
         if (piece.isCrowned()) {
             /*
-             * The piece is crowned so can move in any direction.
+             * The piece is crowned so can 'fly' along a diagonal.
              */
+            
+            
+            // getKingJumpsAboveLeft(board, piecePosition, piece.getOwner())
+            
+            
             addJumpIfNotNull(jumps,
                     getJumpAboveLeft(board, piecePosition, piece.getOwner()));
             addJumpIfNotNull(jumps,
@@ -111,7 +116,15 @@ public class InternationalDraughtsMoveGenerator extends AbstractMoveGenerator {
                     getJumpBottomLeft(board, piecePosition, piece.getOwner()));
             addJumpIfNotNull(jumps,
                     getJumpBottomRight(board, piecePosition, piece.getOwner()));
+            
+            
+            
+            
         } else {
+            /*
+             * Get jumps for all directions as men can jump in any direction in
+             * International Draughts.
+             */
             addJumpIfNotNull(jumps,
                     getJumpAboveLeft(board, piecePosition, piece.getOwner()));
             addJumpIfNotNull(jumps,
@@ -136,15 +149,27 @@ public class InternationalDraughtsMoveGenerator extends AbstractMoveGenerator {
             final BoardPosition piecePosition,
             final Collection<Move> moves) {
         if (piece.isCrowned()) {
-            // The piece is crowned so can move in any direction.
-            addMoveIfNotNull(moves,
-                    getMoveAboveLeft(board, piecePosition));
+            /*
+             * The piece is crowned so can 'fly' along a diagonal.
+             */
+            
+            
+//            addMoveIfNotNull(moves,
+//                    getMoveAboveLeft(board, piecePosition));
+//            
+            getKingMovesAboveLeft(board, piecePosition, moves);
+            
+            
             addMoveIfNotNull(moves,
                     getMoveAboveRight(board, piecePosition));
             addMoveIfNotNull(moves,
                     getMoveBottomLeft(board, piecePosition));
             addMoveIfNotNull(moves,
                     getMoveBottomRight(board, piecePosition));
+            
+            
+            
+            
         } else {
             // The piece is not crowned so the direction needs to be determined.
             if (piece.getMoveDirection() == MoveDirection.UP) {
@@ -162,36 +187,6 @@ public class InternationalDraughtsMoveGenerator extends AbstractMoveGenerator {
             } else {
                 throw new IllegalStateException("Unhandled move direction.");
             }
-        }
-    }
-    /**
-     * A static utility method for adding a move to a list if the move is not
-     * <code>null</code>. This allows much of the <code>null</code> checking
-     * boilerplate to be removed when getting the moves for a piece.
-     *
-     * @param moves         the collection to add the move to if is is not
-     *                      <code>null</code>
-     * @param possibleMove  the move to potentially add to <code>moves</code>
-     */
-    private static void addMoveIfNotNull(final Collection<Move> moves,
-            final Move possibleMove) {
-        if (possibleMove != null) {
-            moves.add(possibleMove);
-        }
-    }
-    /**
-     * A static utility method for adding a jump to a list if the jump is not
-     * <code>null</code>. This allows much of the <code>null</code> checking
-     * boilerplate to be removed when getting the jumps for a piece.
-     *
-     * @param jumps         the collection to add the jump to if is is not
-     *                      <code>null</code>
-     * @param possibleJump  the jump to potentially add to <code>jumps</code>
-     */
-    private static void addJumpIfNotNull(final Collection<Jump> jumps,
-            final Jump possibleJump) {
-        if (possibleJump != null) {
-            jumps.add(possibleJump);
         }
     }
     /**

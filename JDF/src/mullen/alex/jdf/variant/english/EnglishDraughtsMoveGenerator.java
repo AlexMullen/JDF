@@ -184,36 +184,6 @@ public class EnglishDraughtsMoveGenerator extends AbstractMoveGenerator {
         }
     }
     /**
-     * A static utility method for adding a move to a list if the move is not
-     * <code>null</code>. This allows much of the <code>null</code> checking
-     * boilerplate to be removed when getting the moves for a piece.
-     *
-     * @param moves         the collection to add the move to if is is not
-     *                      <code>null</code>
-     * @param possibleMove  the move to potentially add to <code>moves</code>
-     */
-    private static void addMoveIfNotNull(final Collection<Move> moves,
-            final Move possibleMove) {
-        if (possibleMove != null) {
-            moves.add(possibleMove);
-        }
-    }
-    /**
-     * A static utility method for adding a jump to a list if the jump is not
-     * <code>null</code>. This allows much of the <code>null</code> checking
-     * boilerplate to be removed when getting the jumps for a piece.
-     *
-     * @param jumps         the collection to add the jump to if is is not
-     *                      <code>null</code>
-     * @param possibleJump  the jump to potentially add to <code>jumps</code>
-     */
-    private static void addJumpIfNotNull(final Collection<Jump> jumps,
-            final Jump possibleJump) {
-        if (possibleJump != null) {
-            jumps.add(possibleJump);
-        }
-    }
-    /**
      * Explores and returns all possible jump sequences for the specified jumps.
      *
      * @param board  the board to use

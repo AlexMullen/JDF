@@ -1,5 +1,7 @@
 package mullen.alex.jdf.common;
 
+import java.util.Collection;
+
 /**
  * An abstract move generator implementation that provides many primitive helper
  * methods for generating moves so as to minimise the effort required for
@@ -250,5 +252,50 @@ public abstract class AbstractMoveGenerator implements MoveGenerator {
             }
         }
         return null;
+    }
+    
+    
+    protected static void getKingMovesAboveLeft(final Board board,
+            final BoardPosition fromPosition,
+            final Collection<Move> outMoves) {
+        int currentLandPosX = fromPosition.getX();
+        int currentLandPosY = fromPosition.getY();
+
+        while (board.isPositionWithinBounds(
+                --currentLandPosX, --currentLandPosY)) {
+            outMoves.add(new Move(fromPosition,
+                    new BoardPosition(currentLandPosX, currentLandPosY)));
+        }
+    }
+    
+    /**
+     * A static utility method for adding a move to a list if the move is not
+     * <code>null</code>. This allows much of the <code>null</code> checking
+     * boilerplate to be removed when getting the moves for a piece.
+     *
+     * @param moves         the collection to add the move to if is is not
+     *                      <code>null</code>
+     * @param possibleMove  the move to potentially add to <code>moves</code>
+     */
+    protected static void addMoveIfNotNull(final Collection<Move> moves,
+            final Move possibleMove) {
+        if (possibleMove != null) {
+            moves.add(possibleMove);
+        }
+    }
+    /**
+     * A static utility method for adding a jump to a list if the jump is not
+     * <code>null</code>. This allows much of the <code>null</code> checking
+     * boilerplate to be removed when getting the jumps for a piece.
+     *
+     * @param jumps         the collection to add the jump to if is is not
+     *                      <code>null</code>
+     * @param possibleJump  the jump to potentially add to <code>jumps</code>
+     */
+    protected static void addJumpIfNotNull(final Collection<Jump> jumps,
+            final Jump possibleJump) {
+        if (possibleJump != null) {
+            jumps.add(possibleJump);
+        }
     }
 }

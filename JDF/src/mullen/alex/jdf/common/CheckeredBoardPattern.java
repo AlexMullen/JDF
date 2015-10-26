@@ -1,6 +1,5 @@
 package mullen.alex.jdf.common;
 
-
 /**
  * Represents a typical checkered pattern.
  *
@@ -29,8 +28,7 @@ public class CheckeredBoardPattern implements BoardPattern {
     public CheckeredBoardPattern(final int firstColour, final int patternWidth,
             final int patternHeight) {
         // Initial colour validation.
-        if (firstColour != BoardPattern.WHITE_SQUARE
-                && firstColour != BoardPattern.BLACK_SQUARE) {
+        if (firstColour != WHITE_SQUARE && firstColour != BLACK_SQUARE) {
             throw new IllegalArgumentException("firstColour needs to be "
                     + "BoardPattern.WHITE_SQUARE or BoardPattern.WHITE_SQUARE");
         }
@@ -45,24 +43,28 @@ public class CheckeredBoardPattern implements BoardPattern {
     }
     @Override
     public final int getColourAt(final int x, final int y) {
-        if (x < 0 || y < 0 || x >= width || y >= height) {
-            // The coordinates are out of range so return white by default.
-            return BoardPattern.WHITE_SQUARE;
-        } else if (initialColour == BoardPattern.WHITE_SQUARE) {
-            if ((x + y) % 2 == 0) {
-                return BoardPattern.WHITE_SQUARE;
+        int squareColour = WHITE_SQUARE;
+        if (!areCoordinatesOutOfBounds(x, y)) {
+            if (initialColour == WHITE_SQUARE) {
+                squareColour = ((x + y) % 2 == 0) ? WHITE_SQUARE : BLACK_SQUARE;
+            } else if (initialColour == BLACK_SQUARE) {
+                squareColour = ((x + y) % 2 == 0) ? BLACK_SQUARE : WHITE_SQUARE;
             } else {
-                return BoardPattern.BLACK_SQUARE;
+                // Should not happen.
+                throw new IllegalStateException("Unknown board colour!");
             }
-        } else if (initialColour == BoardPattern.BLACK_SQUARE) {
-            if ((x + y) % 2 == 0) {
-                return BoardPattern.BLACK_SQUARE;
-            } else {
-                return BoardPattern.WHITE_SQUARE;
-            }
-        } else {
-            // Should not happen.
-            throw new IllegalStateException("Unknown board colour!");
         }
+        return squareColour;
+    }
+    /**
+     * Determines whether some coordinates are out of the pattern bounds.
+     *
+     * @param x  the X position (left-to-right)
+     * @param y  the Y position (top-to-bottom)
+     * @return   <code>true</code> if out of bounds; <code>false</code> if
+     *           within bounds
+     */
+    private boolean areCoordinatesOutOfBounds(final int x, final int y) {
+        return x < 0 || y < 0 || x >= width || y >= height;
     }
 }
