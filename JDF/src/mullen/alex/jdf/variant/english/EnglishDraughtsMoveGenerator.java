@@ -177,7 +177,7 @@ public class EnglishDraughtsMoveGenerator implements MoveGenerator {
             exploreJump(board,
                     board.getPieceAt(singleJump.getFrom()),
                     singleJump,
-                    new ArrayList<>(),
+                    new ArrayList<Jump>(),
                     jumpSequences);
         }
         return jumpSequences;

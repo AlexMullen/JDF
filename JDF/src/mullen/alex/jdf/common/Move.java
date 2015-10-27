@@ -47,8 +47,8 @@ public class Move {
         from = fromPosition;
         to = toPosition;
         // If the move has no jumps then assign an empty list.
-        jumps = jumpedPositions == null
-                ? Collections.emptyList() : jumpedPositions;
+        jumps = (jumpedPositions == null ?
+                Collections.<Jump>emptyList() : jumpedPositions);
     }
     /**
      * Gets the source position before the move.
