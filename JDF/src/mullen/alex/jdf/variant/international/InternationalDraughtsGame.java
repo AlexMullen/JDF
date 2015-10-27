@@ -14,7 +14,6 @@ import mullen.alex.jdf.common.MovePerformer;
 import mullen.alex.jdf.common.Piece;
 import mullen.alex.jdf.common.Player;
 import mullen.alex.jdf.common.Piece.MoveDirection;
-import mullen.alex.jdf.variant.english.EnglishDraughtsMovePerformer;
 
 /**
  * A draughts game that follows the rules and conventions of International
@@ -64,7 +63,7 @@ public class InternationalDraughtsGame extends Game {
         boardPattern = new CheckeredBoardPattern(BoardPattern.WHITE_SQUARE,
                 BOARD_WIDTH, BOARD_HEIGHT);
         moveGenerator = new InternationalDraughtsMoveGenerator();
-        movePerformer = new EnglishDraughtsMovePerformer();
+        movePerformer = new InternationalDraughtsMovePerformer();
         // Light moves first.
         turnOwner = lightPieceOwner;
         moveHistory = new ArrayDeque<>();
