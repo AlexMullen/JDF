@@ -49,6 +49,12 @@ public class NegamaxDepthLimited implements MoveSearch {
             final Player opponent) {
         System.out.println("---------------------------------------------------"
                 + "---------------------------------------------------");
+        
+        
+//long startTime = System.nanoTime();
+        
+        
+        
         final Board board = game.getBoard();
         final List<Move> moves =
                 game.getMoveGenerator().findMoves(board, owner);
@@ -74,6 +80,9 @@ public class NegamaxDepthLimited implements MoveSearch {
                 bestMoves.add(currentMove);
             }
         }
+        
+//System.out.println(System.nanoTime() - startTime + "ns");
+        
 //        return bestMoves.get(0);
         return bestMoves.get(new Random().nextInt(bestMoves.size()));
     }

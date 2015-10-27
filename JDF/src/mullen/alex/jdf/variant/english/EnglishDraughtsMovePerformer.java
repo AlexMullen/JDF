@@ -27,6 +27,7 @@ public class EnglishDraughtsMovePerformer implements MovePerformer {
             undoOperations.add(
                     setPieceAt(board, currentJump.getJumped(), null));
         }
+        // BUG: Can result in getting crowned on own kings row in International.
         if (isKingsRow(board, move.getTo().getY())
                 && !pieceToMove.isCrowned()) {
             /*

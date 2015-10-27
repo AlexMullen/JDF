@@ -79,7 +79,7 @@ public class Move {
     }
     @Override
     public final String toString() {
-        final StringBuilder sb = new StringBuilder(64);
+        final StringBuilder sb = new StringBuilder(256);
         sb.append("Move [getFrom()=").append(getFrom())
                 .append(", getTo()=").append(getTo()).append(", getJumps()=");
         for (final Jump jump : getJumps()) {

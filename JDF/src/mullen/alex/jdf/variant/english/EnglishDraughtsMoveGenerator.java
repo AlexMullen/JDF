@@ -5,14 +5,16 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import mullen.alex.jdf.common.AbstractMoveGenerator;
 import mullen.alex.jdf.common.Board;
 import mullen.alex.jdf.common.BoardPosition;
 import mullen.alex.jdf.common.Jump;
 import mullen.alex.jdf.common.Move;
+import mullen.alex.jdf.common.MoveGenerator;
 import mullen.alex.jdf.common.Piece;
 import mullen.alex.jdf.common.Player;
 import mullen.alex.jdf.common.Piece.MoveDirection;
+
+import static mullen.alex.jdf.common.MoveGeneratorUtil.*;
 
 /**
  * A move generator implementation that takes into account the rules of
@@ -21,10 +23,9 @@ import mullen.alex.jdf.common.Piece.MoveDirection;
  * @author  Alex Mullen
  *
  */
-public class EnglishDraughtsMoveGenerator extends AbstractMoveGenerator {
+public class EnglishDraughtsMoveGenerator implements MoveGenerator {
     @Override
-    public final List<Move> findMoves(final Board board,
-            final Player player) {
+    public final List<Move> findMoves(final Board board, final Player player) {
         final Collection<Jump> foundJumps = new ArrayList<>();
         final List<Move> foundSimpleMoves = new ArrayList<>();
         /*
@@ -39,7 +40,7 @@ public class EnglishDraughtsMoveGenerator extends AbstractMoveGenerator {
                 if (foundPiece != null
                         && foundPiece.getOwner() == player) {
                     final BoardPosition piecePosition = new BoardPosition(x, y);
-                    getJumpsForPiece(
+                    findJumpsForPiece(
                             board, foundPiece, piecePosition, foundJumps);
                     if (foundJumps.isEmpty()) {
                         /*
@@ -47,18 +48,18 @@ public class EnglishDraughtsMoveGenerator extends AbstractMoveGenerator {
                          * as they cannot be taken if there are jumps available
                          * in English Draughts rules.
                          */
-                         getSimpleMovesForPiece(board, foundPiece,
+                         findSimpleMovesForPiece(board, foundPiece,
                                  piecePosition, foundSimpleMoves);
                     }
                 }
             }
         }
-        if (foundJumps.isEmpty()) {
-            return foundSimpleMoves;
-        } else {
-            // Explore the found jumps further.
-            return getJumpSequences(board, foundJumps);
-        }
+        /*
+         * Get and return jump sequences if there are any jumps otherwise return
+         * any simple moves found.
+         */
+        return foundJumps.isEmpty() ? foundSimpleMoves : findJumpSequences(
+                board, foundJumps);
     }
     @Override
     public final boolean hasAnyMoves(final Board board, final Player player) {
@@ -77,13 +78,13 @@ public class EnglishDraughtsMoveGenerator extends AbstractMoveGenerator {
                      * usually be more simple moves than jumps so this will most
                      * likely return first - thus checked first.
                      */
-                    getSimpleMovesForPiece(
+                    findSimpleMovesForPiece(
                             board, foundPiece, piecePosition, moves);
                     if (!moves.isEmpty()) {
                         return true;
                     }
                     // Check for any jumps.
-                    getJumpsForPiece(board, foundPiece, piecePosition, jumps);
+                    findJumpsForPiece(board, foundPiece, piecePosition, jumps);
                     if (!jumps.isEmpty()) {
                         return true;
                     }
@@ -101,21 +102,21 @@ public class EnglishDraughtsMoveGenerator extends AbstractMoveGenerator {
      * @param piecePosition  the position of the piece
      * @param jumps          the collection to store found jumps into
      */
-    private static void getJumpsForPiece(final Board board,
-            final Piece piece, final BoardPosition piecePosition,
-            final Collection<Jump> jumps) {
+    private static void findJumpsForPiece(final Board board, final Piece piece,
+            final BoardPosition piecePosition, final Collection<Jump> jumps) {
         if (piece.isCrowned()) {
             /*
              * The piece is crowned so can move in any direction.
              */
             addJumpIfNotNull(jumps,
-                    getJumpAboveLeft(board, piecePosition, piece.getOwner()));
+                    findJumpAboveLeft(board, piecePosition, piece.getOwner()));
             addJumpIfNotNull(jumps,
-                    getJumpAboveRight(board, piecePosition, piece.getOwner()));
+                    findJumpAboveRight(board, piecePosition, piece.getOwner()));
             addJumpIfNotNull(jumps,
-                    getJumpBottomLeft(board, piecePosition, piece.getOwner()));
+                    findJumpBottomLeft(board, piecePosition, piece.getOwner()));
             addJumpIfNotNull(jumps,
-                    getJumpBottomRight(board, piecePosition, piece.getOwner()));
+                    findJumpBottomRight(board, piecePosition,
+                            piece.getOwner()));
         } else {
             /*
              * The piece is not crowned so the direction needs to be determined.
@@ -123,18 +124,18 @@ public class EnglishDraughtsMoveGenerator extends AbstractMoveGenerator {
             if (piece.getMoveDirection() == MoveDirection.UP) {
                 // Only get upward jumps.
                 addJumpIfNotNull(jumps,
-                        getJumpAboveLeft(
+                        findJumpAboveLeft(
                                 board, piecePosition, piece.getOwner()));
                 addJumpIfNotNull(jumps,
-                        getJumpAboveRight(
+                        findJumpAboveRight(
                                 board, piecePosition, piece.getOwner()));
             } else if (piece.getMoveDirection() == MoveDirection.DOWN) {
                 // Only get downward jumps.
                 addJumpIfNotNull(jumps,
-                        getJumpBottomLeft(
+                        findJumpBottomLeft(
                                 board, piecePosition, piece.getOwner()));
                 addJumpIfNotNull(jumps,
-                        getJumpBottomRight(
+                        findJumpBottomRight(
                                 board, piecePosition, piece.getOwner()));
             } else {
                 throw new IllegalStateException("Unhandled move direction.");
@@ -149,35 +150,33 @@ public class EnglishDraughtsMoveGenerator extends AbstractMoveGenerator {
      * @param piecePosition  the position of the piece
      * @param moves          the collection to store found jumps into
      */
-    private static void getSimpleMovesForPiece(
-            final Board board,
-            final Piece piece,
-            final BoardPosition piecePosition,
+    private static void findSimpleMovesForPiece(final Board board,
+            final Piece piece, final BoardPosition piecePosition,
             final Collection<Move> moves) {
         if (piece.isCrowned()) {
             // The piece is crowned so can move in any direction.
             addMoveIfNotNull(moves,
-                    getMoveAboveLeft(board, piecePosition));
+                    findMoveAboveLeft(board, piecePosition));
             addMoveIfNotNull(moves,
-                    getMoveAboveRight(board, piecePosition));
+                    findMoveAboveRight(board, piecePosition));
             addMoveIfNotNull(moves,
-                    getMoveBottomLeft(board, piecePosition));
+                    findMoveBottomLeft(board, piecePosition));
             addMoveIfNotNull(moves,
-                    getMoveBottomRight(board, piecePosition));
+                    findMoveBottomRight(board, piecePosition));
         } else {
             // The piece is not crowned so the direction needs to be determined.
             if (piece.getMoveDirection() == MoveDirection.UP) {
                 // Only get upward moves.
                 addMoveIfNotNull(moves,
-                        getMoveAboveLeft(board, piecePosition));
+                        findMoveAboveLeft(board, piecePosition));
                 addMoveIfNotNull(moves,
-                        getMoveAboveRight(board, piecePosition));
+                        findMoveAboveRight(board, piecePosition));
             } else if (piece.getMoveDirection() == MoveDirection.DOWN) {
                 // Only get downward moves.
                 addMoveIfNotNull(moves,
-                        getMoveBottomLeft(board, piecePosition));
+                        findMoveBottomLeft(board, piecePosition));
                 addMoveIfNotNull(moves,
-                        getMoveBottomRight(board, piecePosition));
+                        findMoveBottomRight(board, piecePosition));
             } else {
                 throw new IllegalStateException("Unhandled move direction.");
             }
@@ -190,8 +189,7 @@ public class EnglishDraughtsMoveGenerator extends AbstractMoveGenerator {
      * @param jumps  the jumps
      * @return       a collection of {@link Move} instances for the given jumps
      */
-    private static List<Move> getJumpSequences(
-            final Board board,
+    private static List<Move> findJumpSequences(final Board board,
             final Collection<Jump> jumps) {
         final List<Move> jumpSequences = new ArrayList<>();
         for (final Jump singleJump : jumps) {
@@ -211,17 +209,14 @@ public class EnglishDraughtsMoveGenerator extends AbstractMoveGenerator {
      * @param piece      the piece context that would be performing the jumps
      * @param jump       the initial jump
      * @param path       the current jump sequence path
-     * @param sequences  the collection of found sequences
+     * @param sequences  the list of found sequences
      */
-    private static void exploreJump(
-            final Board board,
-            final Piece piece,
-            final Jump jump,
-            final List<Jump> path,
-            final Collection<Move> sequences) {
+    private static void exploreJump(final Board board, final Piece piece,
+            final Jump jump, final List<Jump> path,
+            final List<Move> sequences) {
         path.add(jump);
-        final Collection<Jump> furtherJumps = new ArrayList<>();
-        getJumpsForPiece(board, piece, jump.getTo(), furtherJumps);
+        final List<Jump> furtherJumps = new ArrayList<>();
+        findJumpsForPiece(board, piece, jump.getTo(), furtherJumps);
         /*
          * Need to remove jumps that have already been done. This will happen
          * with crown pieces as they can go back and forth.
@@ -229,6 +224,9 @@ public class EnglishDraughtsMoveGenerator extends AbstractMoveGenerator {
         removeAlreadyJumpedPositionMoves(furtherJumps, path);
         if (furtherJumps.isEmpty()) {
             sequences.add(new Move(path.get(0).getFrom(), jump.getTo(), path));
+//            possibly optimization to avoid memory allocation
+//        } else if (furtherJumps.size() == 1) {
+//            exploreJump(board, piece, furtherJumps.get(0), path, sequences);
         } else {
             for (final Jump furtherJump : furtherJumps) {
                 exploreJump(board, piece, furtherJump, new ArrayList<>(path),
@@ -244,7 +242,7 @@ public class EnglishDraughtsMoveGenerator extends AbstractMoveGenerator {
      * @param previousJumps  previous jumps
      */
     private static void removeAlreadyJumpedPositionMoves(
-            final Collection<Jump> jumps, final List<Jump> previousJumps) {
+            final List<Jump> jumps, final List<Jump> previousJumps) {
         final Iterator<Jump> jumpsIterator = jumps.iterator();
         while (jumpsIterator.hasNext()) {
             final BoardPosition jumpedPosition =
