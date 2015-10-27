@@ -51,7 +51,7 @@ public class NegamaxDepthLimited implements MoveSearch {
                 + "---------------------------------------------------");
         
         
-//long startTime = System.nanoTime();
+long startTime = System.nanoTime();
         
         
         
@@ -81,7 +81,7 @@ public class NegamaxDepthLimited implements MoveSearch {
             }
         }
         
-//System.out.println(System.nanoTime() - startTime + "ns");
+System.out.println((System.nanoTime() - startTime) / 1000000 + "ms");
         
 //        return bestMoves.get(0);
         return bestMoves.get(new Random().nextInt(bestMoves.size()));

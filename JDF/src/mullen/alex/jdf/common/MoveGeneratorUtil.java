@@ -22,20 +22,17 @@ public final class MoveGeneratorUtil {
      *
      * @param board     the board to use
      * @param position  the position
-     * @return          the move or <code>null</code> if there is no move
+     * @param outMoves  the collection any found move will be added to
      */
-    public static Move findMoveAboveLeft(final Board board,
-            final BoardPosition position) {
-        Move foundMove = null;
+    public static void findMoveAboveLeft(final Board board,
+            final BoardPosition position, final Collection<Move> outMoves) {
         final int spaceX = position.getX() - 1;
         final int spaceY = position.getY() - 1;
         // First check if the top-left position exists and is vacant.
         if (board.isPositionWithinBounds(spaceX, spaceY)
                 && !board.isPieceAt(spaceX, spaceY)) {
-            foundMove = new Move(position, new BoardPosition(spaceX, spaceY));
+            outMoves.add(new Move(position, new BoardPosition(spaceX, spaceY)));
         }
-        // No move.
-        return foundMove;
     }
     /**
      * Gets any potential single move to the above right space of the specified
@@ -43,21 +40,18 @@ public final class MoveGeneratorUtil {
      *
      * @param board     the board to use
      * @param position  the position
-     * @return          the move or <code>null</code> if there is no move
+     * @param outMoves  the collection any found move will be added to
      */
-    public static Move findMoveAboveRight(
+    public static void findMoveAboveRight(
             final Board board,
-            final BoardPosition position) {
-        Move foundMove = null;
+            final BoardPosition position, final Collection<Move> outMoves) {
         final int spaceX = position.getX() + 1;
         final int spaceY = position.getY() - 1;
         // First check if the top-left position exists and is vacant.
         if (board.isPositionWithinBounds(spaceX, spaceY)
                 && !board.isPieceAt(spaceX, spaceY)) {
-            foundMove = new Move(position, new BoardPosition(spaceX, spaceY));
+            outMoves.add(new Move(position, new BoardPosition(spaceX, spaceY)));
         }
-        // No move.
-        return foundMove;
     }
     /**
      * Gets any potential single move to the bottom left space of the specified
@@ -65,21 +59,18 @@ public final class MoveGeneratorUtil {
      *
      * @param board     the board to use
      * @param position  the position
-     * @return          the move or <code>null</code> if there is no move
+     * @param outMoves  the collection any found move will be added to
      */
-    public static Move findMoveBottomLeft(
+    public static void findMoveBottomLeft(
             final Board board,
-            final BoardPosition position) {
-        Move foundMove = null;
+            final BoardPosition position, final Collection<Move> outMoves) {
         final int spaceX = position.getX() - 1;
         final int spaceY = position.getY() + 1;
         // First check if the top-left position exists and is vacant.
         if (board.isPositionWithinBounds(spaceX, spaceY)
                 && !board.isPieceAt(spaceX, spaceY)) {
-            foundMove = new Move(position, new BoardPosition(spaceX, spaceY));
+            outMoves.add(new Move(position, new BoardPosition(spaceX, spaceY)));
         }
-        // No move.
-        return foundMove;
     }
     /**
      * Gets any potential single move to the bottom right space of the specified
@@ -87,21 +78,18 @@ public final class MoveGeneratorUtil {
      *
      * @param board     the board to use
      * @param position  the position
-     * @return          the move or <code>null</code> if there is no move
+     * @param outMoves  the collection any found move will be added to
      */
-    public static Move findMoveBottomRight(
+    public static void findMoveBottomRight(
             final Board board,
-            final BoardPosition position) {
-        Move foundMove = null;
+            final BoardPosition position, final Collection<Move> outMoves) {
         final int spaceX = position.getX() + 1;
         final int spaceY = position.getY() + 1;
         // First check if the top-left position exists and is vacant.
         if (board.isPositionWithinBounds(spaceX, spaceY)
                 && !board.isPieceAt(spaceX, spaceY)) {
-            foundMove = new Move(position, new BoardPosition(spaceX, spaceY));
+            outMoves.add(new Move(position, new BoardPosition(spaceX, spaceY)));
         }
-        // No move.
-        return foundMove;
     }
     /**
      * Gets any potential single jump move over any enemy piece to the above
@@ -110,14 +98,12 @@ public final class MoveGeneratorUtil {
      * @param board         the board to use
      * @param fromPosition  the position
      * @param owner         the owner of the piece any found jump is for
-     * @return              the jump move or <code>null</code> if there is no
-     *                      jump
+     * @param outJumps      the collection any found jump will be added to
      */
-    public static Jump findJumpAboveLeft(
+    public static void findJumpAboveLeft(
             final Board board,
             final BoardPosition fromPosition,
-            final Player owner) {
-        Jump foundJump = null;
+            final Player owner, final Collection<Jump> outJumps) {
         final int landPosX = fromPosition.getX() - 2;
         final int landPosY = fromPosition.getY() - 2;
         /*
@@ -134,13 +120,12 @@ public final class MoveGeneratorUtil {
             if (pieceToJumpOver != null
                     && owner != pieceToJumpOver.getOwner()) {
                 // This is a jump move.
-                foundJump = new Jump(
+                outJumps.add(new Jump(
                         fromPosition,
                         new BoardPosition(landPosX, landPosY),
-                        new BoardPosition(jumpedPosX, jumpedPosY));
+                        new BoardPosition(jumpedPosX, jumpedPosY)));
             }
         }
-        return foundJump;
     }
     /**
      * Gets any potential single jump move over any enemy piece to the above
@@ -149,14 +134,12 @@ public final class MoveGeneratorUtil {
      * @param board         the board to use
      * @param fromPosition  the position
      * @param owner         the owner of the piece any found jump is for
-     * @return              the jump move or <code>null</code> if there is no
-     *                      jump
+     * @param outJumps      the collection any found jump will be added to
      */
-    public static Jump findJumpAboveRight(
+    public static void findJumpAboveRight(
             final Board board,
             final BoardPosition fromPosition,
-            final Player owner) {
-        Jump foundJump = null;
+            final Player owner, final Collection<Jump> outJumps) {
         final int landPosX = fromPosition.getX() + 2;
         final int landPosY = fromPosition.getY() - 2;
         /*
@@ -173,13 +156,12 @@ public final class MoveGeneratorUtil {
             if (pieceToJumpOver != null
                     && owner != pieceToJumpOver.getOwner()) {
                 // This is a jump move.
-                foundJump = new Jump(
+                outJumps.add(new Jump(
                         fromPosition,
                         new BoardPosition(landPosX, landPosY),
-                        new BoardPosition(jumpedPosX, jumpedPosY));
+                        new BoardPosition(jumpedPosX, jumpedPosY)));
             }
         }
-        return foundJump;
     }
     /**
      * Gets any potential single jump move over any enemy piece to the bottom
@@ -188,14 +170,12 @@ public final class MoveGeneratorUtil {
      * @param board         the board to use
      * @param fromPosition  the position
      * @param owner         the owner of the piece any found jump is for
-     * @return              the jump move or <code>null</code> if there is no
-     *                      jump
+     * @param outJumps      the collection any found jump will be added to
      */
-    public static Jump findJumpBottomLeft(
+    public static void findJumpBottomLeft(
             final Board board,
             final BoardPosition fromPosition,
-            final Player owner) {
-        Jump foundJump = null;
+            final Player owner, final Collection<Jump> outJumps) {
         final int landPosX = fromPosition.getX() - 2;
         final int landPosY = fromPosition.getY() + 2;
         /*
@@ -212,13 +192,12 @@ public final class MoveGeneratorUtil {
             if (pieceToJumpOver != null
                     && owner != pieceToJumpOver.getOwner()) {
                 // This is a jump move.
-                foundJump = new Jump(
+                outJumps.add(new Jump(
                         fromPosition,
                         new BoardPosition(landPosX, landPosY),
-                        new BoardPosition(jumpedPosX, jumpedPosY));
+                        new BoardPosition(jumpedPosX, jumpedPosY)));
             }
         }
-        return foundJump;
     }
     /**
      * Gets any potential single jump move over any enemy piece to the bottom
@@ -227,14 +206,12 @@ public final class MoveGeneratorUtil {
      * @param board         the board to use
      * @param fromPosition  the position
      * @param owner         the owner of the piece any found jump is for
-     * @return              the jump move or <code>null</code> if there is no
-     *                      jump
+     * @param outJumps      the collection any found jump will be added to
      */
-    public static Jump findJumpBottomRight(
+    public static void findJumpBottomRight(
             final Board board,
             final BoardPosition fromPosition,
-            final Player owner) {
-        Jump foundJump = null;
+            final Player owner, final Collection<Jump> outJumps) {
         final int landPosX = fromPosition.getX() + 2;
         final int landPosY = fromPosition.getY() + 2;
         /*
@@ -251,13 +228,12 @@ public final class MoveGeneratorUtil {
             if (pieceToJumpOver != null
                     && owner != pieceToJumpOver.getOwner()) {
                 // This is a jump move.
-                foundJump = new Jump(
+                outJumps.add(new Jump(
                         fromPosition,
                         new BoardPosition(landPosX, landPosY),
-                        new BoardPosition(jumpedPosX, jumpedPosY));
+                        new BoardPosition(jumpedPosX, jumpedPosY)));
             }
         }
-        return foundJump;
     }
     /**
      * Gets every move position that is diagonally above-left until either a
@@ -353,27 +329,23 @@ public final class MoveGeneratorUtil {
             final Collection<Jump> outJumps) {
         int squareX = fromPosition.getX();
         int squareY = fromPosition.getY();
-        BoardPosition foundPiecePosition = null;
         // Loop until a piece is found or the edge of board is reached.
         while (board.isPositionWithinBounds(--squareX, --squareY)) {
             final Piece foundPiece = board.getPieceAt(squareX, squareY);
             if (foundPiece != null) {
-                if (foundPiece.getOwner() == owner) {
-                    return;
-                } else {
-                    foundPiecePosition = new BoardPosition(squareX, squareY);
-                    break;
+                if (foundPiece.getOwner() != owner) {
+                    final BoardPosition foundPiecePosition =
+                            new BoardPosition(squareX, squareY);
+                    // Create a jump for each empty space beyond it
+                    while (board.isPositionWithinBounds(--squareX, --squareY)
+                            && !board.isPieceAt(squareX, squareY)) {
+                        outJumps.add(new Jump(
+                                fromPosition,
+                                new BoardPosition(squareX, squareY),
+                                foundPiecePosition));
+                    }
                 }
-            }
-        }
-        if (foundPiecePosition != null) {
-            // Create a jump for each empty space beyond it
-            while (board.isPositionWithinBounds(--squareX, --squareY)
-                    && !board.isPieceAt(squareX, squareY)) {
-                outJumps.add(new Jump(
-                        fromPosition,
-                        new BoardPosition(squareX, squareY),
-                        foundPiecePosition));
+                return;
             }
         }
     }
@@ -395,27 +367,23 @@ public final class MoveGeneratorUtil {
             final Collection<Jump> outJumps) {
         int squareX = fromPosition.getX();
         int squareY = fromPosition.getY();
-        BoardPosition foundPiecePosition = null;
         // Loop until a piece is found or the edge of board is reached.
         while (board.isPositionWithinBounds(++squareX, --squareY)) {
             final Piece foundPiece = board.getPieceAt(squareX, squareY);
             if (foundPiece != null) {
-                if (foundPiece.getOwner() == owner) {
-                    return;
-                } else {
-                    foundPiecePosition = new BoardPosition(squareX, squareY);
-                    break;
+                if (foundPiece.getOwner() != owner) {
+                    final BoardPosition foundPiecePosition =
+                            new BoardPosition(squareX, squareY);
+                    // Create a jump for each empty space beyond it
+                    while (board.isPositionWithinBounds(++squareX, --squareY)
+                            && !board.isPieceAt(squareX, squareY)) {
+                        outJumps.add(new Jump(
+                                fromPosition,
+                                new BoardPosition(squareX, squareY),
+                                foundPiecePosition));
+                    }
                 }
-            }
-        }
-        if (foundPiecePosition != null) {
-            // Create a jump for each empty space beyond it
-            while (board.isPositionWithinBounds(++squareX, --squareY)
-                    && !board.isPieceAt(squareX, squareY)) {
-                outJumps.add(new Jump(
-                        fromPosition,
-                        new BoardPosition(squareX, squareY),
-                        foundPiecePosition));
+                return;
             }
         }
     }
@@ -437,27 +405,23 @@ public final class MoveGeneratorUtil {
             final Collection<Jump> outJumps) {
         int squareX = fromPosition.getX();
         int squareY = fromPosition.getY();
-        BoardPosition foundPiecePosition = null;
         // Loop until a piece is found or the edge of board is reached.
         while (board.isPositionWithinBounds(--squareX, ++squareY)) {
             final Piece foundPiece = board.getPieceAt(squareX, squareY);
             if (foundPiece != null) {
-                if (foundPiece.getOwner() == owner) {
-                    return;
-                } else {
-                    foundPiecePosition = new BoardPosition(squareX, squareY);
-                    break;
+                if (foundPiece.getOwner() != owner) {
+                    final BoardPosition foundPiecePosition =
+                            new BoardPosition(squareX, squareY);
+                    // Create a jump for each empty space beyond it
+                    while (board.isPositionWithinBounds(--squareX, ++squareY)
+                            && !board.isPieceAt(squareX, squareY)) {
+                        outJumps.add(new Jump(
+                                fromPosition,
+                                new BoardPosition(squareX, squareY),
+                                foundPiecePosition));
+                    }
                 }
-            }
-        }
-        if (foundPiecePosition != null) {
-            // Create a jump for each empty space beyond it
-            while (board.isPositionWithinBounds(--squareX, ++squareY)
-                    && !board.isPieceAt(squareX, squareY)) {
-                outJumps.add(new Jump(
-                        fromPosition,
-                        new BoardPosition(squareX, squareY),
-                        foundPiecePosition));
+                return;
             }
         }
     }
@@ -479,58 +443,24 @@ public final class MoveGeneratorUtil {
             final Collection<Jump> outJumps) {
         int squareX = fromPosition.getX();
         int squareY = fromPosition.getY();
-        BoardPosition foundPiecePosition = null;
         // Loop until a piece is found or the edge of board is reached.
         while (board.isPositionWithinBounds(++squareX, ++squareY)) {
             final Piece foundPiece = board.getPieceAt(squareX, squareY);
             if (foundPiece != null) {
-                if (foundPiece.getOwner() == owner) {
-                    return;
-                } else {
-                    foundPiecePosition = new BoardPosition(squareX, squareY);
-                    break;
+                if (foundPiece.getOwner() != owner) {
+                    final BoardPosition foundPiecePosition =
+                            new BoardPosition(squareX, squareY);
+                    // Create a jump for each empty space beyond it
+                    while (board.isPositionWithinBounds(++squareX, ++squareY)
+                            && !board.isPieceAt(squareX, squareY)) {
+                        outJumps.add(new Jump(
+                                fromPosition,
+                                new BoardPosition(squareX, squareY),
+                                foundPiecePosition));
+                    }
                 }
+                return;
             }
-        }
-        if (foundPiecePosition != null) {
-            // Create a jump for each empty space beyond it
-            while (board.isPositionWithinBounds(++squareX, ++squareY)
-                    && !board.isPieceAt(squareX, squareY)) {
-                outJumps.add(new Jump(
-                        fromPosition,
-                        new BoardPosition(squareX, squareY),
-                        foundPiecePosition));
-            }
-        }
-    }
-    /**
-     * A static utility method for adding a move to a list if the move is not
-     * <code>null</code>. This allows much of the <code>null</code> checking
-     * boilerplate to be removed when getting the moves for a piece.
-     *
-     * @param moves         the collection to add the move to if is is not
-     *                      <code>null</code>
-     * @param possibleMove  the move to potentially add to <code>moves</code>
-     */
-    public static void addMoveIfNotNull(final Collection<Move> moves,
-            final Move possibleMove) {
-        if (possibleMove != null) {
-            moves.add(possibleMove);
-        }
-    }
-    /**
-     * A static utility method for adding a jump to a list if the jump is not
-     * <code>null</code>. This allows much of the <code>null</code> checking
-     * boilerplate to be removed when getting the jumps for a piece.
-     *
-     * @param jumps         the collection to add the jump to if is is not
-     *                      <code>null</code>
-     * @param possibleJump  the jump to potentially add to <code>jumps</code>
-     */
-    public static void addJumpIfNotNull(final Collection<Jump> jumps,
-            final Jump possibleJump) {
-        if (possibleJump != null) {
-            jumps.add(possibleJump);
         }
     }
 }

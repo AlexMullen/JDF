@@ -33,15 +33,13 @@ public class EnglishDraughtsMoveGenerator implements MoveGenerator {
          * to the specified player.
          */
         for (int x = 0; x < board.getWidth(); x++) {
-            // Check every 2 squares as pointless checking unused ones.
-//           for (int y = (x % 2 == 0 ? 1 : 0); y < board.getHeight(); y += 2) {
             for (int y = 0; y < board.getHeight(); y++) {
                 final Piece foundPiece = board.getPieceAt(x, y);
                 if (foundPiece != null
                         && foundPiece.getOwner() == player) {
                     final BoardPosition piecePosition = new BoardPosition(x, y);
-                    findJumpsForPiece(
-                            board, foundPiece, piecePosition, foundJumps);
+                    findJumpsForPiece(board, foundPiece, piecePosition,
+                            foundJumps);
                     if (foundJumps.isEmpty()) {
                         /*
                          * Only bother for simple moves if jumps were not found
@@ -66,12 +64,10 @@ public class EnglishDraughtsMoveGenerator implements MoveGenerator {
         final List<Jump> jumps = new ArrayList<>(4);
         final List<Move> moves = new ArrayList<>(4);
         for (int x = 0; x < board.getWidth(); x++) {
-            // Check every 2 squares as pointless checking unused ones.
-//            for (int y = (x % 2 == 0 ? 1 : 0); y < board.getHeight(); y+=2) {
             for (int y = 0; y < board.getHeight(); y++) {
                 final Piece foundPiece = board.getPieceAt(x, y);
                 if (foundPiece != null
-                        && foundPiece.getOwner().equals(player)) {
+                        && foundPiece.getOwner() == player) {
                     final BoardPosition piecePosition = new BoardPosition(x, y);
                     /*
                      * Check for any simple moves. Statistically, there will
@@ -108,35 +104,26 @@ public class EnglishDraughtsMoveGenerator implements MoveGenerator {
             /*
              * The piece is crowned so can move in any direction.
              */
-            addJumpIfNotNull(jumps,
-                    findJumpAboveLeft(board, piecePosition, piece.getOwner()));
-            addJumpIfNotNull(jumps,
-                    findJumpAboveRight(board, piecePosition, piece.getOwner()));
-            addJumpIfNotNull(jumps,
-                    findJumpBottomLeft(board, piecePosition, piece.getOwner()));
-            addJumpIfNotNull(jumps,
-                    findJumpBottomRight(board, piecePosition,
-                            piece.getOwner()));
+            findJumpAboveLeft(board, piecePosition, piece.getOwner(), jumps);
+            findJumpAboveRight(board, piecePosition, piece.getOwner(), jumps);
+            findJumpBottomLeft(board, piecePosition, piece.getOwner(), jumps);
+            findJumpBottomRight(board, piecePosition, piece.getOwner(), jumps);
         } else {
             /*
              * The piece is not crowned so the direction needs to be determined.
              */
             if (piece.getMoveDirection() == MoveDirection.UP) {
                 // Only get upward jumps.
-                addJumpIfNotNull(jumps,
-                        findJumpAboveLeft(
-                                board, piecePosition, piece.getOwner()));
-                addJumpIfNotNull(jumps,
-                        findJumpAboveRight(
-                                board, piecePosition, piece.getOwner()));
+                findJumpAboveLeft(board, piecePosition, piece.getOwner(),
+                        jumps);
+                findJumpAboveRight(board, piecePosition, piece.getOwner(),
+                        jumps);
             } else if (piece.getMoveDirection() == MoveDirection.DOWN) {
                 // Only get downward jumps.
-                addJumpIfNotNull(jumps,
-                        findJumpBottomLeft(
-                                board, piecePosition, piece.getOwner()));
-                addJumpIfNotNull(jumps,
-                        findJumpBottomRight(
-                                board, piecePosition, piece.getOwner()));
+                findJumpBottomLeft(board, piecePosition, piece.getOwner(),
+                        jumps);
+                findJumpBottomRight(board, piecePosition, piece.getOwner(),
+                        jumps);
             } else {
                 throw new IllegalStateException("Unhandled move direction.");
             }
@@ -155,28 +142,20 @@ public class EnglishDraughtsMoveGenerator implements MoveGenerator {
             final Collection<Move> moves) {
         if (piece.isCrowned()) {
             // The piece is crowned so can move in any direction.
-            addMoveIfNotNull(moves,
-                    findMoveAboveLeft(board, piecePosition));
-            addMoveIfNotNull(moves,
-                    findMoveAboveRight(board, piecePosition));
-            addMoveIfNotNull(moves,
-                    findMoveBottomLeft(board, piecePosition));
-            addMoveIfNotNull(moves,
-                    findMoveBottomRight(board, piecePosition));
+            findMoveAboveLeft(board, piecePosition, moves);
+            findMoveAboveRight(board, piecePosition, moves);
+            findMoveBottomLeft(board, piecePosition, moves);
+            findMoveBottomRight(board, piecePosition, moves);
         } else {
             // The piece is not crowned so the direction needs to be determined.
             if (piece.getMoveDirection() == MoveDirection.UP) {
                 // Only get upward moves.
-                addMoveIfNotNull(moves,
-                        findMoveAboveLeft(board, piecePosition));
-                addMoveIfNotNull(moves,
-                        findMoveAboveRight(board, piecePosition));
+                findMoveAboveLeft(board, piecePosition, moves);
+                findMoveAboveRight(board, piecePosition, moves);
             } else if (piece.getMoveDirection() == MoveDirection.DOWN) {
                 // Only get downward moves.
-                addMoveIfNotNull(moves,
-                        findMoveBottomLeft(board, piecePosition));
-                addMoveIfNotNull(moves,
-                        findMoveBottomRight(board, piecePosition));
+                findMoveBottomLeft(board, piecePosition, moves);
+                findMoveBottomRight(board, piecePosition, moves);
             } else {
                 throw new IllegalStateException("Unhandled move direction.");
             }

@@ -67,7 +67,7 @@ public class InternationalDraughtsMoveGenerator implements MoveGenerator {
             for (int y = 0; y < board.getHeight(); y++) {
                 final Piece foundPiece = board.getPieceAt(x, y);
                 if (foundPiece != null
-                        && foundPiece.getOwner().equals(player)) {
+                        && foundPiece.getOwner() == player) {
                     final BoardPosition piecePosition = new BoardPosition(x, y);
                     /*
                      * Check for any simple moves. Statistically, there will
@@ -104,7 +104,6 @@ public class InternationalDraughtsMoveGenerator implements MoveGenerator {
             /*
              * The piece is crowned so can 'fly' along a diagonal.
              */
-            // getFlyingJumpsAboveLeft(board, piecePosition, piece.getOwner())
             findFlyingJumpsAboveLeft(board, piecePosition, piece.getOwner(),
                     jumps);
             findFlyingJumpsAboveRight(board, piecePosition, piece.getOwner(),
@@ -118,15 +117,10 @@ public class InternationalDraughtsMoveGenerator implements MoveGenerator {
              * Get jumps for all directions as men can jump in any direction in
              * International Draughts.
              */
-            addJumpIfNotNull(jumps,
-                    findJumpAboveLeft(board, piecePosition, piece.getOwner()));
-            addJumpIfNotNull(jumps,
-                    findJumpAboveRight(board, piecePosition, piece.getOwner()));
-            addJumpIfNotNull(jumps,
-                    findJumpBottomLeft(board, piecePosition, piece.getOwner()));
-            addJumpIfNotNull(jumps,
-                    findJumpBottomRight(board, piecePosition,
-                            piece.getOwner()));
+            findJumpAboveLeft(board, piecePosition, piece.getOwner(), jumps);
+            findJumpAboveRight(board, piecePosition, piece.getOwner(), jumps);
+            findJumpBottomLeft(board, piecePosition, piece.getOwner(), jumps);
+            findJumpBottomRight(board, piecePosition, piece.getOwner(), jumps);
         }
     }
     /**
@@ -152,16 +146,12 @@ public class InternationalDraughtsMoveGenerator implements MoveGenerator {
             // The piece is not crowned so the direction needs to be determined.
             if (piece.getMoveDirection() == MoveDirection.UP) {
                 // Only get upward moves.
-                addMoveIfNotNull(moves,
-                        findMoveAboveLeft(board, piecePosition));
-                addMoveIfNotNull(moves,
-                        findMoveAboveRight(board, piecePosition));
+                findMoveAboveLeft(board, piecePosition, moves);
+                findMoveAboveRight(board, piecePosition, moves);
             } else if (piece.getMoveDirection() == MoveDirection.DOWN) {
                 // Only get downward moves.
-                addMoveIfNotNull(moves,
-                        findMoveBottomLeft(board, piecePosition));
-                addMoveIfNotNull(moves,
-                        findMoveBottomRight(board, piecePosition));
+                findMoveBottomLeft(board, piecePosition, moves);
+                findMoveBottomRight(board, piecePosition, moves);
             } else {
                 throw new IllegalStateException("Unhandled move direction.");
             }
