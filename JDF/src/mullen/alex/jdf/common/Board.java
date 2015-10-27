@@ -109,7 +109,7 @@ public class Board {
      * @see #getPieceAt(int, int)
      */
     public final Piece getPieceAt(final BoardPosition position) {
-        return getPieceAt(position.getX(), position.getY());
+        return getPieceAt(position.x, position.y);
     }
     /**
      * Sets the piece at the specified position.
@@ -140,7 +140,7 @@ public class Board {
      */
     public final void setPieceAt(final BoardPosition position,
             final Piece newPiece) {
-        pieces[position.getX()][position.getY()] = newPiece;
+        pieces[position.x][position.y] = newPiece;
     }
     /**
      * Sets the piece at the specified position and returns the previous piece
@@ -181,7 +181,7 @@ public class Board {
      */
     public final Piece setPieceAndGetAt(final BoardPosition position,
             final Piece newPiece) {
-        return setPieceAndGetAt(position.getX(), position.getY(), newPiece);
+        return setPieceAndGetAt(position.x, position.y, newPiece);
     }
     /**
      * Gets whether there is a piece at the specified position.

@@ -26,8 +26,8 @@ public final class MoveGeneratorUtil {
      */
     public static void findMoveAboveLeft(final Board board,
             final BoardPosition position, final Collection<Move> outMoves) {
-        final int spaceX = position.getX() - 1;
-        final int spaceY = position.getY() - 1;
+        final int spaceX = position.x - 1;
+        final int spaceY = position.y - 1;
         // First check if the top-left position exists and is vacant.
         if (board.isPositionWithinBounds(spaceX, spaceY)
                 && !board.isPieceAt(spaceX, spaceY)) {
@@ -45,8 +45,8 @@ public final class MoveGeneratorUtil {
     public static void findMoveAboveRight(
             final Board board,
             final BoardPosition position, final Collection<Move> outMoves) {
-        final int spaceX = position.getX() + 1;
-        final int spaceY = position.getY() - 1;
+        final int spaceX = position.x + 1;
+        final int spaceY = position.y - 1;
         // First check if the top-left position exists and is vacant.
         if (board.isPositionWithinBounds(spaceX, spaceY)
                 && !board.isPieceAt(spaceX, spaceY)) {
@@ -64,8 +64,8 @@ public final class MoveGeneratorUtil {
     public static void findMoveBottomLeft(
             final Board board,
             final BoardPosition position, final Collection<Move> outMoves) {
-        final int spaceX = position.getX() - 1;
-        final int spaceY = position.getY() + 1;
+        final int spaceX = position.x - 1;
+        final int spaceY = position.y + 1;
         // First check if the top-left position exists and is vacant.
         if (board.isPositionWithinBounds(spaceX, spaceY)
                 && !board.isPieceAt(spaceX, spaceY)) {
@@ -83,8 +83,8 @@ public final class MoveGeneratorUtil {
     public static void findMoveBottomRight(
             final Board board,
             final BoardPosition position, final Collection<Move> outMoves) {
-        final int spaceX = position.getX() + 1;
-        final int spaceY = position.getY() + 1;
+        final int spaceX = position.x + 1;
+        final int spaceY = position.y + 1;
         // First check if the top-left position exists and is vacant.
         if (board.isPositionWithinBounds(spaceX, spaceY)
                 && !board.isPieceAt(spaceX, spaceY)) {
@@ -104,16 +104,16 @@ public final class MoveGeneratorUtil {
             final Board board,
             final BoardPosition fromPosition,
             final Player owner, final Collection<Jump> outJumps) {
-        final int landPosX = fromPosition.getX() - 2;
-        final int landPosY = fromPosition.getY() - 2;
+        final int landPosX = fromPosition.x - 2;
+        final int landPosY = fromPosition.y - 2;
         /*
          * Make sure the landing position exists and is vacant. If this exists
          * then the jumped position must also exist.
          */
         if (board.isPositionWithinBounds(landPosX, landPosY)
                 && !board.isPieceAt(landPosX, landPosY)) {
-            final int jumpedPosX = fromPosition.getX() - 1;
-            final int jumpedPosY = fromPosition.getY() - 1;
+            final int jumpedPosX = fromPosition.x - 1;
+            final int jumpedPosY = fromPosition.y - 1;
             final Piece pieceToJumpOver =
                     board.getPieceAt(jumpedPosX, jumpedPosY);
             // Check if the piece that can be jumped (if any) is an enemy piece.
@@ -140,16 +140,16 @@ public final class MoveGeneratorUtil {
             final Board board,
             final BoardPosition fromPosition,
             final Player owner, final Collection<Jump> outJumps) {
-        final int landPosX = fromPosition.getX() + 2;
-        final int landPosY = fromPosition.getY() - 2;
+        final int landPosX = fromPosition.x + 2;
+        final int landPosY = fromPosition.y - 2;
         /*
          * Make sure the landing position exists and is vacant. If this exists
          * then the jumped position must also exist.
          */
         if (board.isPositionWithinBounds(landPosX, landPosY)
                 && !board.isPieceAt(landPosX, landPosY)) {
-            final int jumpedPosX = fromPosition.getX() + 1;
-            final int jumpedPosY = fromPosition.getY() - 1;
+            final int jumpedPosX = fromPosition.x + 1;
+            final int jumpedPosY = fromPosition.y - 1;
             final Piece pieceToJumpOver =
                     board.getPieceAt(jumpedPosX, jumpedPosY);
             // Check if the piece that can be jumped (if any) is an enemy piece.
@@ -176,16 +176,16 @@ public final class MoveGeneratorUtil {
             final Board board,
             final BoardPosition fromPosition,
             final Player owner, final Collection<Jump> outJumps) {
-        final int landPosX = fromPosition.getX() - 2;
-        final int landPosY = fromPosition.getY() + 2;
+        final int landPosX = fromPosition.x - 2;
+        final int landPosY = fromPosition.y + 2;
         /*
          * Make sure the landing position exists and is vacant. If this exists
          * then the jumped position must also exist.
          */
         if (board.isPositionWithinBounds(landPosX, landPosY)
                 && !board.isPieceAt(landPosX, landPosY)) {
-            final int jumpedPosX = fromPosition.getX() - 1;
-            final int jumpedPosY = fromPosition.getY() + 1;
+            final int jumpedPosX = fromPosition.x - 1;
+            final int jumpedPosY = fromPosition.y + 1;
             final Piece pieceToJumpOver =
                     board.getPieceAt(jumpedPosX, jumpedPosY);
             // Check if the piece that can be jumped (if any) is an enemy piece.
@@ -212,16 +212,16 @@ public final class MoveGeneratorUtil {
             final Board board,
             final BoardPosition fromPosition,
             final Player owner, final Collection<Jump> outJumps) {
-        final int landPosX = fromPosition.getX() + 2;
-        final int landPosY = fromPosition.getY() + 2;
+        final int landPosX = fromPosition.x + 2;
+        final int landPosY = fromPosition.y + 2;
         /*
          * Make sure the landing position exists and is vacant. If this exists
          * then the jumped position must also exist.
          */
         if (board.isPositionWithinBounds(landPosX, landPosY)
                 && !board.isPieceAt(landPosX, landPosY)) {
-            final int jumpedPosX = fromPosition.getX() + 1;
-            final int jumpedPosY = fromPosition.getY() + 1;
+            final int jumpedPosX = fromPosition.x + 1;
+            final int jumpedPosY = fromPosition.y + 1;
             final Piece pieceToJumpOver =
                     board.getPieceAt(jumpedPosX, jumpedPosY);
             // Check if the piece that can be jumped (if any) is an enemy piece.
@@ -246,8 +246,8 @@ public final class MoveGeneratorUtil {
     public static void findFlyingMovesAboveLeft(final Board board,
             final BoardPosition fromPosition,
             final Collection<Move> outMoves) {
-        int landPosX = fromPosition.getX();
-        int landPosY = fromPosition.getY();
+        int landPosX = fromPosition.x;
+        int landPosY = fromPosition.y;
         while (board.isPositionWithinBounds(--landPosX, --landPosY)
                 && !board.isPieceAt(landPosX, landPosY)) {
             outMoves.add(new Move(fromPosition, new BoardPosition(
@@ -265,8 +265,8 @@ public final class MoveGeneratorUtil {
     public static void findFlyingMovesAboveRight(final Board board,
             final BoardPosition fromPosition,
             final Collection<Move> outMoves) {
-        int landPosX = fromPosition.getX();
-        int landPosY = fromPosition.getY();
+        int landPosX = fromPosition.x;
+        int landPosY = fromPosition.y;
         while (board.isPositionWithinBounds(++landPosX, --landPosY)
                 && !board.isPieceAt(landPosX, landPosY)) {
             outMoves.add(new Move(fromPosition, new BoardPosition(
@@ -284,8 +284,8 @@ public final class MoveGeneratorUtil {
     public static void findFlyingMovesBottomLeft(final Board board,
             final BoardPosition fromPosition,
             final Collection<Move> outMoves) {
-        int landPosX = fromPosition.getX();
-        int landPosY = fromPosition.getY();
+        int landPosX = fromPosition.x;
+        int landPosY = fromPosition.y;
         while (board.isPositionWithinBounds(--landPosX, ++landPosY)
                 && !board.isPieceAt(landPosX, landPosY)) {
             outMoves.add(new Move(fromPosition, new BoardPosition(
@@ -303,8 +303,8 @@ public final class MoveGeneratorUtil {
     public static void findFlyingMovesBottomRight(final Board board,
             final BoardPosition fromPosition,
             final Collection<Move> outMoves) {
-        int landPosX = fromPosition.getX();
-        int landPosY = fromPosition.getY();
+        int landPosX = fromPosition.x;
+        int landPosY = fromPosition.y;
         while (board.isPositionWithinBounds(++landPosX, ++landPosY)
                 && !board.isPieceAt(landPosX, landPosY)) {
             outMoves.add(new Move(fromPosition, new BoardPosition(
@@ -327,8 +327,8 @@ public final class MoveGeneratorUtil {
     public static void findFlyingJumpsAboveLeft(final Board board,
             final BoardPosition fromPosition, final Player owner,
             final Collection<Jump> outJumps) {
-        int squareX = fromPosition.getX();
-        int squareY = fromPosition.getY();
+        int squareX = fromPosition.x;
+        int squareY = fromPosition.y;
         // Loop until a piece is found or the edge of board is reached.
         while (board.isPositionWithinBounds(--squareX, --squareY)) {
             final Piece foundPiece = board.getPieceAt(squareX, squareY);
@@ -365,8 +365,8 @@ public final class MoveGeneratorUtil {
     public static void findFlyingJumpsAboveRight(final Board board,
             final BoardPosition fromPosition, final Player owner,
             final Collection<Jump> outJumps) {
-        int squareX = fromPosition.getX();
-        int squareY = fromPosition.getY();
+        int squareX = fromPosition.x;
+        int squareY = fromPosition.y;
         // Loop until a piece is found or the edge of board is reached.
         while (board.isPositionWithinBounds(++squareX, --squareY)) {
             final Piece foundPiece = board.getPieceAt(squareX, squareY);
@@ -403,8 +403,8 @@ public final class MoveGeneratorUtil {
     public static void findFlyingJumpsBottomLeft(final Board board,
             final BoardPosition fromPosition, final Player owner,
             final Collection<Jump> outJumps) {
-        int squareX = fromPosition.getX();
-        int squareY = fromPosition.getY();
+        int squareX = fromPosition.x;
+        int squareY = fromPosition.y;
         // Loop until a piece is found or the edge of board is reached.
         while (board.isPositionWithinBounds(--squareX, ++squareY)) {
             final Piece foundPiece = board.getPieceAt(squareX, squareY);
@@ -441,8 +441,8 @@ public final class MoveGeneratorUtil {
     public static void findFlyingJumpsBottomRight(final Board board,
             final BoardPosition fromPosition, final Player owner,
             final Collection<Jump> outJumps) {
-        int squareX = fromPosition.getX();
-        int squareY = fromPosition.getY();
+        int squareX = fromPosition.x;
+        int squareY = fromPosition.y;
         // Loop until a piece is found or the edge of board is reached.
         while (board.isPositionWithinBounds(++squareX, ++squareY)) {
             final Piece foundPiece = board.getPieceAt(squareX, squareY);

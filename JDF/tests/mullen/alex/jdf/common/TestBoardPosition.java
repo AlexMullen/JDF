@@ -3,7 +3,6 @@ package mullen.alex.jdf.common;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import mullen.alex.jdf.common.BoardPosition;
 
 import org.junit.Test;
 
@@ -22,8 +21,8 @@ public class TestBoardPosition {
         final int x = 5;
         final int y = 3;
         final BoardPosition boardPosition = new BoardPosition(x, y);
-        assertEquals(x, boardPosition.getX());
-        assertEquals(y, boardPosition.getY());
+        assertEquals(x, boardPosition.x);
+        assertEquals(y, boardPosition.y);
     }
     /**
      * Tests the {@link #equals(Object)} method with identity and state.

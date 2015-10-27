@@ -9,9 +9,9 @@ package mullen.alex.jdf.common;
  */
 public class BoardPosition {
     /** Holds the X position (left-to-right). */
-    private final int x;
+    public final int x;
     /** Holds the Y position (top-to-bottom). */
-    private final int y;
+    public final int y;
     /**
      * Creates a new instance that represents the specified position.
      *
@@ -24,32 +24,12 @@ public class BoardPosition {
         y = posY;
     }
     /**
-     * Gets the X value of this position.
-     * <p>
-     * The X values go from left-to-right.
-     *
-     * @return  the X position
-     */
-    public final int getX() {
-        return x;
-    }
-    /**
-     * Gets the Y value of this position.
-     * <p>
-     * The Y values go from top-to-bottom.
-     *
-     * @return  the Y position
-     */
-    public final int getY() {
-        return y;
-    }
-    /**
      * Indicates whether one board position is equivalent to another.
      * <p>
      * Two positions are considered equivalent if:
      * <p>
-     * <code>this.</code>{@link #getX()} == <code>obj.</code>{@link #getX()}
-     * && <code>this.</code>{@link #getY()} == <code>obj.</code>{@link #getY()}
+     * <code>this.</code>{@link #x} == <code>obj.</code>{@link #x}
+     * && <code>this.</code>{@link #y} == <code>obj.</code>{@link #y}
      */
     @Override
     public final boolean equals(final Object obj) {

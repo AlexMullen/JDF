@@ -26,7 +26,7 @@ import static mullen.alex.jdf.common.MoveGeneratorUtil.*;
 public class InternationalDraughtsMoveGenerator implements MoveGenerator {
     @Override
     public final List<Move> findMoves(final Board board, final Player player) {
-        final Collection<Jump> foundJumps = new ArrayList<>();
+        final List<Jump> foundJumps = new ArrayList<>();
         final List<Move> foundSimpleMoves = new ArrayList<>();
         /*
          * Go through every square and get the moves of any pieces that belong
@@ -165,14 +165,16 @@ public class InternationalDraughtsMoveGenerator implements MoveGenerator {
      * @return       a collection of {@link Move} instances for the given jumps
      */
     private static List<Move> findJumpSequences(final Board board,
-            final Collection<Jump> jumps) {
+            final List<Jump> jumps) {
         final List<Move> jumpSequences = new ArrayList<>();
-        for (final Jump singleJump : jumps) {
+        final int jumpsSize = jumps.size();
+        for (int i = 0; i < jumpsSize; i++) {
+            final Jump singleJump = jumps.get(i);
             exploreJump(board,
-                        board.getPieceAt(singleJump.getFrom()),
-                        singleJump,
-                        new ArrayList<>(),
-                        jumpSequences);
+                    board.getPieceAt(singleJump.getFrom()),
+                    singleJump,
+                    new ArrayList<>(),
+                    jumpSequences);
         }
         return jumpSequences;
     }
@@ -203,9 +205,11 @@ public class InternationalDraughtsMoveGenerator implements MoveGenerator {
 //      } else if (furtherJumps.size() == 1) {
 //          exploreJump(board, piece, furtherJumps.get(0), path, sequences);
         } else {
-            for (final Jump furtherJump : furtherJumps) {
+            final int furtherJumpsSize = furtherJumps.size();
+            for (int i = 0; i < furtherJumpsSize; i++) {
+                final Jump furtherJump = furtherJumps.get(i);
                 exploreJump(board, piece, furtherJump, new ArrayList<>(path),
-                            sequences);
+                        sequences);
             }
         }
     }
@@ -223,8 +227,9 @@ public class InternationalDraughtsMoveGenerator implements MoveGenerator {
             final BoardPosition jumpedPosition =
                     jumpsIterator.next().getJumped();
             // Check jumps already found.
-            for (final Jump jumpAlreadyMade : previousJumps) {
-                if (jumpedPosition.equals(jumpAlreadyMade.getJumped())) {
+            final int previousJumpsSize = previousJumps.size();
+            for (int i = 0; i < previousJumpsSize; i++) {
+                if (jumpedPosition.equals(previousJumps.get(i).getJumped())) {
                     jumpsIterator.remove();
                     // No point in searching the remaining if any.
                     break;

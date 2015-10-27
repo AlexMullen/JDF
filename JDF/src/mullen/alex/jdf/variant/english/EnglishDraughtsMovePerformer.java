@@ -5,7 +5,6 @@ import java.util.List;
 
 import mullen.alex.jdf.common.Board;
 import mullen.alex.jdf.common.BoardPosition;
-import mullen.alex.jdf.common.Jump;
 import mullen.alex.jdf.common.Move;
 import mullen.alex.jdf.common.MovePerformer;
 import mullen.alex.jdf.common.Piece;
@@ -23,12 +22,13 @@ public class EnglishDraughtsMovePerformer implements MovePerformer {
         final Piece pieceToMove = board.getPieceAt(move.getFrom());
         undoOperations.add(setPieceAt(board, move.getFrom(), null));
         undoOperations.add(setPieceAt(board, move.getTo(), pieceToMove));
-        for (final Jump currentJump : move.getJumps()) {
-            undoOperations.add(
-                    setPieceAt(board, currentJump.getJumped(), null));
+        final int jumpsSize = move.getJumps().size();
+        for (int i = 0; i < jumpsSize; i++) {
+            undoOperations.add(setPieceAt(board,
+                    move.getJumps().get(i).getJumped(), null));
         }
         // BUG: Can result in getting crowned on own kings row in International.
-        if (isKingsRow(board, move.getTo().getY())
+        if (isKingsRow(board, move.getTo().y)
                 && !pieceToMove.isCrowned()) {
             /*
              * Create a copy of the uncrowned piece, crown it and then place it

@@ -2,8 +2,6 @@ package mullen.alex.jdf.common;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import mullen.alex.jdf.common.BoardPosition;
-import mullen.alex.jdf.common.Move;
 
 import org.junit.Test;
 
