@@ -20,10 +20,10 @@ public class TestMove {
         final BoardPosition fromPos = new BoardPosition(1, 3);
         final BoardPosition toPos = new BoardPosition(1, 5);
         final Move move = new Move(fromPos, toPos);
-        assertNotNull(move.getFrom());
-        assertNotNull(move.getTo());
-        assertEquals(fromPos, move.getFrom());
-        assertEquals(toPos, move.getTo());
+        assertNotNull(move.from);
+        assertNotNull(move.to);
+        assertEquals(fromPos, move.from);
+        assertEquals(toPos, move.to);
     }
     /**
      * Tests {@link Move#getJumps()} never returns <code>null</code> when there
@@ -36,10 +36,10 @@ public class TestMove {
         final BoardPosition toPos = new BoardPosition(1, 5);
         // Test implicit null jump list constructor.
         Move move = new Move(fromPos, toPos);
-        assertNotNull(move.getJumps());
+        assertNotNull(move.jumps);
         // Test explicit null jump list constructor.
         move = new Move(fromPos, toPos, null);
-        assertNotNull(move.getJumps());
+        assertNotNull(move.jumps);
     }
     /**
      * Tests {@link Move#toString()} does not throw an NPE when attempting to

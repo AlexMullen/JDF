@@ -19,16 +19,16 @@ public class EnglishDraughtsMovePerformer implements MovePerformer {
     @Override
     public final PerformedMove perform(final Move move, final Board board) {
         final List<UndoOperation> undoOperations = new ArrayList<>(8);
-        final Piece pieceToMove = board.getPieceAt(move.getFrom());
-        undoOperations.add(setPieceAt(board, move.getFrom(), null));
-        undoOperations.add(setPieceAt(board, move.getTo(), pieceToMove));
-        final int jumpsSize = move.getJumps().size();
+        final Piece pieceToMove = board.getPieceAt(move.from);
+        undoOperations.add(setPieceAt(board, move.from, null));
+        undoOperations.add(setPieceAt(board, move.to, pieceToMove));
+        final int jumpsSize = move.jumps.size();
         for (int i = 0; i < jumpsSize; i++) {
             undoOperations.add(setPieceAt(board,
-                    move.getJumps().get(i).getJumped(), null));
+                    move.jumps.get(i).jumped, null));
         }
         // BUG: Can result in getting crowned on own kings row in International.
-        if (isKingsRow(board, move.getTo().y)
+        if (isKingsRow(board, move.to.y)
                 && !pieceToMove.isCrowned()) {
             /*
              * Create a copy of the uncrowned piece, crown it and then place it
@@ -37,7 +37,7 @@ public class EnglishDraughtsMovePerformer implements MovePerformer {
             final Piece pieceToMoveCopy = new Piece(pieceToMove);
             pieceToMoveCopy.crown();
             undoOperations.add(
-                    setPieceAt(board, move.getTo(), pieceToMoveCopy));
+                    setPieceAt(board, move.to, pieceToMoveCopy));
         }
         return new PerformedMove() {
             @Override
@@ -58,7 +58,7 @@ public class EnglishDraughtsMovePerformer implements MovePerformer {
      *               <code>false</code> if it is not
      */
     public static final boolean isKingsRow(final Board board, final int y) {
-        return y == 0 || y == (board.getHeight() - 1);
+        return y == 0 || y == (board.height - 1);
     }
     /**
      * Sets the piece at the specified position on the given board and returns

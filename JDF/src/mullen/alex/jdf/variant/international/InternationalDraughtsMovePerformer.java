@@ -20,16 +20,16 @@ public class InternationalDraughtsMovePerformer implements MovePerformer {
     @Override
     public final PerformedMove perform(final Move move, final Board board) {
         final List<UndoOperation> undoOperations = new ArrayList<>(8);
-        final Piece pieceToMove = board.getPieceAt(move.getFrom());
-        undoOperations.add(setPieceAt(board, move.getFrom(), null));
-        undoOperations.add(setPieceAt(board, move.getTo(), pieceToMove));
-        final int jumpsSize = move.getJumps().size();
+        final Piece pieceToMove = board.getPieceAt(move.from);
+        undoOperations.add(setPieceAt(board, move.from, null));
+        undoOperations.add(setPieceAt(board, move.to, pieceToMove));
+        final int jumpsSize = move.jumps.size();
         for (int i = 0; i < jumpsSize; i++) {
             undoOperations.add(setPieceAt(board,
-                    move.getJumps().get(i).getJumped(), null));
+                    move.jumps.get(i).jumped, null));
         }
         if (!pieceToMove.isCrowned() && isPieceInOpposingKingsRow(board,
-                move.getTo().y, pieceToMove.getMoveDirection())) {
+                move.to.y, pieceToMove.getMoveDirection())) {
             /*
              * Create a copy of the uncrowned piece, crown it and then place it
              * into the board whilst saving the original for undoing.
@@ -37,7 +37,7 @@ public class InternationalDraughtsMovePerformer implements MovePerformer {
             final Piece pieceToMoveCopy = new Piece(pieceToMove);
             pieceToMoveCopy.crown();
             undoOperations.add(
-                    setPieceAt(board, move.getTo(), pieceToMoveCopy));
+                    setPieceAt(board, move.to, pieceToMoveCopy));
         }
         return new PerformedMove() {
             @Override
@@ -65,7 +65,7 @@ public class InternationalDraughtsMovePerformer implements MovePerformer {
         if (pieceMoveDir == MoveDirection.UP) {
             return y == 0;
         } else if (pieceMoveDir == MoveDirection.DOWN) {
-            return y == (board.getHeight() - 1);
+            return y == (board.height - 1);
         } else {
             throw new IllegalStateException("Passed in a unhandled direction");
         }

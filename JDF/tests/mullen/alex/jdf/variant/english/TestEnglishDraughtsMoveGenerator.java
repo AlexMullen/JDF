@@ -51,10 +51,10 @@ public class TestEnglishDraughtsMoveGenerator {
         assertEquals(1, foundMoves.size());
         final Move foundMove = foundMoves.get(0);
         // There should be no jumps.
-        assertEquals(0, foundMove.getJumps().size());
+        assertEquals(0, foundMove.jumps.size());
         // Assert the expected move positions.
-        assertEquals(new BoardPosition(3, 7), foundMove.getFrom());
-        assertEquals(new BoardPosition(2, 6), foundMove.getTo());
+        assertEquals(new BoardPosition(3, 7), foundMove.from);
+        assertEquals(new BoardPosition(2, 6), foundMove.to);
     }
     /**
      * A test for making sure a simple move can be properly found.
@@ -69,15 +69,15 @@ public class TestEnglishDraughtsMoveGenerator {
         assertEquals(2, foundMoves.size());
         final Move firstfoundMove = foundMoves.get(0);
         // There should be no jumps.
-        assertEquals(0, firstfoundMove.getJumps().size());
-        assertEquals(new BoardPosition(3, 1), firstfoundMove.getFrom());
-        assertEquals(new BoardPosition(2, 0), firstfoundMove.getTo());
+        assertEquals(0, firstfoundMove.jumps.size());
+        assertEquals(new BoardPosition(3, 1), firstfoundMove.from);
+        assertEquals(new BoardPosition(2, 0), firstfoundMove.to);
         // Check the second move is what we expect.
         final Move secondfoundMove = foundMoves.get(1);
         // There should be no jumps.
-        assertEquals(0, secondfoundMove.getJumps().size());
-        assertEquals(new BoardPosition(3, 1), secondfoundMove.getFrom());
-        assertEquals(new BoardPosition(4, 0), secondfoundMove.getTo());
+        assertEquals(0, secondfoundMove.jumps.size());
+        assertEquals(new BoardPosition(3, 1), secondfoundMove.from);
+        assertEquals(new BoardPosition(4, 0), secondfoundMove.to);
     }
     /**
      * A test for making sure no moves are returned when there isn't any.
@@ -112,16 +112,13 @@ public class TestEnglishDraughtsMoveGenerator {
         final BoardPosition expectedFromPosition = new BoardPosition(3, 7);
         final BoardPosition expectedtoPosition = new BoardPosition(1, 5);
         final BoardPosition expectedJumpPosition = new BoardPosition(2, 6);
-        assertEquals(expectedFromPosition, jumpMove.getFrom());
-        assertEquals(expectedtoPosition, jumpMove.getTo());
+        assertEquals(expectedFromPosition, jumpMove.from);
+        assertEquals(expectedtoPosition, jumpMove.to);
         // There should be one jump in the sequence.
-        assertEquals(1, jumpMove.getJumps().size());
-        assertEquals(expectedFromPosition,
-                jumpMove.getJumps().get(0).getFrom());
-        assertEquals(expectedtoPosition,
-                jumpMove.getJumps().get(0).getTo());
-        assertEquals(expectedJumpPosition,
-                jumpMove.getJumps().get(0).getJumped());
+        assertEquals(1, jumpMove.jumps.size());
+        assertEquals(expectedFromPosition, jumpMove.jumps.get(0).from);
+        assertEquals(expectedtoPosition, jumpMove.jumps.get(0).to);
+        assertEquals(expectedJumpPosition, jumpMove.jumps.get(0).jumped);
     }
     /**
      * A test for making sure a double jump in the same diagonal direction works
@@ -139,17 +136,17 @@ public class TestEnglishDraughtsMoveGenerator {
         assertEquals(1, foundMoves.size());
         final Move foundJumpMove = foundMoves.get(0);
         // There should be two jumps in the sequence.
-        assertEquals(2, foundJumpMove.getJumps().size());
+        assertEquals(2, foundJumpMove.jumps.size());
         // Check the first jump in the sequence is what we expect.
-        final Jump firstJump = foundJumpMove.getJumps().get(0);
-        assertEquals(new BoardPosition(0, 7), firstJump.getFrom());
-        assertEquals(new BoardPosition(2, 5), firstJump.getTo());
-        assertEquals(new BoardPosition(1, 6), firstJump.getJumped());
+        final Jump firstJump = foundJumpMove.jumps.get(0);
+        assertEquals(new BoardPosition(0, 7), firstJump.from);
+        assertEquals(new BoardPosition(2, 5), firstJump.to);
+        assertEquals(new BoardPosition(1, 6), firstJump.jumped);
         // Check the second jump in the sequence is what we expect.
-        final Jump secondJump = foundJumpMove.getJumps().get(1);
-        assertEquals(new BoardPosition(2, 5), secondJump.getFrom());
-        assertEquals(new BoardPosition(4, 3), secondJump.getTo());
-        assertEquals(new BoardPosition(3, 4), secondJump.getJumped());
+        final Jump secondJump = foundJumpMove.jumps.get(1);
+        assertEquals(new BoardPosition(2, 5), secondJump.from);
+        assertEquals(new BoardPosition(4, 3), secondJump.to);
+        assertEquals(new BoardPosition(3, 4), secondJump.jumped);
     }
     /**
      * A test for making sure a triple jump in the same diagonal direction works
@@ -168,22 +165,22 @@ public class TestEnglishDraughtsMoveGenerator {
         assertEquals(1, foundMoves.size());
         final Move foundJumpMove = foundMoves.get(0);
         // There should be two jumps in the sequence.
-        assertEquals(3, foundJumpMove.getJumps().size());
+        assertEquals(3, foundJumpMove.jumps.size());
         // Check the first jump in the sequence is what we expect.
-        final Jump firstJump = foundJumpMove.getJumps().get(0);
-        assertEquals(new BoardPosition(0, 7), firstJump.getFrom());
-        assertEquals(new BoardPosition(2, 5), firstJump.getTo());
-        assertEquals(new BoardPosition(1, 6), firstJump.getJumped());
+        final Jump firstJump = foundJumpMove.jumps.get(0);
+        assertEquals(new BoardPosition(0, 7), firstJump.from);
+        assertEquals(new BoardPosition(2, 5), firstJump.to);
+        assertEquals(new BoardPosition(1, 6), firstJump.jumped);
         // Check the second jump in the sequence is what we expect.
-        final Jump secondJump = foundJumpMove.getJumps().get(1);
-        assertEquals(new BoardPosition(2, 5), secondJump.getFrom());
-        assertEquals(new BoardPosition(4, 3), secondJump.getTo());
-        assertEquals(new BoardPosition(3, 4), secondJump.getJumped());
+        final Jump secondJump = foundJumpMove.jumps.get(1);
+        assertEquals(new BoardPosition(2, 5), secondJump.from);
+        assertEquals(new BoardPosition(4, 3), secondJump.to);
+        assertEquals(new BoardPosition(3, 4), secondJump.jumped);
         // Check the third jump in the sequence is what we expect.
-        final Jump thirdJump = foundJumpMove.getJumps().get(2);
-        assertEquals(new BoardPosition(4, 3), thirdJump.getFrom());
-        assertEquals(new BoardPosition(6, 1), thirdJump.getTo());
-        assertEquals(new BoardPosition(5, 2), thirdJump.getJumped());
+        final Jump thirdJump = foundJumpMove.jumps.get(2);
+        assertEquals(new BoardPosition(4, 3), thirdJump.from);
+        assertEquals(new BoardPosition(6, 1), thirdJump.to);
+        assertEquals(new BoardPosition(5, 2), thirdJump.jumped);
     }
     /**
      * An empty mock <code>Player</code> instance used as a place holder

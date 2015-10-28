@@ -11,9 +11,9 @@ import java.util.Arrays;
  */
 public class Board {
     /** Holds the width of the board. */
-    private final int width;
+    public final int width;
     /** Holds the height of the board. */
-    private final int height;
+    public final int height;
     /** The piece positions represented by a two-dimensional array. */
     private final Piece[][] pieces;
     /**
@@ -56,26 +56,6 @@ public class Board {
                 }
             }
         }
-    }
-    /**
-     * Gets the width of the board.
-     * <p>
-     * The width of the board goes from left-to-right in 2D space.
-     *
-     * @return  the width
-     */
-    public final int getWidth() {
-        return width;
-    }
-    /**
-     * Gets the height of the board.
-     * <p>
-     * The height of the board goes from top-to-bottom in 2D space.
-     *
-     * @return  the height
-     */
-    public final int getHeight() {
-        return height;
     }
     /**
      * Gets the piece at the specified position.

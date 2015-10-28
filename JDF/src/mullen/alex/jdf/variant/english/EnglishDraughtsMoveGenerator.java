@@ -32,8 +32,8 @@ public class EnglishDraughtsMoveGenerator implements MoveGenerator {
          * Go through every square and get the moves of any pieces that belong
          * to the specified player.
          */
-        for (int x = 0; x < board.getWidth(); x++) {
-            for (int y = 0; y < board.getHeight(); y++) {
+        for (int x = 0; x < board.width; x++) {
+            for (int y = 0; y < board.height; y++) {
                 final Piece foundPiece = board.getPieceAt(x, y);
                 if (foundPiece != null
                         && foundPiece.getOwner() == player) {
@@ -63,8 +63,8 @@ public class EnglishDraughtsMoveGenerator implements MoveGenerator {
     public final boolean hasAnyMoves(final Board board, final Player player) {
         final List<Jump> jumps = new ArrayList<>(4);
         final List<Move> moves = new ArrayList<>(4);
-        for (int x = 0; x < board.getWidth(); x++) {
-            for (int y = 0; y < board.getHeight(); y++) {
+        for (int x = 0; x < board.width; x++) {
+            for (int y = 0; y < board.height; y++) {
                 final Piece foundPiece = board.getPieceAt(x, y);
                 if (foundPiece != null
                         && foundPiece.getOwner() == player) {
@@ -175,7 +175,7 @@ public class EnglishDraughtsMoveGenerator implements MoveGenerator {
         for (int i = 0; i < jumpsSize; i++) {
             final Jump singleJump = jumps.get(i);
             exploreJump(board,
-                    board.getPieceAt(singleJump.getFrom()),
+                    board.getPieceAt(singleJump.from),
                     singleJump,
                     new ArrayList<Jump>(),
                     jumpSequences);
@@ -197,14 +197,14 @@ public class EnglishDraughtsMoveGenerator implements MoveGenerator {
             final List<Move> sequences) {
         path.add(jump);
         final List<Jump> furtherJumps = new ArrayList<>();
-        findJumpsForPiece(board, piece, jump.getTo(), furtherJumps);
+        findJumpsForPiece(board, piece, jump.to, furtherJumps);
         /*
          * Need to remove jumps that have already been done. This will happen
          * with crown pieces as they can go back and forth.
          */
         removeAlreadyJumpedPositionMoves(furtherJumps, path);
         if (furtherJumps.isEmpty()) {
-            sequences.add(new Move(path.get(0).getFrom(), jump.getTo(), path));
+            sequences.add(new Move(path.get(0).from, jump.to, path));
 //            possibly optimization to avoid memory allocation
 //        } else if (furtherJumps.size() == 1) {
 //            exploreJump(board, piece, furtherJumps.get(0), path, sequences);
@@ -229,11 +229,11 @@ public class EnglishDraughtsMoveGenerator implements MoveGenerator {
         final Iterator<Jump> jumpsIterator = jumps.iterator();
         while (jumpsIterator.hasNext()) {
             final BoardPosition jumpedPosition =
-                    jumpsIterator.next().getJumped();
+                    jumpsIterator.next().jumped;
             // Check jumps already found.
             final int previousJumpsSize = previousJumps.size();
             for (int i = 0; i < previousJumpsSize; i++) {
-                if (jumpedPosition.equals(previousJumps.get(i).getJumped())) {
+                if (jumpedPosition.equals(previousJumps.get(i).jumped)) {
                     jumpsIterator.remove();
                     // No point in searching the remaining if any.
                     break;

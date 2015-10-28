@@ -26,8 +26,8 @@ public class TestBoard {
         final int width = 8;
         final int height = 8;
         final Board board = new Board(width, height);
-        assertEquals(width, board.getWidth());
-        assertEquals(height, board.getHeight());
+        assertEquals(width, board.width);
+        assertEquals(height, board.height);
     }
     /**
      * Tests the copy constructor to make sure it produces a copy that is
@@ -90,20 +90,20 @@ public class TestBoard {
         int width = 1;
         int height = 8;
         Board board = new Board(width, height);
-        assertEquals(width, board.getWidth());
-        assertEquals(height, board.getHeight());
+        assertEquals(width, board.width);
+        assertEquals(height, board.height);
         // Test lower height.
         width = 8;
         height = 1;
         board = new Board(width, height);
-        assertEquals(width, board.getWidth());
-        assertEquals(height, board.getHeight());
+        assertEquals(width, board.width);
+        assertEquals(height, board.height);
         // Test lower width and height.
         width = 1;
         height = 1;
         board = new Board(width, height);
-        assertEquals(width, board.getWidth());
-        assertEquals(height, board.getHeight());
+        assertEquals(width, board.width);
+        assertEquals(height, board.height);
     }
     /**
      * Tests the constructor with the lowest disallowed width a board can be to
@@ -115,8 +115,8 @@ public class TestBoard {
         final int width = 0;
         final int height = 8;
         final Board board = new Board(width, height);
-        assertEquals(width, board.getWidth());
-        assertEquals(height, board.getHeight());
+        assertEquals(width, board.width);
+        assertEquals(height, board.height);
     }
     /**
      * Tests the constructor with the lowest disallowed height a board can be to
@@ -128,8 +128,8 @@ public class TestBoard {
         final int width = 8;
         final int height = 0;
         final Board board = new Board(width, height);
-        assertEquals(width, board.getWidth());
-        assertEquals(height, board.getHeight());
+        assertEquals(width, board.width);
+        assertEquals(height, board.height);
     }
     /**
      * Tests the constructor with the lowest disallowed width and height a board
@@ -141,34 +141,34 @@ public class TestBoard {
         final int width = 0;
         final int height = 0;
         final Board board = new Board(width, height);
-        assertEquals(width, board.getWidth());
-        assertEquals(height, board.getHeight());
+        assertEquals(width, board.width);
+        assertEquals(height, board.height);
     }
     /**
-     * Tests {@link Board#getWidth()} returns the same value passed into the
+     * Tests {@link Board#width} returns the same value passed into the
      * constructor. An unusual width value will be used to make sure the most
      * common value is not being hard-coded.
      */
     @SuppressWarnings("static-method")
     @Test
-    public final void testGetWidth() {
+    public final void testWidth() {
         final int width = 24;
         final int height = 8;
         final Board board = new Board(width, height);
-        assertEquals(width, board.getWidth());
+        assertEquals(width, board.width);
     }
     /**
-     * Tests {@link Board#getHeight()} returns the same value passed into the
+     * Tests {@link Board#height} returns the same value passed into the
      * constructor. An unusual height value will be used to make sure the most
      * common value is not being hard-coded.
      */
     @SuppressWarnings("static-method")
     @Test
-    public final void testGetHeight() {
+    public final void testHeight() {
         final int width = 8;
         final int height = 645;
         final Board board = new Board(width, height);
-        assertEquals(height, board.getHeight());
+        assertEquals(height, board.height);
     }
     /**
      * Tests {@link Board#getPieceAt(int, int)} returns expected values.
@@ -522,8 +522,8 @@ public class TestBoard {
         final int height = 8;
         final Board board = new Board(width, height);
         // Check all valid positions.
-        for (int x = 0; x < board.getWidth(); x++) {
-            for (int y = 0; y < board.getHeight(); y++) {
+        for (int x = 0; x < board.width; x++) {
+            for (int y = 0; y < board.height; y++) {
                 assertTrue(board.isPositionWithinBounds(x, y));
             }
         }

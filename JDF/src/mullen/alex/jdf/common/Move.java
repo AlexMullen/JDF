@@ -12,11 +12,11 @@ import java.util.List;
  */
 public class Move {
     /** Holds the original position before the move. */
-    private final BoardPosition from;
+    public final BoardPosition from;
     /** Holds the destination position for the move. */
-    private final BoardPosition to;
+    public final BoardPosition to;
     /** Holds the list of jumps for this move if any. */
-    private final List<Jump> jumps;
+    public final List<Jump> jumps;
     /**
      * Creates a new instance using the specified source and destination
      * position.
@@ -50,39 +50,12 @@ public class Move {
         jumps = (jumpedPositions == null ?
                 Collections.<Jump>emptyList() : jumpedPositions);
     }
-    /**
-     * Gets the source position before the move.
-     *
-     * @return  the source position
-     */
-    public final BoardPosition getFrom() {
-        return from;
-    }
-    /**
-     * Gets the destination position after the move completes.
-     *
-     * @return  the destination position.
-     */
-    public final BoardPosition getTo() {
-        return to;
-    }
-    /**
-     * Gets the jumps for this move.
-     * <p>
-     * If there are no jumps, this method is guaranteed to return an empty list
-     * rather than <code>null</code>.
-     *
-     * @return  the list of jumps in sequence order
-     */
-    public final List<Jump> getJumps() {
-        return jumps;
-    }
     @Override
     public final String toString() {
         final StringBuilder sb = new StringBuilder(256);
-        sb.append("Move [getFrom()=").append(getFrom())
-                .append(", getTo()=").append(getTo()).append(", getJumps()=");
-        for (final Jump jump : getJumps()) {
+        sb.append("Move [from=").append(from)
+                .append(", to=").append(to).append(", jumps=");
+        for (final Jump jump : jumps) {
             sb.append("\n    ").append(jump);
         }
         return sb.append("]").toString();

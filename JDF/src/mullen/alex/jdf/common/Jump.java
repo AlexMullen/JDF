@@ -8,11 +8,11 @@ package mullen.alex.jdf.common;
  */
 public class Jump {
     /** Holds the original position before the jump. */
-    private final BoardPosition from;
+    public final BoardPosition from;
     /** Holds the destination position for the jump. */
-    private final BoardPosition to;
+    public final BoardPosition to;
     /** Holds the position that was jumped over. */
-    private final BoardPosition jumped;
+    public final BoardPosition jumped;
     /**
      * Creates a new instance using the specified source, destination
      * and jumped position.
@@ -30,33 +30,8 @@ public class Jump {
         to = toPosition;
         jumped = jumpedPosition;
     }
-    /**
-     * Gets the source position before the move.
-     *
-     * @return  the source position
-     */
-    public final BoardPosition getFrom() {
-        return from;
-    }
-    /**
-     * Gets the destination position after the move completes.
-     *
-     * @return  the destination position.
-     */
-    public final BoardPosition getTo() {
-        return to;
-    }
-    /**
-     * Gets the position that was jumped.
-     *
-     * @return  the jumped position
-     */
-    public final BoardPosition getJumped() {
-        return jumped;
-    }
     @Override
     public final String toString() {
-        return "Jump [getFrom()=" + getFrom() + ", getTo()=" + getTo()
-                + ", getJumped()=" + getJumped() + "]";
+        return "Jump [from=" + from + ", to=" + to + ", jumped=" + jumped + "]";
     }
 }
