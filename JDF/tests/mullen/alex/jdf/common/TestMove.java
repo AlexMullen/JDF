@@ -26,7 +26,7 @@ public class TestMove {
         assertEquals(toPos, move.to);
     }
     /**
-     * Tests {@link Move#getJumps()} never returns <code>null</code> when there
+     * Tests {@link Move#jumps} never returns <code>null</code> when there
      * is no jumps for the move.
      */
     @SuppressWarnings("static-method")
@@ -43,7 +43,7 @@ public class TestMove {
     }
     /**
      * Tests {@link Move#toString()} does not throw an NPE when attempting to
-     * print out a <code>null</code> {@link Move#getJumps()} reference.
+     * print out a <code>null</code> {@link Move#jumps} reference.
      */
     @SuppressWarnings("static-method")
     @Test

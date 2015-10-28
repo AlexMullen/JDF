@@ -48,8 +48,13 @@ public class GameBuilderFactory {
      *                 <code>false</code> otherwise if another builder was
      *                 already registered that shares the same name
      */
-    public final boolean registerBuilder(
-            final GameBuilder builder) {
-        return gameBuilderMap.putIfAbsent(builder.getName(), builder) == null;
+    public final boolean registerBuilder(final GameBuilder builder) {
+        final GameBuilder existing = gameBuilderMap.get(builder.getName());
+        if (existing == null) {
+            gameBuilderMap.put(builder.getName(), builder);
+            return true;
+        } else {
+            return false;
+        }
     }
 }
