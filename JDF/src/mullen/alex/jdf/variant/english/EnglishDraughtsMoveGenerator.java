@@ -37,7 +37,8 @@ public class EnglishDraughtsMoveGenerator implements MoveGenerator {
                 final Piece foundPiece = board.getPieceAt(x, y);
                 if (foundPiece != null
                         && foundPiece.getOwner() == player) {
-                    final BoardPosition piecePosition = new BoardPosition(x, y);
+                    final BoardPosition piecePosition =
+                            board.getBoardPositionFor(x, y);
                     findJumpsForPiece(board, foundPiece, piecePosition,
                             foundJumps);
                     if (foundJumps.isEmpty()) {
@@ -68,7 +69,8 @@ public class EnglishDraughtsMoveGenerator implements MoveGenerator {
                 final Piece foundPiece = board.getPieceAt(x, y);
                 if (foundPiece != null
                         && foundPiece.getOwner() == player) {
-                    final BoardPosition piecePosition = new BoardPosition(x, y);
+                    final BoardPosition piecePosition =
+                            board.getBoardPositionFor(x, y);
                     /*
                      * Check for any simple moves. Statistically, there will
                      * usually be more simple moves than jumps so this will most

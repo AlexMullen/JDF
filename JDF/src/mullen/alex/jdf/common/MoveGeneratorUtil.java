@@ -31,7 +31,8 @@ public final class MoveGeneratorUtil {
         // First check if the top-left position exists and is vacant.
         if (board.isPositionWithinBounds(spaceX, spaceY)
                 && !board.isPieceAt(spaceX, spaceY)) {
-            outMoves.add(new Move(position, new BoardPosition(spaceX, spaceY)));
+            outMoves.add(new Move(position,
+                    board.getBoardPositionFor(spaceX, spaceY)));
         }
     }
     /**
@@ -50,7 +51,8 @@ public final class MoveGeneratorUtil {
         // First check if the top-left position exists and is vacant.
         if (board.isPositionWithinBounds(spaceX, spaceY)
                 && !board.isPieceAt(spaceX, spaceY)) {
-            outMoves.add(new Move(position, new BoardPosition(spaceX, spaceY)));
+            outMoves.add(new Move(position,
+                    board.getBoardPositionFor(spaceX, spaceY)));
         }
     }
     /**
@@ -69,7 +71,8 @@ public final class MoveGeneratorUtil {
         // First check if the top-left position exists and is vacant.
         if (board.isPositionWithinBounds(spaceX, spaceY)
                 && !board.isPieceAt(spaceX, spaceY)) {
-            outMoves.add(new Move(position, new BoardPosition(spaceX, spaceY)));
+            outMoves.add(new Move(position,
+                    board.getBoardPositionFor(spaceX, spaceY)));
         }
     }
     /**
@@ -88,7 +91,8 @@ public final class MoveGeneratorUtil {
         // First check if the top-left position exists and is vacant.
         if (board.isPositionWithinBounds(spaceX, spaceY)
                 && !board.isPieceAt(spaceX, spaceY)) {
-            outMoves.add(new Move(position, new BoardPosition(spaceX, spaceY)));
+            outMoves.add(new Move(position,
+                    board.getBoardPositionFor(spaceX, spaceY)));
         }
     }
     /**
@@ -122,8 +126,8 @@ public final class MoveGeneratorUtil {
                 // This is a jump move.
                 outJumps.add(new Jump(
                         fromPosition,
-                        new BoardPosition(landPosX, landPosY),
-                        new BoardPosition(jumpedPosX, jumpedPosY)));
+                        board.getBoardPositionFor(landPosX, landPosY),
+                        board.getBoardPositionFor(jumpedPosX, jumpedPosY)));
             }
         }
     }
@@ -158,8 +162,8 @@ public final class MoveGeneratorUtil {
                 // This is a jump move.
                 outJumps.add(new Jump(
                         fromPosition,
-                        new BoardPosition(landPosX, landPosY),
-                        new BoardPosition(jumpedPosX, jumpedPosY)));
+                        board.getBoardPositionFor(landPosX, landPosY),
+                        board.getBoardPositionFor(jumpedPosX, jumpedPosY)));
             }
         }
     }
@@ -194,8 +198,8 @@ public final class MoveGeneratorUtil {
                 // This is a jump move.
                 outJumps.add(new Jump(
                         fromPosition,
-                        new BoardPosition(landPosX, landPosY),
-                        new BoardPosition(jumpedPosX, jumpedPosY)));
+                        board.getBoardPositionFor(landPosX, landPosY),
+                        board.getBoardPositionFor(jumpedPosX, jumpedPosY)));
             }
         }
     }
@@ -230,8 +234,8 @@ public final class MoveGeneratorUtil {
                 // This is a jump move.
                 outJumps.add(new Jump(
                         fromPosition,
-                        new BoardPosition(landPosX, landPosY),
-                        new BoardPosition(jumpedPosX, jumpedPosY)));
+                        board.getBoardPositionFor(landPosX, landPosY),
+                        board.getBoardPositionFor(jumpedPosX, jumpedPosY)));
             }
         }
     }
@@ -250,8 +254,8 @@ public final class MoveGeneratorUtil {
         int landPosY = fromPosition.y;
         while (board.isPositionWithinBounds(--landPosX, --landPosY)
                 && !board.isPieceAt(landPosX, landPosY)) {
-            outMoves.add(new Move(fromPosition, new BoardPosition(
-                    landPosX, landPosY)));
+            outMoves.add(new Move(fromPosition,
+                    board.getBoardPositionFor(landPosX, landPosY)));
         }
     }
     /**
@@ -269,8 +273,8 @@ public final class MoveGeneratorUtil {
         int landPosY = fromPosition.y;
         while (board.isPositionWithinBounds(++landPosX, --landPosY)
                 && !board.isPieceAt(landPosX, landPosY)) {
-            outMoves.add(new Move(fromPosition, new BoardPosition(
-                    landPosX, landPosY)));
+            outMoves.add(new Move(fromPosition,
+                    board.getBoardPositionFor(landPosX, landPosY)));
         }
     }
     /**
@@ -288,8 +292,8 @@ public final class MoveGeneratorUtil {
         int landPosY = fromPosition.y;
         while (board.isPositionWithinBounds(--landPosX, ++landPosY)
                 && !board.isPieceAt(landPosX, landPosY)) {
-            outMoves.add(new Move(fromPosition, new BoardPosition(
-                    landPosX, landPosY)));
+            outMoves.add(new Move(fromPosition,
+                    board.getBoardPositionFor(landPosX, landPosY)));
         }
     }
     /**
@@ -307,8 +311,8 @@ public final class MoveGeneratorUtil {
         int landPosY = fromPosition.y;
         while (board.isPositionWithinBounds(++landPosX, ++landPosY)
                 && !board.isPieceAt(landPosX, landPosY)) {
-            outMoves.add(new Move(fromPosition, new BoardPosition(
-                    landPosX, landPosY)));
+            outMoves.add(new Move(fromPosition,
+                    board.getBoardPositionFor(landPosX, landPosY)));
         }
     }
     /**
@@ -335,13 +339,13 @@ public final class MoveGeneratorUtil {
             if (foundPiece != null) {
                 if (foundPiece.getOwner() != owner) {
                     final BoardPosition foundPiecePosition =
-                            new BoardPosition(squareX, squareY);
+                            board.getBoardPositionFor(squareX, squareY);
                     // Create a jump for each empty space beyond it
                     while (board.isPositionWithinBounds(--squareX, --squareY)
                             && !board.isPieceAt(squareX, squareY)) {
                         outJumps.add(new Jump(
                                 fromPosition,
-                                new BoardPosition(squareX, squareY),
+                                board.getBoardPositionFor(squareX, squareY),
                                 foundPiecePosition));
                     }
                 }
@@ -373,13 +377,13 @@ public final class MoveGeneratorUtil {
             if (foundPiece != null) {
                 if (foundPiece.getOwner() != owner) {
                     final BoardPosition foundPiecePosition =
-                            new BoardPosition(squareX, squareY);
+                            board.getBoardPositionFor(squareX, squareY);
                     // Create a jump for each empty space beyond it
                     while (board.isPositionWithinBounds(++squareX, --squareY)
                             && !board.isPieceAt(squareX, squareY)) {
                         outJumps.add(new Jump(
                                 fromPosition,
-                                new BoardPosition(squareX, squareY),
+                                board.getBoardPositionFor(squareX, squareY),
                                 foundPiecePosition));
                     }
                 }
@@ -411,13 +415,13 @@ public final class MoveGeneratorUtil {
             if (foundPiece != null) {
                 if (foundPiece.getOwner() != owner) {
                     final BoardPosition foundPiecePosition =
-                            new BoardPosition(squareX, squareY);
+                            board.getBoardPositionFor(squareX, squareY);
                     // Create a jump for each empty space beyond it
                     while (board.isPositionWithinBounds(--squareX, ++squareY)
                             && !board.isPieceAt(squareX, squareY)) {
                         outJumps.add(new Jump(
                                 fromPosition,
-                                new BoardPosition(squareX, squareY),
+                                board.getBoardPositionFor(squareX, squareY),
                                 foundPiecePosition));
                     }
                 }
@@ -449,13 +453,13 @@ public final class MoveGeneratorUtil {
             if (foundPiece != null) {
                 if (foundPiece.getOwner() != owner) {
                     final BoardPosition foundPiecePosition =
-                            new BoardPosition(squareX, squareY);
+                            board.getBoardPositionFor(squareX, squareY);
                     // Create a jump for each empty space beyond it
                     while (board.isPositionWithinBounds(++squareX, ++squareY)
                             && !board.isPieceAt(squareX, squareY)) {
                         outJumps.add(new Jump(
                                 fromPosition,
-                                new BoardPosition(squareX, squareY),
+                                board.getBoardPositionFor(squareX, squareY),
                                 foundPiecePosition));
                     }
                 }

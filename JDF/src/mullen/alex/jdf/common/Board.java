@@ -16,6 +16,8 @@ public class Board {
     public final int height;
     /** The piece positions represented by a two-dimensional array. */
     private final Piece[][] pieces;
+    /** The cached position objects for each position on the board. */
+    private final BoardPosition[][] positions;
     /**
      * Creates a new draughts board that is of the specified dimensions.
      *
@@ -35,6 +37,12 @@ public class Board {
         width = boardWidth;
         height = boardHeight;
         pieces = new Piece[width][height];
+        positions = new BoardPosition[width][height];
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                positions[x][y] = new BoardPosition(x, y);
+            }
+        }
     }
     /**
      * Creates a new instance that is a deep-copy of the specified board.
@@ -48,14 +56,30 @@ public class Board {
         width = boardToCopy.width;
         height = boardToCopy.height;
         pieces = new Piece[width][height];
+        positions = new BoardPosition[width][height];
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 final Piece foundPiece = boardToCopy.pieces[x][y];
                 if (foundPiece != null) {
                     pieces[x][y] = new Piece(foundPiece);
                 }
+                positions[x][y] = boardToCopy.positions[x][y];
             }
         }
+    }
+    /**
+     * Gets a cached {@link BoardPosition} instance for the specified position
+     * so as to limit the amount of garbage.
+     *
+     * @param x  the X position (left-to-right)
+     * @param y  the Y position (top-to-bottom)
+     * @return   a <code>BoardPosition</code> instance for the position
+     * @throws ArrayIndexOutOfBoundsException  if the location specified with
+     *                                         <code>x</code> and <code>y</code>
+     *                                         is out of bounds on this board
+     */
+    public final BoardPosition getBoardPositionFor(final int x, final int y) {
+        return positions[x][y];
     }
     /**
      * Gets the piece at the specified position.

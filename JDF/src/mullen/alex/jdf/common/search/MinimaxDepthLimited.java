@@ -60,6 +60,7 @@ public class MinimaxDepthLimited implements MoveSearch {
             // This is depth 0, so call min at depth 1.
             final float currentMoveValue =
                     minimax(board, 1, false, game, owner, opponent);
+            System.out.println(currentMove + " = " + currentMoveValue);
             if (currentBestScore < currentMoveValue) {
                 currentBestScore = currentMoveValue;
                 bestMoves.clear();
