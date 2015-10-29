@@ -231,7 +231,7 @@ public class InternationalDraughtsMoveGenerator implements MoveGenerator {
             // Check jumps already found.
             final int previousJumpsSize = previousJumps.size();
             for (int i = 0; i < previousJumpsSize; i++) {
-                if (jumpedPosition.equals(previousJumps.get(i).jumped)) {
+                if (jumpedPosition.isSamePositionAs(previousJumps.get(i).jumped)) {
                     jumpsIterator.remove();
                     // No point in searching the remaining if any.
                     break;

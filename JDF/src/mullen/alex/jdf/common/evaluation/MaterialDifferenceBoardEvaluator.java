@@ -41,8 +41,8 @@ public class MaterialDifferenceBoardEvaluator implements BoardEvaluator {
                 }
             }
         }
-        return (float) ownerPieceNonCrownedCount + ownerPieceCrownedCount
-                - opponentNonCrownedPieceCount + opponentPieceCrownedCount;
+        return (ownerPieceNonCrownedCount + ownerPieceCrownedCount)
+                - (opponentNonCrownedPieceCount + opponentPieceCrownedCount);
     }
     @Override
     public final String toString() {

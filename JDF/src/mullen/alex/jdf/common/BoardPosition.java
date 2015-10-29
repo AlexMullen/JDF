@@ -24,6 +24,24 @@ public class BoardPosition {
         y = posY;
     }
     /**
+     * Determines whether two positions are same.
+     * <p>
+     * Two positions are considered the same if:
+     * <p>
+     * <code>this.</code>{@link #x} == <code>obj.</code>{@link #x}
+     * && <code>this.</code>{@link #y} == <code>obj.</code>{@link #y}
+     * <p>
+     * You should use this method rather than {@link #equals(Object)} for
+     * performance critical sections as this does not perform any reference
+     * checks, null checks or casts.
+     *
+     * @param other  the other position to compare
+     * @return       <code>true</code> if the same; <code>false</code> otherwise
+     */
+    public final boolean isSamePositionAs(final BoardPosition other) {
+        return x == other.x && y == other.y;
+    }
+    /**
      * Indicates whether one board position is equivalent to another.
      * <p>
      * Two positions are considered equivalent if:

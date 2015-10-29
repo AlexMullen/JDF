@@ -115,6 +115,9 @@ public class MinimaxAlphaBetaDepthLimited implements MoveSearch {
                 float currentBestValue = -MAX_ABS_AB_RANGE;
                 final List<Move> moves =
                         game.getMoveGenerator().findMoves(board, owner);
+                if (moves.isEmpty()) {
+                    return boardEvaluator.evaluate(board, owner);
+                }
                 for (final Move currentMove : moves) {
                     final PerformedMove performedMove =
                             game.getMovePerformer().perform(currentMove, board);
@@ -123,9 +126,9 @@ public class MinimaxAlphaBetaDepthLimited implements MoveSearch {
                                     opponent, alpha, beta));
                     performedMove.undo();
                     alpha = Math.max(alpha, currentBestValue);
-                    if (beta + threshold <= alpha) {
+                    if (alpha + threshold >= beta) {
                         // Prune.
-                        break;
+                        return alpha;
                     }
                 }
                 return currentBestValue;
@@ -134,6 +137,9 @@ public class MinimaxAlphaBetaDepthLimited implements MoveSearch {
                 float currentBestValue = MAX_ABS_AB_RANGE;
                 final List<Move> moves =
                         game.getMoveGenerator().findMoves(board, opponent);
+                if (moves.isEmpty()) {
+                    return boardEvaluator.evaluate(board, owner);
+                }
                 for (final Move currentMove : moves) {
                     final PerformedMove performedMove =
                             game.getMovePerformer().perform(currentMove, board);
@@ -144,7 +150,7 @@ public class MinimaxAlphaBetaDepthLimited implements MoveSearch {
                     beta = Math.min(beta, currentBestValue);
                     if (beta + threshold <= alpha) {
                         // Prune.
-                        break;
+                        return beta;
                     }
                 }
                 return currentBestValue;
