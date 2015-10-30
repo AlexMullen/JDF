@@ -31,8 +31,10 @@ public class InternationalDraughtsMoveGenerator implements MoveGenerator {
          * Go through every square and get the moves of any pieces that belong
          * to the specified player.
          */
-        for (int x = 0; x < board.width; x++) {
-            for (int y = 0; y < board.height; y++) {
+        final int boardWidth = board.width;
+        final int boardHeight = board.height;
+        for (int x = 0; x < boardWidth; x++) {
+            for (int y = 0; y < boardHeight; y++) {
                 final Piece foundPiece = board.getPieceAt(x, y);
                 if (foundPiece != null
                         && foundPiece.owner == player) {
@@ -63,8 +65,10 @@ public class InternationalDraughtsMoveGenerator implements MoveGenerator {
     public final boolean hasAnyMoves(final Board board, final Player player) {
         final List<Jump> jumps = new ArrayList<>(4);
         final List<Move> moves = new ArrayList<>(4);
-        for (int x = 0; x < board.width; x++) {
-            for (int y = 0; y < board.height; y++) {
+        final int boardWidth = board.width;
+        final int boardHeight = board.height;
+        for (int x = 0; x < boardWidth; x++) {
+            for (int y = 0; y < boardHeight; y++) {
                 final Piece foundPiece = board.getPieceAt(x, y);
                 if (foundPiece != null
                         && foundPiece.owner == player) {
@@ -200,8 +204,8 @@ public class InternationalDraughtsMoveGenerator implements MoveGenerator {
         if (furtherJumps.isEmpty()) {
             sequences.add(new Move(path.get(0).from, jump.to, path));
 //          possibly optimization to avoid memory allocation
-//      } else if (furtherJumps.size() == 1) {
-//          exploreJump(board, piece, furtherJumps.get(0), path, sequences);
+        } else if (furtherJumps.size() == 1) {
+            exploreJump(board, piece, furtherJumps.get(0), path, sequences);
         } else {
             final int furtherJumpsSize = furtherJumps.size();
             for (int i = 0; i < furtherJumpsSize; i++) {

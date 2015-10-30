@@ -19,8 +19,10 @@ public class MaterialDifferenceBoardEvaluator implements BoardEvaluator {
         int opponentPieceCrownedCount = 0;
         int opponentNonCrownedPieceCount = 0;
         // Go through each square and count the pieces.
-        for (int x = 0; x < board.width; x++) {
-            for (int y = 0; y < board.height; y++) {
+        final int boardWidth = board.width;
+        final int boardHeight = board.height;
+        for (int x = 0; x < boardWidth; x++) {
+            for (int y = 0; y < boardHeight; y++) {
                 final Piece foundPiece = board.getPieceAt(x, y);
                 if (foundPiece != null) {
                     if (foundPiece.owner == owner) {

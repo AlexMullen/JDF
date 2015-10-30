@@ -28,7 +28,6 @@ public class NegamaxAlphaBetaDepthLimited implements MoveSearch {
     private final int maxSearchDepth;
     /** The random number generator to use when choosing equal moves. */
     private final Random rng;
-private int nodeCount;
     /**
      * Creates a new instance that uses the specified board evaluator
      * and searches to the specified depth.
@@ -54,7 +53,6 @@ private int nodeCount;
             final Player opponent) {
         System.out.println("---------------------------------------------------"
                 + "---------------------------------------------------");
-nodeCount = 0;
 long startTime = System.nanoTime();
         final Board board = game.getBoard();
         final List<Move> moves =
@@ -85,8 +83,7 @@ System.out.println(currentMove + " = " + currentMoveValue);
             }
         }
 long timeTakenMs = (System.nanoTime() - startTime) / 1000000;
-System.out.println("Searched " + nodeCount + " nodes in " + timeTakenMs
-        + "ms or " + nodeCount / (timeTakenMs == 0 ? 1 : timeTakenMs) + " nodes per ms");
+System.out.println("Searched in " + timeTakenMs + "ms ");
 //        return bestMoves.get(0);
         return bestMoves.get(rng.nextInt(bestMoves.size()));
     }
@@ -101,7 +98,8 @@ System.out.println("Searched " + nodeCount + " nodes in " + timeTakenMs
             float beta) {
         final Player evaluateFor = (isOwner ? owner : opponent);
         if (currentDepth == maxSearchDepth) {
-            nodeCount++;
+//            return quiescence(board, game, owner, opponent, isOwner,
+//                    alpha, beta);
             return boardEvaluator.evaluate(board, evaluateFor);
         }
         final List<Move> moves =
@@ -126,5 +124,45 @@ System.out.println("Searched " + nodeCount + " nodes in " + timeTakenMs
             }
         }
         return bestScore;
+    }
+    private float quiescence(
+            final Board board,
+            final Game game,
+            final Player owner,
+            final Player opponent,
+            final boolean isOwner,
+            float alpha,
+            float beta) {
+        final Player evaluateFor = (isOwner ? owner : opponent);
+        final float standPat = boardEvaluator.evaluate(board, evaluateFor);
+        if (standPat > beta) {
+            return standPat;
+        }
+//        if (alpha < stand_pat) {
+//            alpha = stand_pat;
+//        }
+        final List<Move> moves =
+                game.getMoveGenerator().findMoves(board, evaluateFor);
+        // Make sure there are no captures.
+        final int moveCount = moves.size();
+        if (moveCount >= 1 && moves.get(0).jumps.size() > 0) {
+            float bestScore = -MAX_ABS_AB_RANGE;
+            for (int i = 0; i < moveCount; i++) {
+                final PerformedMove performedMove =
+                        game.getMovePerformer().perform(moves.get(i), board);
+                final float moveVal =
+                        -quiescence(board, game, owner, opponent, !isOwner,
+                                -beta, -alpha);
+                performedMove.undo();
+                bestScore = Math.max(bestScore, moveVal);
+                alpha = Math.max(alpha, moveVal);
+                if (alpha > beta) {
+                    break;
+                }
+            }
+            return bestScore;
+        } else {
+            return standPat;
+        }
     }
 }

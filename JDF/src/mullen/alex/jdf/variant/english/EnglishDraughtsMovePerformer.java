@@ -18,11 +18,12 @@ import mullen.alex.jdf.common.Piece;
 public class EnglishDraughtsMovePerformer implements MovePerformer {
     @Override
     public final PerformedMove perform(final Move move, final Board board) {
-        final List<UndoOperation> undoOperations = new ArrayList<>(10);
+        final int jumpsSize = move.jumps.size();
+        final List<UndoOperation> undoOperations =
+                new ArrayList<>(3 + jumpsSize);
         final Piece pieceToMove = board.getPieceAt(move.from);
         undoOperations.add(setPieceAt(board, move.from, null));
         undoOperations.add(setPieceAt(board, move.to, pieceToMove));
-        final int jumpsSize = move.jumps.size();
         for (int i = 0; i < jumpsSize; i++) {
             undoOperations.add(
                     setPieceAt(board, move.jumps.get(i).jumped, null));
