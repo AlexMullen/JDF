@@ -32,25 +32,22 @@ public class EnglishDraughtsMoveGenerator implements MoveGenerator {
          * Go through every square and get the moves of any pieces that belong
          * to the specified player.
          */
-        final int boardWidth = board.width;
-        final int boardHeight = board.height;
-        for (int x = 0; x < boardWidth; x++) {
-            for (int y = 0; y < boardHeight; y++) {
-                final Piece foundPiece = board.getPieceAt(x, y);
-                if (foundPiece != null && foundPiece.owner == player) {
-                    final BoardPosition piecePosition =
-                            board.getBoardPositionFor(x, y);
-                    findJumpsForPiece(board, foundPiece, piecePosition,
-                            foundJumps);
-                    if (foundJumps.isEmpty()) {
-                        /*
-                         * Only bother for simple moves if jumps were not found
-                         * as they cannot be taken if there are jumps available
-                         * in English Draughts rules.
-                         */
-                         findSimpleMovesForPiece(board, foundPiece,
-                                 piecePosition, foundSimpleMoves);
-                    }
+        final Piece[] pieces = board.pieces;
+        final BoardPosition[] positions = board.positions;
+        final int piecesArrayLength = pieces.length;
+        for (int i = 0; i < piecesArrayLength; i++) {
+            final Piece foundPiece = pieces[i];
+            if (foundPiece != null && foundPiece.owner == player) {
+                final BoardPosition piecePosition = positions[i];
+                findJumpsForPiece(board, foundPiece, piecePosition, foundJumps);
+                if (foundJumps.isEmpty()) {
+                    /*
+                     * Only bother for simple moves if jumps were not found
+                     * as they cannot be taken if there are jumps available
+                     * in English Draughts rules.
+                     */
+                    findSimpleMovesForPiece(board, foundPiece,
+                            piecePosition, foundSimpleMoves);
                 }
             }
         }
@@ -65,29 +62,27 @@ public class EnglishDraughtsMoveGenerator implements MoveGenerator {
     public final boolean hasAnyMoves(final Board board, final Player player) {
         final List<Jump> jumps = new ArrayList<>(4);
         final List<Move> moves = new ArrayList<>(4);
-        final int boardWidth = board.width;
-        final int boardHeight = board.height;
-        for (int x = 0; x < boardWidth; x++) {
-            for (int y = 0; y < boardHeight; y++) {
-                final Piece foundPiece = board.getPieceAt(x, y);
-                if (foundPiece != null && foundPiece.owner == player) {
-                    final BoardPosition piecePosition =
-                            board.getBoardPositionFor(x, y);
-                    /*
-                     * Check for any simple moves. Statistically, there will
-                     * usually be more simple moves than jumps so this will most
-                     * likely return first - thus checked first.
-                     */
-                    findSimpleMovesForPiece(
-                            board, foundPiece, piecePosition, moves);
-                    if (!moves.isEmpty()) {
-                        return true;
-                    }
-                    // Check for any jumps.
-                    findJumpsForPiece(board, foundPiece, piecePosition, jumps);
-                    if (!jumps.isEmpty()) {
-                        return true;
-                    }
+        final Piece[] pieces = board.pieces;
+        final BoardPosition[] positions = board.positions;
+        final int piecesArrayLength = pieces.length;
+        for (int i = 0; i < piecesArrayLength; i++) {
+            final Piece foundPiece = pieces[i];
+            if (foundPiece != null && foundPiece.owner == player) {
+                final BoardPosition piecePosition = positions[i];
+                /*
+                 * Check for any simple moves. Statistically, there will
+                 * usually be more simple moves than jumps so this will most
+                 * likely return first - thus checked first.
+                 */
+                findSimpleMovesForPiece(
+                        board, foundPiece, piecePosition, moves);
+                if (!moves.isEmpty()) {
+                    return true;
+                }
+                // Check for any jumps.
+                findJumpsForPiece(board, foundPiece, piecePosition, jumps);
+                if (!jumps.isEmpty()) {
+                    return true;
                 }
             }
         }
@@ -213,8 +208,20 @@ public class EnglishDraughtsMoveGenerator implements MoveGenerator {
             }
         }
     }
-    private static List<Jump> findNextPieceJumps(final Board board, final Piece piece,
-            final BoardPosition piecePosition, final List<Jump> previousJumps) {
+    /**
+     * A helper method for {@link #exploreJump(Board, Piece, Jump, List, List)}
+     * that retrieves the next set of piece jumps for a piece.
+     *
+     * @param board          the board
+     * @param piece          the piece
+     * @param piecePosition  the position of the piece
+     * @param previousJumps  the current path of jumps the piece has currently
+     *                       already taken
+     * @return               the list of successive moves for the piece
+     */
+    private static List<Jump> findNextPieceJumps(final Board board,
+            final Piece piece, final BoardPosition piecePosition,
+            final List<Jump> previousJumps) {
         List<Jump> jumps;
         final Player pieceOwner = piece.owner;
         if (piece.isCrowned()) {

@@ -14,10 +14,10 @@ public class Board {
     public final int width;
     /** Holds the height of the board. */
     public final int height;
-    /** The piece positions represented by a two-dimensional array. */
-    private final Piece[][] pieces;
+    /** The piece positions represented by a one-dimensional array. */
+    public final Piece[] pieces;
     /** The cached position objects for each position on the board. */
-    private final BoardPosition[][] positions;
+    public final BoardPosition[] positions;
     /**
      * Creates a new draughts board that is of the specified dimensions.
      *
@@ -36,11 +36,12 @@ public class Board {
         }
         width = boardWidth;
         height = boardHeight;
-        pieces = new Piece[width][height];
-        positions = new BoardPosition[width][height];
+        pieces = new Piece[width * height];
+        positions = new BoardPosition[width * height];
         for (int x = 0; x < width; x++) {
+            final int heightByX = height * x;
             for (int y = 0; y < height; y++) {
-                positions[x][y] = new BoardPosition(x, y);
+                positions[y + heightByX] = new BoardPosition(x, y);
             }
         }
     }
@@ -55,13 +56,14 @@ public class Board {
     public Board(final Board boardToCopy) {
         width = boardToCopy.width;
         height = boardToCopy.height;
-        pieces = new Piece[width][height];
+        pieces = new Piece[width * height];
         positions = boardToCopy.positions;
         for (int x = 0; x < width; x++) {
+            final int heightByX = height * x;
             for (int y = 0; y < height; y++) {
-                final Piece foundPiece = boardToCopy.pieces[x][y];
+                final Piece foundPiece = boardToCopy.pieces[y + heightByX];
                 if (foundPiece != null) {
-                    pieces[x][y] = new Piece(foundPiece);
+                    pieces[y + (height * x)] = new Piece(foundPiece);
                 }
             }
         }
@@ -78,7 +80,7 @@ public class Board {
      *                                         is out of bounds on this board
      */
     public final BoardPosition getBoardPositionFor(final int x, final int y) {
-        return positions[x][y];
+        return positions[y + (height * x)];
     }
     /**
      * Gets the piece at the specified position.
@@ -94,7 +96,7 @@ public class Board {
      * @see #getPieceAt(BoardPosition)
      */
     public final Piece getPieceAt(final int x, final int y) {
-        return pieces[x][y];
+        return pieces[y + (height * x)];
     }
     /**
      * Gets the piece at the position specified in the <code>position</code>
@@ -127,7 +129,7 @@ public class Board {
      */
     public final void setPieceAt(final int x, final int y,
             final Piece newPiece) {
-        pieces[x][y] = newPiece;
+        pieces[y + (height * x)] = newPiece;
     }
     /**
      * Sets the piece at the specified position.
@@ -143,7 +145,7 @@ public class Board {
      */
     public final void setPieceAt(final BoardPosition position,
             final Piece newPiece) {
-        pieces[position.x][position.y] = newPiece;
+        pieces[position.y + (height * position.x)] = newPiece;
     }
     /**
      * Sets the piece at the specified position and returns the previous piece
@@ -162,8 +164,9 @@ public class Board {
      */
     public final Piece setPieceAndGetAt(final int x, final int y,
             final Piece newPiece) {
-        final Piece previousPiece = pieces[x][y];
-        pieces[x][y] = newPiece;
+        final int index = y + (height * x);
+        final Piece previousPiece = pieces[index];
+        pieces[index] = newPiece;
         return previousPiece;
     }
     /**
@@ -244,8 +247,9 @@ public class Board {
         sb.append("Board [width=").append(width).append(", height=")
           .append(height).append(']');
         for (int x = 0; x < width; x++) {
+            final int heightByX = height * x;
             for (int y = 0; y < height; y++) {
-                final Piece foundPiece = pieces[x][y];
+                final Piece foundPiece = pieces[y + heightByX];
                 if (foundPiece != null) {
                     sb.append("\n    (").append(x).append(',')
                       .append(y).append(") = ").append(foundPiece);

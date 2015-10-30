@@ -64,7 +64,7 @@ System.out.println(moves.get(0));
         }
         float alpha = -MAX_ABS_AB_RANGE;
         final float beta  =  MAX_ABS_AB_RANGE;
-        final List<Move> bestMoves = new ArrayList<>();
+        final List<Move> bestMoves = new ArrayList<>(20);
         for (int i = 0; i < moves.size(); i++) {
             final Move currentMove = moves.get(i);
             final PerformedMove performedMove =

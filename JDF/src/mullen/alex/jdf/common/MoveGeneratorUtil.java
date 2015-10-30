@@ -32,7 +32,7 @@ public final class MoveGeneratorUtil {
         if (board.isPositionWithinBounds(spaceX, spaceY)
                 && !board.isPieceAt(spaceX, spaceY)) {
             outMoves.add(new Move(position,
-                    board.getBoardPositionFor(spaceX, spaceY)));
+                    board.positions[spaceY + (board.height * spaceX)]));
         }
     }
     /**
@@ -52,7 +52,7 @@ public final class MoveGeneratorUtil {
         if (board.isPositionWithinBounds(spaceX, spaceY)
                 && !board.isPieceAt(spaceX, spaceY)) {
             outMoves.add(new Move(position,
-                    board.getBoardPositionFor(spaceX, spaceY)));
+                    board.positions[spaceY + (board.height * spaceX)]));
         }
     }
     /**
@@ -72,7 +72,7 @@ public final class MoveGeneratorUtil {
         if (board.isPositionWithinBounds(spaceX, spaceY)
                 && !board.isPieceAt(spaceX, spaceY)) {
             outMoves.add(new Move(position,
-                    board.getBoardPositionFor(spaceX, spaceY)));
+                    board.positions[spaceY + (board.height * spaceX)]));
         }
     }
     /**
@@ -92,7 +92,7 @@ public final class MoveGeneratorUtil {
         if (board.isPositionWithinBounds(spaceX, spaceY)
                 && !board.isPieceAt(spaceX, spaceY)) {
             outMoves.add(new Move(position,
-                    board.getBoardPositionFor(spaceX, spaceY)));
+                    board.positions[spaceY + (board.height * spaceX)]));
         }
     }
     /**
@@ -249,10 +249,11 @@ public final class MoveGeneratorUtil {
             final Collection<Move> outMoves) {
         int landPosX = fromPosition.x;
         int landPosY = fromPosition.y;
+        final BoardPosition[] positions = board.positions;
         while (board.isPositionWithinBounds(--landPosX, --landPosY)
                 && !board.isPieceAt(landPosX, landPosY)) {
             outMoves.add(new Move(fromPosition,
-                    board.getBoardPositionFor(landPosX, landPosY)));
+                    positions[landPosY + (board.height * landPosX)]));
         }
     }
     /**
@@ -268,10 +269,11 @@ public final class MoveGeneratorUtil {
             final Collection<Move> outMoves) {
         int landPosX = fromPosition.x;
         int landPosY = fromPosition.y;
+        final BoardPosition[] positions = board.positions;
         while (board.isPositionWithinBounds(++landPosX, --landPosY)
                 && !board.isPieceAt(landPosX, landPosY)) {
             outMoves.add(new Move(fromPosition,
-                    board.getBoardPositionFor(landPosX, landPosY)));
+                    positions[landPosY + (board.height * landPosX)]));
         }
     }
     /**
@@ -287,10 +289,11 @@ public final class MoveGeneratorUtil {
             final Collection<Move> outMoves) {
         int landPosX = fromPosition.x;
         int landPosY = fromPosition.y;
+        final BoardPosition[] positions = board.positions;
         while (board.isPositionWithinBounds(--landPosX, ++landPosY)
                 && !board.isPieceAt(landPosX, landPosY)) {
             outMoves.add(new Move(fromPosition,
-                    board.getBoardPositionFor(landPosX, landPosY)));
+                    positions[landPosY + (board.height * landPosX)]));
         }
     }
     /**
@@ -306,10 +309,11 @@ public final class MoveGeneratorUtil {
             final Collection<Move> outMoves) {
         int landPosX = fromPosition.x;
         int landPosY = fromPosition.y;
+        final BoardPosition[] positions = board.positions;
         while (board.isPositionWithinBounds(++landPosX, ++landPosY)
                 && !board.isPieceAt(landPosX, landPosY)) {
             outMoves.add(new Move(fromPosition,
-                    board.getBoardPositionFor(landPosX, landPosY)));
+                    positions[landPosY + (board.height * landPosX)]));
         }
     }
     /**
