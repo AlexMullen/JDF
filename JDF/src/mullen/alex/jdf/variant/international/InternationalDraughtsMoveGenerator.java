@@ -13,7 +13,6 @@ import mullen.alex.jdf.common.MoveGenerator;
 import mullen.alex.jdf.common.Piece;
 import mullen.alex.jdf.common.Player;
 import mullen.alex.jdf.common.Piece.MoveDirection;
-
 import static mullen.alex.jdf.common.MoveGeneratorUtil.*;
 
 /**
@@ -27,7 +26,7 @@ public class InternationalDraughtsMoveGenerator implements MoveGenerator {
     @Override
     public final List<Move> findMoves(final Board board, final Player player) {
         final List<Jump> foundJumps = new ArrayList<>();
-        final List<Move> foundSimpleMoves = new ArrayList<>();
+        final List<Move> foundSimpleMoves = new ArrayList<>(40);
         /*
          * Go through every square and get the moves of any pieces that belong
          * to the specified player.
@@ -36,7 +35,7 @@ public class InternationalDraughtsMoveGenerator implements MoveGenerator {
             for (int y = 0; y < board.height; y++) {
                 final Piece foundPiece = board.getPieceAt(x, y);
                 if (foundPiece != null
-                        && foundPiece.getOwner() == player) {
+                        && foundPiece.owner == player) {
                     final BoardPosition piecePosition =
                             board.getBoardPositionFor(x, y);
                     findJumpsForPiece(
@@ -68,7 +67,7 @@ public class InternationalDraughtsMoveGenerator implements MoveGenerator {
             for (int y = 0; y < board.height; y++) {
                 final Piece foundPiece = board.getPieceAt(x, y);
                 if (foundPiece != null
-                        && foundPiece.getOwner() == player) {
+                        && foundPiece.owner == player) {
                     final BoardPosition piecePosition =
                             board.getBoardPositionFor(x, y);
                     /*
@@ -102,27 +101,24 @@ public class InternationalDraughtsMoveGenerator implements MoveGenerator {
      */
     private static void findJumpsForPiece(final Board board, final Piece piece,
             final BoardPosition piecePosition, final Collection<Jump> jumps) {
+        final Player owner = piece.owner;
         if (piece.isCrowned()) {
             /*
              * The piece is crowned so can 'fly' along a diagonal.
              */
-            findFlyingJumpsAboveLeft(board, piecePosition, piece.getOwner(),
-                    jumps);
-            findFlyingJumpsAboveRight(board, piecePosition, piece.getOwner(),
-                    jumps);
-            findFlyingJumpsBottomLeft(board, piecePosition, piece.getOwner(),
-                    jumps);
-            findFlyingJumpsBottomRight(board, piecePosition, piece.getOwner(),
-                    jumps);
+            findFlyingJumpsAboveLeft(board, piecePosition, owner, jumps);
+            findFlyingJumpsAboveRight(board, piecePosition, owner, jumps);
+            findFlyingJumpsBottomLeft(board, piecePosition, owner, jumps);
+            findFlyingJumpsBottomRight(board, piecePosition, owner, jumps);
         } else {
             /*
              * Get jumps for all directions as men can jump in any direction in
              * International Draughts.
              */
-            findJumpAboveLeft(board, piecePosition, piece.getOwner(), jumps);
-            findJumpAboveRight(board, piecePosition, piece.getOwner(), jumps);
-            findJumpBottomLeft(board, piecePosition, piece.getOwner(), jumps);
-            findJumpBottomRight(board, piecePosition, piece.getOwner(), jumps);
+            findJumpAboveLeft(board, piecePosition, owner, jumps);
+            findJumpAboveRight(board, piecePosition, owner, jumps);
+            findJumpBottomLeft(board, piecePosition, owner, jumps);
+            findJumpBottomRight(board, piecePosition, owner, jumps);
         }
     }
     /**
@@ -198,7 +194,7 @@ public class InternationalDraughtsMoveGenerator implements MoveGenerator {
         findJumpsForPiece(board, piece, jump.to, furtherJumps);
         /*
          * Need to remove jumps that have already been done. This will happen
-         * with crown pieces as they can go back and forth.
+         * with pieces as they can jump backwards.
          */
         removeAlreadyJumpedPositionMoves(furtherJumps, path);
         if (furtherJumps.isEmpty()) {
@@ -231,7 +227,7 @@ public class InternationalDraughtsMoveGenerator implements MoveGenerator {
             // Check jumps already found.
             final int previousJumpsSize = previousJumps.size();
             for (int i = 0; i < previousJumpsSize; i++) {
-                if (jumpedPosition.isSamePositionAs(previousJumps.get(i).jumped)) {
+                if (jumpedPosition.equals(previousJumps.get(i).jumped)) {
                     jumpsIterator.remove();
                     // No point in searching the remaining if any.
                     break;

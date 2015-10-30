@@ -56,7 +56,7 @@ public class TestPiece {
         // Now create a clone.
         final Piece clonedPiece = new Piece(originalPiece);
         // Check the fields are the same.
-        assertEquals(originalPiece.getOwner(), clonedPiece.getOwner());
+        assertEquals(originalPiece.owner, clonedPiece.owner);
         assertEquals(originalPiece.getMoveDirection(),
                 clonedPiece.getMoveDirection());
         assertTrue(originalPiece.isCrowned() == clonedPiece.isCrowned());
@@ -64,7 +64,7 @@ public class TestPiece {
         originalPiece.crown();
         assertTrue(originalPiece.isCrowned());
         // Assert that the clone has not changed.
-        assertEquals(originalPiece.getOwner(), clonedPiece.getOwner());
+        assertEquals(originalPiece.owner, clonedPiece.owner);
         assertNotSame(originalPiece.getMoveDirection(),
                 clonedPiece.getMoveDirection());
         assertTrue(originalPiece.isCrowned() != clonedPiece.isCrowned());

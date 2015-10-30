@@ -19,14 +19,14 @@ import mullen.alex.jdf.common.Piece.MoveDirection;
 public class InternationalDraughtsMovePerformer implements MovePerformer {
     @Override
     public final PerformedMove perform(final Move move, final Board board) {
-        final List<UndoOperation> undoOperations = new ArrayList<>(8);
+        final List<UndoOperation> undoOperations = new ArrayList<>(10);
         final Piece pieceToMove = board.getPieceAt(move.from);
         undoOperations.add(setPieceAt(board, move.from, null));
         undoOperations.add(setPieceAt(board, move.to, pieceToMove));
         final int jumpsSize = move.jumps.size();
         for (int i = 0; i < jumpsSize; i++) {
-            undoOperations.add(setPieceAt(board,
-                    move.jumps.get(i).jumped, null));
+            undoOperations.add(
+                    setPieceAt(board, move.jumps.get(i).jumped, null));
         }
         if (!pieceToMove.isCrowned() && isPieceInOpposingKingsRow(board,
                 move.to.y, pieceToMove.getMoveDirection())) {
@@ -36,8 +36,7 @@ public class InternationalDraughtsMovePerformer implements MovePerformer {
              */
             final Piece pieceToMoveCopy = new Piece(pieceToMove);
             pieceToMoveCopy.crown();
-            undoOperations.add(
-                    setPieceAt(board, move.to, pieceToMoveCopy));
+            undoOperations.add(setPieceAt(board, move.to, pieceToMoveCopy));
         }
         return new PerformedMove() {
             @Override

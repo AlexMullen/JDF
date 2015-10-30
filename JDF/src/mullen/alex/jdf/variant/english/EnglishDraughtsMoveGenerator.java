@@ -27,7 +27,7 @@ public class EnglishDraughtsMoveGenerator implements MoveGenerator {
     @Override
     public final List<Move> findMoves(final Board board, final Player player) {
         final List<Jump> foundJumps = new ArrayList<>();
-        final List<Move> foundSimpleMoves = new ArrayList<>();
+        final List<Move> foundSimpleMoves = new ArrayList<>(20);
         /*
          * Go through every square and get the moves of any pieces that belong
          * to the specified player.
@@ -35,8 +35,7 @@ public class EnglishDraughtsMoveGenerator implements MoveGenerator {
         for (int x = 0; x < board.width; x++) {
             for (int y = 0; y < board.height; y++) {
                 final Piece foundPiece = board.getPieceAt(x, y);
-                if (foundPiece != null
-                        && foundPiece.getOwner() == player) {
+                if (foundPiece != null && foundPiece.owner == player) {
                     final BoardPosition piecePosition =
                             board.getBoardPositionFor(x, y);
                     findJumpsForPiece(board, foundPiece, piecePosition,
@@ -67,8 +66,7 @@ public class EnglishDraughtsMoveGenerator implements MoveGenerator {
         for (int x = 0; x < board.width; x++) {
             for (int y = 0; y < board.height; y++) {
                 final Piece foundPiece = board.getPieceAt(x, y);
-                if (foundPiece != null
-                        && foundPiece.getOwner() == player) {
+                if (foundPiece != null && foundPiece.owner == player) {
                     final BoardPosition piecePosition =
                             board.getBoardPositionFor(x, y);
                     /*
@@ -106,26 +104,22 @@ public class EnglishDraughtsMoveGenerator implements MoveGenerator {
             /*
              * The piece is crowned so can move in any direction.
              */
-            findJumpAboveLeft(board, piecePosition, piece.getOwner(), jumps);
-            findJumpAboveRight(board, piecePosition, piece.getOwner(), jumps);
-            findJumpBottomLeft(board, piecePosition, piece.getOwner(), jumps);
-            findJumpBottomRight(board, piecePosition, piece.getOwner(), jumps);
+            findJumpAboveLeft(board, piecePosition, piece.owner, jumps);
+            findJumpAboveRight(board, piecePosition, piece.owner, jumps);
+            findJumpBottomLeft(board, piecePosition, piece.owner, jumps);
+            findJumpBottomRight(board, piecePosition, piece.owner, jumps);
         } else {
             /*
              * The piece is not crowned so the direction needs to be determined.
              */
             if (piece.getMoveDirection() == MoveDirection.UP) {
                 // Only get upward jumps.
-                findJumpAboveLeft(board, piecePosition, piece.getOwner(),
-                        jumps);
-                findJumpAboveRight(board, piecePosition, piece.getOwner(),
-                        jumps);
+                findJumpAboveLeft(board, piecePosition, piece.owner, jumps);
+                findJumpAboveRight(board, piecePosition, piece.owner, jumps);
             } else if (piece.getMoveDirection() == MoveDirection.DOWN) {
                 // Only get downward jumps.
-                findJumpBottomLeft(board, piecePosition, piece.getOwner(),
-                        jumps);
-                findJumpBottomRight(board, piecePosition, piece.getOwner(),
-                        jumps);
+                findJumpBottomLeft(board, piecePosition, piece.owner, jumps);
+                findJumpBottomRight(board, piecePosition, piece.owner, jumps);
             } else {
                 throw new IllegalStateException("Unhandled move direction.");
             }
@@ -198,13 +192,15 @@ public class EnglishDraughtsMoveGenerator implements MoveGenerator {
             final Jump jump, final List<Jump> path,
             final List<Move> sequences) {
         path.add(jump);
-        final List<Jump> furtherJumps = new ArrayList<>();
+        final List<Jump> furtherJumps = new ArrayList<>(4);
         findJumpsForPiece(board, piece, jump.to, furtherJumps);
         /*
          * Need to remove jumps that have already been done. This will happen
          * with crown pieces as they can go back and forth.
          */
         removeAlreadyJumpedPositionMoves(furtherJumps, path);
+//        final List<Jump> furtherJumps =
+//                findNextPieceJumps(board, piece, jump.to, path);
         if (furtherJumps.isEmpty()) {
             sequences.add(new Move(path.get(0).from, jump.to, path));
 //            possibly optimization to avoid memory allocation
@@ -219,6 +215,42 @@ public class EnglishDraughtsMoveGenerator implements MoveGenerator {
             }
         }
     }
+//    private static List<Jump> findNextPieceJumps(final Board board, final Piece piece,
+//            final BoardPosition piecePosition, final List<Jump> previousJumps) {
+//        List<Jump> jumps;
+//        if (piece.isCrowned()) {
+//            jumps = new ArrayList<>(4);
+//            /*
+//             * The piece is crowned so can move in any direction.
+//             */
+//            findJumpAboveLeft(board, piecePosition, piece.owner, jumps);
+//            findJumpAboveRight(board, piecePosition, piece.owner, jumps);
+//            findJumpBottomLeft(board, piecePosition, piece.owner, jumps);
+//            findJumpBottomRight(board, piecePosition, piece.owner, jumps);
+//            /*
+//             * Need to remove jumps that have already been done. This will
+//             * happen with crown pieces as they can go back and forth.
+//             */
+//            removeAlreadyJumpedPositionMoves(jumps, previousJumps);
+//        } else {
+//            jumps = new ArrayList<>(2);
+//            /*
+//             * The piece is not crowned so the direction needs to be determined.
+//             */
+//            if (piece.getMoveDirection() == MoveDirection.UP) {
+//                // Only get upward jumps.
+//                findJumpAboveLeft(board, piecePosition, piece.owner, jumps);
+//                findJumpAboveRight(board, piecePosition, piece.owner, jumps);
+//            } else if (piece.getMoveDirection() == MoveDirection.DOWN) {
+//                // Only get downward jumps.
+//                findJumpBottomLeft(board, piecePosition, piece.owner, jumps);
+//                findJumpBottomRight(board, piecePosition, piece.owner, jumps);
+//            } else {
+//                throw new IllegalStateException("Unhandled move direction.");
+//            }
+//        }
+//        return jumps;
+//    }
     /**
      * A helper method for pruning jumps that are not possible because a jump
      * has already been performed over the position.
@@ -230,12 +262,11 @@ public class EnglishDraughtsMoveGenerator implements MoveGenerator {
             final List<Jump> jumps, final List<Jump> previousJumps) {
         final Iterator<Jump> jumpsIterator = jumps.iterator();
         while (jumpsIterator.hasNext()) {
-            final BoardPosition jumpedPosition =
-                    jumpsIterator.next().jumped;
+            final BoardPosition jumpedPosition = jumpsIterator.next().jumped;
             // Check jumps already found.
             final int previousJumpsSize = previousJumps.size();
             for (int i = 0; i < previousJumpsSize; i++) {
-                if (jumpedPosition.isSamePositionAs(previousJumps.get(i).jumped)) {
+                if (jumpedPosition.equals(previousJumps.get(i).jumped)) {
                     jumpsIterator.remove();
                     // No point in searching the remaining if any.
                     break;

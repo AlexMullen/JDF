@@ -121,8 +121,7 @@ public final class MoveGeneratorUtil {
             final Piece pieceToJumpOver =
                     board.getPieceAt(jumpedPosX, jumpedPosY);
             // Check if the piece that can be jumped (if any) is an enemy piece.
-            if (pieceToJumpOver != null
-                    && owner != pieceToJumpOver.getOwner()) {
+            if (pieceToJumpOver != null && owner != pieceToJumpOver.owner) {
                 // This is a jump move.
                 outJumps.add(new Jump(
                         fromPosition,
@@ -157,8 +156,7 @@ public final class MoveGeneratorUtil {
             final Piece pieceToJumpOver =
                     board.getPieceAt(jumpedPosX, jumpedPosY);
             // Check if the piece that can be jumped (if any) is an enemy piece.
-            if (pieceToJumpOver != null
-                    && owner != pieceToJumpOver.getOwner()) {
+            if (pieceToJumpOver != null && owner != pieceToJumpOver.owner) {
                 // This is a jump move.
                 outJumps.add(new Jump(
                         fromPosition,
@@ -194,7 +192,7 @@ public final class MoveGeneratorUtil {
                     board.getPieceAt(jumpedPosX, jumpedPosY);
             // Check if the piece that can be jumped (if any) is an enemy piece.
             if (pieceToJumpOver != null
-                    && owner != pieceToJumpOver.getOwner()) {
+                    && owner != pieceToJumpOver.owner) {
                 // This is a jump move.
                 outJumps.add(new Jump(
                         fromPosition,
@@ -229,8 +227,7 @@ public final class MoveGeneratorUtil {
             final Piece pieceToJumpOver =
                     board.getPieceAt(jumpedPosX, jumpedPosY);
             // Check if the piece that can be jumped (if any) is an enemy piece.
-            if (pieceToJumpOver != null
-                    && owner != pieceToJumpOver.getOwner()) {
+            if (pieceToJumpOver != null && owner != pieceToJumpOver.owner) {
                 // This is a jump move.
                 outJumps.add(new Jump(
                         fromPosition,
@@ -337,7 +334,7 @@ public final class MoveGeneratorUtil {
         while (board.isPositionWithinBounds(--squareX, --squareY)) {
             final Piece foundPiece = board.getPieceAt(squareX, squareY);
             if (foundPiece != null) {
-                if (foundPiece.getOwner() != owner) {
+                if (foundPiece.owner != owner) {
                     final BoardPosition foundPiecePosition =
                             board.getBoardPositionFor(squareX, squareY);
                     // Create a jump for each empty space beyond it
@@ -375,7 +372,7 @@ public final class MoveGeneratorUtil {
         while (board.isPositionWithinBounds(++squareX, --squareY)) {
             final Piece foundPiece = board.getPieceAt(squareX, squareY);
             if (foundPiece != null) {
-                if (foundPiece.getOwner() != owner) {
+                if (foundPiece.owner != owner) {
                     final BoardPosition foundPiecePosition =
                             board.getBoardPositionFor(squareX, squareY);
                     // Create a jump for each empty space beyond it
@@ -413,7 +410,7 @@ public final class MoveGeneratorUtil {
         while (board.isPositionWithinBounds(--squareX, ++squareY)) {
             final Piece foundPiece = board.getPieceAt(squareX, squareY);
             if (foundPiece != null) {
-                if (foundPiece.getOwner() != owner) {
+                if (foundPiece.owner != owner) {
                     final BoardPosition foundPiecePosition =
                             board.getBoardPositionFor(squareX, squareY);
                     // Create a jump for each empty space beyond it
@@ -451,7 +448,7 @@ public final class MoveGeneratorUtil {
         while (board.isPositionWithinBounds(++squareX, ++squareY)) {
             final Piece foundPiece = board.getPieceAt(squareX, squareY);
             if (foundPiece != null) {
-                if (foundPiece.getOwner() != owner) {
+                if (foundPiece.owner != owner) {
                     final BoardPosition foundPiecePosition =
                             board.getBoardPositionFor(squareX, squareY);
                     // Create a jump for each empty space beyond it

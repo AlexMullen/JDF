@@ -23,7 +23,7 @@ public class MaterialDifferenceBoardEvaluator implements BoardEvaluator {
             for (int y = 0; y < board.height; y++) {
                 final Piece foundPiece = board.getPieceAt(x, y);
                 if (foundPiece != null) {
-                    if (foundPiece.getOwner().equals(owner)) {
+                    if (foundPiece.owner == owner) {
                         // Owner piece.
                         if (foundPiece.isCrowned()) {
                             ownerPieceCrownedCount++;
@@ -41,8 +41,11 @@ public class MaterialDifferenceBoardEvaluator implements BoardEvaluator {
                 }
             }
         }
-        return (ownerPieceNonCrownedCount + ownerPieceCrownedCount)
-                - (opponentNonCrownedPieceCount + opponentPieceCrownedCount);
+        final int ownerTotalPieceCount =
+                (ownerPieceNonCrownedCount + ownerPieceCrownedCount);
+        final int opponentTotalPieceCount =
+                (opponentNonCrownedPieceCount + opponentPieceCrownedCount);
+        return ownerTotalPieceCount - opponentTotalPieceCount;
     }
     @Override
     public final String toString() {

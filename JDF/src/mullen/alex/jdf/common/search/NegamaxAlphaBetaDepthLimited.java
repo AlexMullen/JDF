@@ -13,12 +13,13 @@ import mullen.alex.jdf.common.MovePerformer.PerformedMove;
 import mullen.alex.jdf.common.evaluation.BoardEvaluator;
 
 /**
- * A move search that uses a Negamax search algorithm that is depth limited.
+ * A move search that uses a Negamax search algorithm that is depth limited and
+ * uses alpha-beta pruning.
  *
  * @author  Alex Mullen
  *
  */
-public class NegamaxDepthLimited implements MoveSearch {
+public class NegamaxAlphaBetaDepthLimited implements MoveSearch {
     /** Holds the maximum absolute range that alpha or beta can be. */
     private static final float MAX_ABS_AB_RANGE = 1000.0f;
     /** The board evaluator to use for evaluating board states. */
@@ -39,7 +40,7 @@ private int nodeCount;
      * @throws NullPointerException      if <code>evaluator</code> is
      *                                   <code>null</code>
      */
-    public NegamaxDepthLimited(final BoardEvaluator evaluator,
+    public NegamaxAlphaBetaDepthLimited(final BoardEvaluator evaluator,
             final int depth) {
         boardEvaluator = Objects.requireNonNull(evaluator);
         if (depth < 1) {
@@ -60,19 +61,20 @@ long startTime = System.nanoTime();
                 game.getMoveGenerator().findMoves(board, owner);
         if (moves.size() == 1) {
             // No point evaluating only one move.
-            System.out.println(moves.get(0));
+System.out.println(moves.get(0));
             return moves.get(0);
         }
         float alpha = -MAX_ABS_AB_RANGE;
-        float beta  =  MAX_ABS_AB_RANGE;
+        final float beta  =  MAX_ABS_AB_RANGE;
         final List<Move> bestMoves = new ArrayList<>();
         for (int i = 0; i < moves.size(); i++) {
             final Move currentMove = moves.get(i);
             final PerformedMove performedMove =
                     game.getMovePerformer().perform(currentMove, board);
             final float currentMoveValue =
-                    -negamax(board, game, owner, opponent, 1, false, -beta, -alpha);
-            System.out.println(currentMove + " = " + currentMoveValue);
+                    -negamax(board, game, owner, opponent, 1, false,
+                            -beta, -alpha);
+System.out.println(currentMove + " = " + currentMoveValue);
             performedMove.undo();
             if (currentMoveValue > alpha) {
                 alpha = currentMoveValue;
@@ -88,10 +90,15 @@ System.out.println("Searched " + nodeCount + " nodes in " + timeTakenMs
 //        return bestMoves.get(0);
         return bestMoves.get(rng.nextInt(bestMoves.size()));
     }
-    private float negamax(final Board board, final Game game,
-            final Player owner, final Player opponent,
-            final int currentDepth, final boolean isOwner,
-            float alpha, float beta) {
+    private float negamax(
+            final Board board,
+            final Game game,
+            final Player owner,
+            final Player opponent,
+            final int currentDepth,
+            final boolean isOwner,
+            float alpha,
+            float beta) {
         final Player evaluateFor = (isOwner ? owner : opponent);
         if (currentDepth == maxSearchDepth) {
             nodeCount++;
@@ -103,7 +110,6 @@ System.out.println("Searched " + nodeCount + " nodes in " + timeTakenMs
         if (moveCount == 0) {
             return boardEvaluator.evaluate(board, evaluateFor);
         }
-        
         float bestScore = -MAX_ABS_AB_RANGE;
         for (int i = 0; i < moveCount; i++) {
             final PerformedMove performedMove =
@@ -114,6 +120,7 @@ System.out.println("Searched " + nodeCount + " nodes in " + timeTakenMs
             performedMove.undo();
             bestScore = Math.max(bestScore, moveVal);
             alpha = Math.max(alpha, moveVal);
+//            if (alpha >= beta) { // Need better evaluation function for this.
             if (alpha > beta) {
                 break;
             }

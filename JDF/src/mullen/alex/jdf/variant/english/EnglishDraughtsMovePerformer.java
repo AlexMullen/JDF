@@ -18,26 +18,25 @@ import mullen.alex.jdf.common.Piece;
 public class EnglishDraughtsMovePerformer implements MovePerformer {
     @Override
     public final PerformedMove perform(final Move move, final Board board) {
-        final List<UndoOperation> undoOperations = new ArrayList<>(8);
+        final List<UndoOperation> undoOperations = new ArrayList<>(10);
         final Piece pieceToMove = board.getPieceAt(move.from);
         undoOperations.add(setPieceAt(board, move.from, null));
         undoOperations.add(setPieceAt(board, move.to, pieceToMove));
         final int jumpsSize = move.jumps.size();
         for (int i = 0; i < jumpsSize; i++) {
-            undoOperations.add(setPieceAt(board,
-                    move.jumps.get(i).jumped, null));
+            undoOperations.add(
+                    setPieceAt(board, move.jumps.get(i).jumped, null));
         }
-        // BUG: Can result in getting crowned on own kings row in International.
-        if (isKingsRow(board, move.to.y)
-                && !pieceToMove.isCrowned()) {
+        // BUG: Can result in getting crowned on own kings row in International
+        //      due to men being able to jump backwards.
+        if (isKingsRow(board, move.to.y) && !pieceToMove.isCrowned()) {
             /*
              * Create a copy of the uncrowned piece, crown it and then place it
              * into the board whilst saving the original for undoing.
              */
             final Piece pieceToMoveCopy = new Piece(pieceToMove);
             pieceToMoveCopy.crown();
-            undoOperations.add(
-                    setPieceAt(board, move.to, pieceToMoveCopy));
+            undoOperations.add(setPieceAt(board, move.to, pieceToMoveCopy));
         }
         return new PerformedMove() {
             @Override

@@ -10,7 +10,7 @@ import java.util.Objects;
  */
 public class Piece {
     /** Holds the owner of this piece. */
-    private final Player player;
+    public final Player owner;
     /** Holds the movement direction this piece can do. */
     private MoveDirection moveDirection;
     /**
@@ -20,14 +20,14 @@ public class Piece {
      * A <code>direction</code> value of {@link MoveDirection#BOTH} effectively
      * crowns this piece and {@link #isCrowned()} will return <code>true</code>.
      *
-     * @param owner      the <code>PieceOwner</code> the piece will belong to
+     * @param player     the <code>Player</code> the piece will belong to
      * @param direction  the direction this piece is allowed to move in
      *
      * @throws NullPointerException  if <code>owner</code> or
      *                               <code>direction</code> is <code>null</code>
      */
-    public Piece(final Player owner, final MoveDirection direction) {
-        player = Objects.requireNonNull(owner, "Who owns dis?");
+    public Piece(final Player player, final MoveDirection direction) {
+        owner = Objects.requireNonNull(player, "Who owns dis?");
         moveDirection = Objects.requireNonNull(direction, "Move nowhere?");
     }
     /**
@@ -39,16 +39,8 @@ public class Piece {
      * @see #Piece(Player, MoveDirection)
      */
     public Piece(final Piece piece) {
-        player = piece.player;
+        owner = piece.owner;
         moveDirection = piece.moveDirection;
-    }
-    /**
-     * Gets the {@link Player} instance that this piece belongs to.
-     *
-     * @return  the owner
-     */
-    public final Player getOwner() {
-        return player;
     }
     /**
      * Gets the direction this piece is allowed to move in.
@@ -81,7 +73,7 @@ public class Piece {
         final int prime = 31;
         int result = 1;
         result = prime * result + moveDirection.hashCode();
-        result = prime * result + player.hashCode();
+        result = prime * result + owner.hashCode();
         return result;
     }
     /**
@@ -102,11 +94,11 @@ public class Piece {
         if (moveDirection != other.moveDirection) {
             return false;
         }
-        return player.equals(other.player);
+        return owner == other.owner;
     }
     @Override
     public final String toString() {
-        return "Piece [getOwner()=" + getOwner() + ", getMoveDirection()="
+        return "Piece [owner=" + owner + ", getMoveDirection()="
                 + getMoveDirection() + ", isCrowned()=" + isCrowned() + "]";
     }
     /**
