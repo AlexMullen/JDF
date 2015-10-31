@@ -21,7 +21,7 @@ import mullen.alex.jdf.common.evaluation.BoardEvaluator;
  */
 public class MinimaxAlphaBetaDepthLimited implements MoveSearch {
     /** Holds the maximum absolute range that alpha or beta can be. */
-    private static final float MAX_ABS_AB_RANGE = 1000.0f;
+    private static final int MAX_ABS_AB_RANGE = 1000;
     /** The board evaluator to use for evaluating board states. */
     private final BoardEvaluator boardEvaluator;
     /** Holds the maximum depth to search to. */
@@ -60,12 +60,12 @@ public class MinimaxAlphaBetaDepthLimited implements MoveSearch {
             System.out.println(moves.get(0));
             return moves.get(0);
         }
-        float alpha = -MAX_ABS_AB_RANGE;
+        int alpha = -MAX_ABS_AB_RANGE;
         final List<Move> bestMoves = new ArrayList<>();
         for (final Move currentMove : moves) {
             final PerformedMove performedMove =
                     game.getMovePerformer().perform(currentMove, board);
-            final float currentMoveValue =
+            final int currentMoveValue =
                     minimax(board, 1, false, game, max, min,
                             -MAX_ABS_AB_RANGE, MAX_ABS_AB_RANGE);
             System.out.println(currentMove + " = " + currentMoveValue);
@@ -100,15 +100,15 @@ public class MinimaxAlphaBetaDepthLimited implements MoveSearch {
      * @return                  the value of the current board state N moves
      *                          ahead
      */
-    private float minimax(final Board board, final int currentDepth,
+    private int minimax(final Board board, final int currentDepth,
             final boolean maximisingPlayer, final Game game,
-            final Player max, final Player min, float alpha,
-            float beta) {
+            final Player max, final Player min, int alpha,
+            int beta) {
         if (currentDepth == maxSearchDepth) {
             return boardEvaluator.evaluate(board, max);
         } else {
             if (maximisingPlayer) {
-                float currentBestValue = -MAX_ABS_AB_RANGE;
+                int currentBestValue = -MAX_ABS_AB_RANGE;
                 final List<Move> moves =
                         game.getMoveGenerator().findMoves(board, max);
                 if (moves.isEmpty()) {
@@ -130,7 +130,7 @@ public class MinimaxAlphaBetaDepthLimited implements MoveSearch {
                 return currentBestValue;
             } else {
                 // Minimising player.
-                float currentBestValue = MAX_ABS_AB_RANGE;
+                int currentBestValue = MAX_ABS_AB_RANGE;
                 final List<Move> moves =
                         game.getMoveGenerator().findMoves(board, min);
                 if (moves.isEmpty()) {

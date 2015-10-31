@@ -21,7 +21,7 @@ import mullen.alex.jdf.common.evaluation.BoardEvaluator;
  */
 public class NegamaxAlphaBetaDepthLimited implements MoveSearch {
     /** Holds the maximum absolute range that alpha or beta can be. */
-    private static final float MAX_ABS_AB_RANGE = 1000.0f;
+    private static final int MAX_ABS_AB_RANGE = 1000;
     /** The board evaluator to use for evaluating board states. */
     private final BoardEvaluator boardEvaluator;
     /** Holds the maximum depth to search to. */
@@ -62,13 +62,13 @@ public class NegamaxAlphaBetaDepthLimited implements MoveSearch {
             System.out.println(moves.get(0));
             return moves.get(0);
         }
-        float bestMoveScore = -MAX_ABS_AB_RANGE;
+        int bestMoveScore = -MAX_ABS_AB_RANGE;
         final List<Move> bestMoves = new ArrayList<>(20);
         for (int i = 0; i < moves.size(); i++) {
             final Move currentMove = moves.get(i);
             final PerformedMove performedMove =
                     game.getMovePerformer().perform(currentMove, board);
-            final float currentMoveValue =
+            final int currentMoveValue =
                     -negamax(board, game, minPlayer, maxPlayer,
                             maxSearchDepth - 1, -MAX_ABS_AB_RANGE,
                             MAX_ABS_AB_RANGE);
@@ -78,8 +78,7 @@ public class NegamaxAlphaBetaDepthLimited implements MoveSearch {
                 bestMoveScore = currentMoveValue;
                 bestMoves.clear();
                 bestMoves.add(currentMove);
-            } else if (Math.abs(currentMoveValue - bestMoveScore)
-                    < 0.000000001) {
+            } else if (currentMoveValue == bestMoveScore) {
                 bestMoves.add(currentMove);
             }
         }
@@ -87,22 +86,22 @@ public class NegamaxAlphaBetaDepthLimited implements MoveSearch {
         System.out.println("Searched in " + timeTakenMs + "ms ");
         return bestMoves.get(rng.nextInt(bestMoves.size()));
     }
-    private float negamax(final Board board, final Game game,
+    private int negamax(final Board board, final Game game,
             final Player maxPlayer, final Player minPlayer, final int depth,
-            float alpha, float beta) {
+            int alpha, int beta) {
         if (depth == 0) {
             // Perform quiescence search until the position is 'quiet'.
             return quiescence(board, game, maxPlayer, minPlayer, alpha, beta);
 //            return boardEvaluator.evaluate(board, maxPlayer);
         }
-        float bestScore = -MAX_ABS_AB_RANGE;
+        int bestScore = -MAX_ABS_AB_RANGE;
         final List<Move> moves =
                 game.getMoveGenerator().findMoves(board, maxPlayer);
         final int moveCount = moves.size();
         for (int i = 0; i < moveCount; i++) {
             final PerformedMove performedMove =
                     game.getMovePerformer().perform(moves.get(i), board);
-            final float moveVal = -negamax(board, game, minPlayer, maxPlayer,
+            final int moveVal = -negamax(board, game, minPlayer, maxPlayer,
                     depth - 1, -beta, -alpha);
             performedMove.undo();
             bestScore = Math.max(bestScore, moveVal);
@@ -113,10 +112,10 @@ public class NegamaxAlphaBetaDepthLimited implements MoveSearch {
         }
         return bestScore;
     }
-    private float quiescence(final Board board, final Game game,
-            final Player maxPlayer, final Player minPlayer, float alpha,
-            float beta) {
-        final float standPat = boardEvaluator.evaluate(board, maxPlayer);
+    private int quiescence(final Board board, final Game game,
+            final Player maxPlayer, final Player minPlayer, int alpha,
+            int beta) {
+        final int standPat = boardEvaluator.evaluate(board, maxPlayer);
         if (standPat >= beta) {
             return standPat;
         }
@@ -128,11 +127,11 @@ public class NegamaxAlphaBetaDepthLimited implements MoveSearch {
         // Make sure there are no captures.
         final int moveCount = moves.size();
         if (moveCount >= 1 && !moves.get(0).jumps.isEmpty()) {
-            float bestScore = -MAX_ABS_AB_RANGE;
+            int bestScore = -MAX_ABS_AB_RANGE;
             for (int i = 0; i < moveCount; i++) {
                 final PerformedMove performedMove =
                         game.getMovePerformer().perform(moves.get(i), board);
-                final float moveVal =
+                final int moveVal =
                         -quiescence(board, game, minPlayer, maxPlayer,
                                 -beta, -alpha);
                 performedMove.undo();

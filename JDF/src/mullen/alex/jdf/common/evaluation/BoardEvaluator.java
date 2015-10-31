@@ -23,5 +23,5 @@ public interface BoardEvaluator {
      * @param owner  the piece owner the score applies to
      * @return       the score given
      */
-    float evaluate(Board board, Player owner);
+    int evaluate(Board board, Player owner);
 }

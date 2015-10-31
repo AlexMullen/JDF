@@ -23,7 +23,7 @@ import mullen.alex.jdf.common.evaluation.BoardEvaluator;
  */
 public class MinimaxAlphaBetaTimeLimited implements MoveSearch {
     /** Holds the maximum absolute range that alpha or beta can be. */
-    private static final float MAX_ABS_AB_RANGE = 1000.0f;
+    private static final int MAX_ABS_AB_RANGE = 1000;
     /** The board evaluator to use for evaluating board state. */
     private final BoardEvaluator boardEvaluator;
     /** Holds the maximum time allowed to search for in milliseconds. */
@@ -63,7 +63,7 @@ public class MinimaxAlphaBetaTimeLimited implements MoveSearch {
         if (moves.size() == 1) {
             return moves.get(0);
         }
-        float alpha = -MAX_ABS_AB_RANGE;
+        int alpha = -MAX_ABS_AB_RANGE;
         final List<Move> bestMoves = new ArrayList<>();
         final long timeToStopAt = System.currentTimeMillis() + searchTime;
         for (int depth = 1; System.currentTimeMillis() < timeToStopAt;
@@ -73,7 +73,7 @@ public class MinimaxAlphaBetaTimeLimited implements MoveSearch {
                 final PerformedMove performedMove =
                         game.getMovePerformer().perform(currentMove, board);
                 // This is depth 0, so call min at depth 1.
-                final float currentMoveValue =
+                final int currentMoveValue =
                         minimax(board, depth, timeToStopAt, false, game, owner,
                                 opponent, alpha, MAX_ABS_AB_RANGE);
                 if (currentMoveValue > alpha) {
@@ -107,21 +107,21 @@ public class MinimaxAlphaBetaTimeLimited implements MoveSearch {
      * @return                  the value of the current board state N moves
      *                          ahead
      */
-    private float minimax(final Board board, final int depth,
+    private int minimax(final Board board, final int depth,
             final long timeToStopAt,
             final boolean maximisingPlayer, final Game game,
-            final Player owner, final Player opponent, final float alpha,
-            final float beta) {
+            final Player owner, final Player opponent, final int alpha,
+            final int beta) {
         if (depth == 0 || System.currentTimeMillis() > timeToStopAt) {
             return boardEvaluator.evaluate(board, owner);
         } else {
             if (maximisingPlayer) {
-                float currentBestScore = -MAX_ABS_AB_RANGE;
+                int currentBestScore = -MAX_ABS_AB_RANGE;
                 for (final Move currentMove
                         : game.getMoveGenerator().findMoves(board, owner)) {
                     final PerformedMove performedMove =
                             game.getMovePerformer().perform(currentMove, board);
-                    final float currentMoveValue =
+                    final int currentMoveValue =
                             minimax(board, depth - 1, timeToStopAt, false, game,
                                     owner, opponent, alpha, beta);
                     currentBestScore =
@@ -135,12 +135,12 @@ public class MinimaxAlphaBetaTimeLimited implements MoveSearch {
                 }
                 return currentBestScore;
             } else {
-                float currentBestScore = MAX_ABS_AB_RANGE;
+                int currentBestScore = MAX_ABS_AB_RANGE;
                 for (final Move currentMove
                         : game.getMoveGenerator().findMoves(board, opponent)) {
                     final PerformedMove performedMove =
                             game.getMovePerformer().perform(currentMove, board);
-                    final float currentMoveValue =
+                    final int currentMoveValue =
                             minimax(board, depth - 1, timeToStopAt, true, game,
                                     owner, opponent, alpha, beta);
                     currentBestScore =

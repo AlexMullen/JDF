@@ -13,7 +13,7 @@ import mullen.alex.jdf.common.Player;
  */
 public class MaterialDifferenceBoardEvaluator implements BoardEvaluator {
     @Override
-    public final float evaluate(final Board board, final Player owner) {
+    public final int evaluate(final Board board, final Player owner) {
         int ownerPieceCrownedCount = 0;
         int ownerPieceNonCrownedCount = 0;
         int opponentPieceCrownedCount = 0;
