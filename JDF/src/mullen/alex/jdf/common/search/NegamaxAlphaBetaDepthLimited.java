@@ -49,14 +49,14 @@ public class NegamaxAlphaBetaDepthLimited implements MoveSearch {
         rng = new Random();
     }
     @Override
-    public final Move search(final Game game, final Player owner,
-            final Player opponent) {
+    public final Move search(final Game game, final Player maxPlayer,
+            final Player minPlayer) {
         System.out.println("---------------------------------------------------"
                 + "---------------------------------------------------");
 long startTime = System.nanoTime();
         final Board board = game.getBoard();
         final List<Move> moves =
-                game.getMoveGenerator().findMoves(board, owner);
+                game.getMoveGenerator().findMoves(board, maxPlayer);
         if (moves.size() == 1) {
             // No point evaluating only one move.
 System.out.println(moves.get(0));
@@ -70,8 +70,8 @@ System.out.println(moves.get(0));
             final PerformedMove performedMove =
                     game.getMovePerformer().perform(currentMove, board);
             final float currentMoveValue =
-                    -negamax(board, game, owner, opponent, 1, false,
-                            -beta, -alpha);
+                    -negamax(board, game, minPlayer, maxPlayer,
+                            maxSearchDepth - 1, -beta, -alpha);
 System.out.println(currentMove + " = " + currentMoveValue);
             performedMove.undo();
             if (currentMoveValue > alpha) {
@@ -87,35 +87,28 @@ System.out.println("Searched in " + timeTakenMs + "ms ");
 //        return bestMoves.get(0);
         return bestMoves.get(rng.nextInt(bestMoves.size()));
     }
-    private float negamax(
-            final Board board,
-            final Game game,
-            final Player owner,
-            final Player opponent,
-            final int currentDepth,
-            final boolean isOwner,
-            float alpha,
-            float beta) {
-        final Player evaluateFor = (isOwner ? owner : opponent);
-        if (currentDepth == maxSearchDepth) {
-            return quiescence(board, game, owner, opponent, isOwner,
-                    alpha, beta);
-//            return boardEvaluator.evaluate(board, evaluateFor);
+    private float negamax(final Board board, final Game game,
+            final Player maxPlayer, final Player minPlayer, final int depth,
+            float alpha, float beta) {
+        if (depth == 0) {
+            // Perform quiescence search until the position is 'quiet'.
+            return quiescence(board, game, maxPlayer, minPlayer, alpha, beta);
+//            return boardEvaluator.evaluate(board, maxPlayer);
         }
         final List<Move> moves =
-                game.getMoveGenerator().findMoves(board, evaluateFor);
+                game.getMoveGenerator().findMoves(board, maxPlayer);
+        // Check for terminal node (when there is no more moves).
         final int moveCount = moves.size();
         if (moveCount == 0) {
             // Terminal node.
-            return boardEvaluator.evaluate(board, evaluateFor);
+            return boardEvaluator.evaluate(board, maxPlayer);
         }
         float bestScore = -MAX_ABS_AB_RANGE;
         for (int i = 0; i < moveCount; i++) {
             final PerformedMove performedMove =
                     game.getMovePerformer().perform(moves.get(i), board);
-            // Negate the score.
-            final float moveVal = -negamax(board, game, owner, opponent,
-                    currentDepth + 1, !isOwner, -beta, -alpha);
+            final float moveVal = -negamax(board, game, minPlayer, maxPlayer,
+                    depth - 1, -beta, -alpha);
             performedMove.undo();
             bestScore = Math.max(bestScore, moveVal);
             alpha = Math.max(alpha, moveVal);
@@ -126,16 +119,10 @@ System.out.println("Searched in " + timeTakenMs + "ms ");
         }
         return bestScore;
     }
-    private float quiescence(
-            final Board board,
-            final Game game,
-            final Player owner,
-            final Player opponent,
-            final boolean isOwner,
-            float alpha,
+    private float quiescence(final Board board, final Game game,
+            final Player maxPlayer, final Player minPlayer, float alpha,
             float beta) {
-        final Player evaluateFor = (isOwner ? owner : opponent);
-        final float standPat = boardEvaluator.evaluate(board, evaluateFor);
+        final float standPat = boardEvaluator.evaluate(board, maxPlayer);
         if (standPat > beta) {
             return standPat;
         }
@@ -143,7 +130,7 @@ System.out.println("Searched in " + timeTakenMs + "ms ");
 //            alpha = stand_pat;
 //        }
         final List<Move> moves =
-                game.getMoveGenerator().findMoves(board, evaluateFor);
+                game.getMoveGenerator().findMoves(board, maxPlayer);
         // Make sure there are no captures.
         final int moveCount = moves.size();
         if (moveCount >= 1 && !moves.get(0).jumps.isEmpty()) {
@@ -152,13 +139,12 @@ System.out.println("Searched in " + timeTakenMs + "ms ");
                 final PerformedMove performedMove =
                         game.getMovePerformer().perform(moves.get(i), board);
                 final float moveVal =
-                        -quiescence(board, game, owner, opponent, !isOwner,
+                        -quiescence(board, game, minPlayer, maxPlayer,
                                 -beta, -alpha);
                 performedMove.undo();
                 bestScore = Math.max(bestScore, moveVal);
                 alpha = Math.max(alpha, moveVal);
                 if (alpha > beta) {
-                    System.out.println("moves done=" + (i + 1) + ", out of " + moveCount);
                     break;
                 }
             }

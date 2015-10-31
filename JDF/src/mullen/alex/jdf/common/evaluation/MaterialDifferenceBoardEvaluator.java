@@ -23,21 +23,21 @@ public class MaterialDifferenceBoardEvaluator implements BoardEvaluator {
         final int piecesArrayLength = pieces.length;
         for (int i = 0; i < piecesArrayLength; i++) {
             final Piece foundPiece = pieces[i];
-            if (foundPiece == null) {
-                continue;
-            } else if (foundPiece.owner == owner) {
-                // Owner piece.
-                if (foundPiece.isCrowned()) {
-                    ownerPieceCrownedCount++;
+            if (foundPiece != null) {
+                if (foundPiece.owner == owner) {
+                    // Owner piece.
+                    if (foundPiece.isCrowned()) {
+                        ownerPieceCrownedCount++;
+                    } else {
+                        ownerPieceNonCrownedCount++;
+                    }
                 } else {
-                    ownerPieceNonCrownedCount++;
-                }
-            } else {
-                // Opponent piece.
-                if (foundPiece.isCrowned()) {
-                    opponentPieceCrownedCount++;
-                } else {
-                    opponentNonCrownedPieceCount++;
+                    // Opponent piece.
+                    if (foundPiece.isCrowned()) {
+                        opponentPieceCrownedCount++;
+                    } else {
+                        opponentNonCrownedPieceCount++;
+                    }
                 }
             }
         }
