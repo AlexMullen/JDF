@@ -98,14 +98,15 @@ System.out.println("Searched in " + timeTakenMs + "ms ");
             float beta) {
         final Player evaluateFor = (isOwner ? owner : opponent);
         if (currentDepth == maxSearchDepth) {
-//            return quiescence(board, game, owner, opponent, isOwner,
-//                    alpha, beta);
-            return boardEvaluator.evaluate(board, evaluateFor);
+            return quiescence(board, game, owner, opponent, isOwner,
+                    alpha, beta);
+//            return boardEvaluator.evaluate(board, evaluateFor);
         }
         final List<Move> moves =
                 game.getMoveGenerator().findMoves(board, evaluateFor);
         final int moveCount = moves.size();
         if (moveCount == 0) {
+            // Terminal node.
             return boardEvaluator.evaluate(board, evaluateFor);
         }
         float bestScore = -MAX_ABS_AB_RANGE;
@@ -145,7 +146,7 @@ System.out.println("Searched in " + timeTakenMs + "ms ");
                 game.getMoveGenerator().findMoves(board, evaluateFor);
         // Make sure there are no captures.
         final int moveCount = moves.size();
-        if (moveCount >= 1 && moves.get(0).jumps.size() > 0) {
+        if (moveCount >= 1 && !moves.get(0).jumps.isEmpty()) {
             float bestScore = -MAX_ABS_AB_RANGE;
             for (int i = 0; i < moveCount; i++) {
                 final PerformedMove performedMove =
@@ -157,6 +158,7 @@ System.out.println("Searched in " + timeTakenMs + "ms ");
                 bestScore = Math.max(bestScore, moveVal);
                 alpha = Math.max(alpha, moveVal);
                 if (alpha > beta) {
+                    System.out.println("moves done=" + (i + 1) + ", out of " + moveCount);
                     break;
                 }
             }

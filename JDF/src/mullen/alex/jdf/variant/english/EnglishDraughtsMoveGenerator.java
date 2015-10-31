@@ -46,8 +46,8 @@ public class EnglishDraughtsMoveGenerator implements MoveGenerator {
                      * as they cannot be taken if there are jumps available
                      * in English Draughts rules.
                      */
-                    findSimpleMovesForPiece(board, foundPiece,
-                            piecePosition, foundSimpleMoves);
+                    findSimpleMovesForPiece(
+                            board, foundPiece, piecePosition, foundSimpleMoves);
                 }
             }
         }
