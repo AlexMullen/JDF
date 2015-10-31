@@ -62,8 +62,7 @@ long startTime = System.nanoTime();
 System.out.println(moves.get(0));
             return moves.get(0);
         }
-        float alpha = -MAX_ABS_AB_RANGE;
-        final float beta  =  MAX_ABS_AB_RANGE;
+        float bestMoveScore = -MAX_ABS_AB_RANGE;
         final List<Move> bestMoves = new ArrayList<>(20);
         for (int i = 0; i < moves.size(); i++) {
             final Move currentMove = moves.get(i);
@@ -71,14 +70,14 @@ System.out.println(moves.get(0));
                     game.getMovePerformer().perform(currentMove, board);
             final float currentMoveValue =
                     -negamax(board, game, minPlayer, maxPlayer,
-                            maxSearchDepth - 1, -beta, -alpha);
+                            maxSearchDepth - 1, -MAX_ABS_AB_RANGE, MAX_ABS_AB_RANGE);
 System.out.println(currentMove + " = " + currentMoveValue);
             performedMove.undo();
-            if (currentMoveValue > alpha) {
-                alpha = currentMoveValue;
+            if (currentMoveValue > bestMoveScore) {
+                bestMoveScore = currentMoveValue;
                 bestMoves.clear();
                 bestMoves.add(currentMove);
-            } else if (Math.abs(currentMoveValue - alpha) < 0.000000001) {
+            } else if (Math.abs(currentMoveValue - bestMoveScore) < 0.000000001) {
                 bestMoves.add(currentMove);
             }
         }
@@ -113,7 +112,7 @@ System.out.println("Searched in " + timeTakenMs + "ms ");
             bestScore = Math.max(bestScore, moveVal);
             alpha = Math.max(alpha, moveVal);
 //            if (alpha >= beta) { // Need better evaluation function for this.
-            if (alpha > beta) {
+            if (alpha >= beta) {
                 break;
             }
         }
@@ -123,7 +122,7 @@ System.out.println("Searched in " + timeTakenMs + "ms ");
             final Player maxPlayer, final Player minPlayer, float alpha,
             float beta) {
         final float standPat = boardEvaluator.evaluate(board, maxPlayer);
-        if (standPat > beta) {
+        if (standPat >= beta) {
             return standPat;
         }
 //        if (alpha < stand_pat) {
@@ -144,7 +143,7 @@ System.out.println("Searched in " + timeTakenMs + "ms ");
                 performedMove.undo();
                 bestScore = Math.max(bestScore, moveVal);
                 alpha = Math.max(alpha, moveVal);
-                if (alpha > beta) {
+                if (alpha >= beta) {
                     break;
                 }
             }

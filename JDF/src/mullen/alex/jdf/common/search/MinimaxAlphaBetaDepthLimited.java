@@ -26,8 +26,6 @@ public class MinimaxAlphaBetaDepthLimited implements MoveSearch {
     private final BoardEvaluator boardEvaluator;
     /** Holds the maximum depth to search to. */
     private final int maxSearchDepth;
-    /** The threshold to use for alpha-beta pruning. */
-    private final int threshold;
     /**
      * Creates a new instance that uses the specified board evaluator
      * and searches to the specified depth.
@@ -36,29 +34,27 @@ public class MinimaxAlphaBetaDepthLimited implements MoveSearch {
      *
      * @param evaluator    the board evaluator to use
      * @param depth        the depth to search
-     * @param abThreshold  the threshold to use for alpha-beta pruning
      *
      * @throws IllegalArgumentException  if <code>depth</code> < 1
      * @throws NullPointerException      if <code>evaluator</code> is
      *                                   <code>null</code>
      */
     public MinimaxAlphaBetaDepthLimited(final BoardEvaluator evaluator,
-            final int depth, final int abThreshold) {
+            final int depth) {
         boardEvaluator = Objects.requireNonNull(evaluator);
         if (depth < 1) {
             throw new IllegalArgumentException("depth(" + depth + ") < 1");
         }
         maxSearchDepth = depth;
-        threshold = abThreshold;
     }
     @Override
-    public final Move search(final Game game, final Player owner,
-            final Player opponent) {
+    public final Move search(final Game game, final Player max,
+            final Player min) {
         System.out.println("---------------------------------------------------"
                 + "---------------------------------------------------");
         final Board board = game.getBoard();
         final List<Move> moves =
-                game.getMoveGenerator().findMoves(board, owner);
+                game.getMoveGenerator().findMoves(board, max);
         if (moves.size() == 1) {
             // No point evaluating only one move.
             System.out.println(moves.get(0));
@@ -70,8 +66,8 @@ public class MinimaxAlphaBetaDepthLimited implements MoveSearch {
             final PerformedMove performedMove =
                     game.getMovePerformer().perform(currentMove, board);
             final float currentMoveValue =
-                    minimax(board, 1, false, game, owner, opponent,
-                            alpha, MAX_ABS_AB_RANGE);
+                    minimax(board, 1, false, game, max, min,
+                            -MAX_ABS_AB_RANGE, MAX_ABS_AB_RANGE);
             System.out.println(currentMove + " = " + currentMoveValue);
             performedMove.undo();
             if (currentMoveValue > alpha) {
@@ -97,8 +93,8 @@ public class MinimaxAlphaBetaDepthLimited implements MoveSearch {
      *                          turn; <code>false</code> if it is the opponents
      *                          turn (minimising player)
      * @param game              the game context
-     * @param owner             the maximising player
-     * @param opponent          the opponent (minimising player)
+     * @param max               the maximising player
+     * @param min               the opponent (minimising player)
      * @param alpha             the current alpha value
      * @param beta              the current beta value
      * @return                  the value of the current board state N moves
@@ -106,29 +102,29 @@ public class MinimaxAlphaBetaDepthLimited implements MoveSearch {
      */
     private float minimax(final Board board, final int currentDepth,
             final boolean maximisingPlayer, final Game game,
-            final Player owner, final Player opponent, float alpha,
+            final Player max, final Player min, float alpha,
             float beta) {
         if (currentDepth == maxSearchDepth) {
-            return boardEvaluator.evaluate(board, owner);
+            return boardEvaluator.evaluate(board, max);
         } else {
             if (maximisingPlayer) {
                 float currentBestValue = -MAX_ABS_AB_RANGE;
                 final List<Move> moves =
-                        game.getMoveGenerator().findMoves(board, owner);
+                        game.getMoveGenerator().findMoves(board, max);
                 if (moves.isEmpty()) {
-                    return boardEvaluator.evaluate(board, owner);
+                    return boardEvaluator.evaluate(board, max);
                 }
                 for (final Move currentMove : moves) {
                     final PerformedMove performedMove =
                             game.getMovePerformer().perform(currentMove, board);
                     currentBestValue = Math.max(currentBestValue,
-                            minimax(board, currentDepth + 1, false, game, owner,
-                                    opponent, alpha, beta));
+                            minimax(board, currentDepth + 1, false, game, max,
+                                    min, alpha, beta));
                     performedMove.undo();
                     alpha = Math.max(alpha, currentBestValue);
-                    if (alpha + threshold >= beta) {
+                    if (alpha >= beta) {
                         // Prune.
-                        return alpha;
+                        break;
                     }
                 }
                 return currentBestValue;
@@ -136,21 +132,21 @@ public class MinimaxAlphaBetaDepthLimited implements MoveSearch {
                 // Minimising player.
                 float currentBestValue = MAX_ABS_AB_RANGE;
                 final List<Move> moves =
-                        game.getMoveGenerator().findMoves(board, opponent);
+                        game.getMoveGenerator().findMoves(board, min);
                 if (moves.isEmpty()) {
-                    return boardEvaluator.evaluate(board, owner);
+                    return boardEvaluator.evaluate(board, max);
                 }
                 for (final Move currentMove : moves) {
                     final PerformedMove performedMove =
                             game.getMovePerformer().perform(currentMove, board);
                     currentBestValue = Math.min(currentBestValue,
-                            minimax(board, currentDepth + 1, true, game, owner,
-                                    opponent, alpha, beta));
+                            minimax(board, currentDepth + 1, true, game, max,
+                                    min, alpha, beta));
                     performedMove.undo();
                     beta = Math.min(beta, currentBestValue);
-                    if (beta + threshold <= alpha) {
+                    if (alpha >= beta) {
                         // Prune.
-                        return beta;
+                        break;
                     }
                 }
                 return currentBestValue;
