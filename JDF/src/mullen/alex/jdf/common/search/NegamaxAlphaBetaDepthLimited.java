@@ -53,13 +53,13 @@ public class NegamaxAlphaBetaDepthLimited implements MoveSearch {
             final Player minPlayer) {
         System.out.println("---------------------------------------------------"
                 + "---------------------------------------------------");
-long startTime = System.nanoTime();
+        long startTime = System.nanoTime();
         final Board board = game.getBoard();
         final List<Move> moves =
                 game.getMoveGenerator().findMoves(board, maxPlayer);
         if (moves.size() == 1) {
             // No point evaluating only one move.
-System.out.println(moves.get(0));
+            System.out.println(moves.get(0));
             return moves.get(0);
         }
         float bestMoveScore = -MAX_ABS_AB_RANGE;
@@ -70,20 +70,21 @@ System.out.println(moves.get(0));
                     game.getMovePerformer().perform(currentMove, board);
             final float currentMoveValue =
                     -negamax(board, game, minPlayer, maxPlayer,
-                            maxSearchDepth - 1, -MAX_ABS_AB_RANGE, MAX_ABS_AB_RANGE);
-System.out.println(currentMove + " = " + currentMoveValue);
+                            maxSearchDepth - 1, -MAX_ABS_AB_RANGE,
+                            MAX_ABS_AB_RANGE);
+            System.out.println(currentMove + " = " + currentMoveValue);
             performedMove.undo();
             if (currentMoveValue > bestMoveScore) {
                 bestMoveScore = currentMoveValue;
                 bestMoves.clear();
                 bestMoves.add(currentMove);
-            } else if (Math.abs(currentMoveValue - bestMoveScore) < 0.000000001) {
+            } else if (Math.abs(currentMoveValue - bestMoveScore)
+                    < 0.000000001) {
                 bestMoves.add(currentMove);
             }
         }
-long timeTakenMs = (System.nanoTime() - startTime) / 1000000;
-System.out.println("Searched in " + timeTakenMs + "ms ");
-//        return bestMoves.get(0);
+        long timeTakenMs = (System.nanoTime() - startTime) / 1000000;
+        System.out.println("Searched in " + timeTakenMs + "ms ");
         return bestMoves.get(rng.nextInt(bestMoves.size()));
     }
     private float negamax(final Board board, final Game game,
@@ -94,15 +95,10 @@ System.out.println("Searched in " + timeTakenMs + "ms ");
             return quiescence(board, game, maxPlayer, minPlayer, alpha, beta);
 //            return boardEvaluator.evaluate(board, maxPlayer);
         }
+        float bestScore = -MAX_ABS_AB_RANGE;
         final List<Move> moves =
                 game.getMoveGenerator().findMoves(board, maxPlayer);
-        // Check for terminal node (when there is no more moves).
         final int moveCount = moves.size();
-        if (moveCount == 0) {
-            // Terminal node.
-            return boardEvaluator.evaluate(board, maxPlayer);
-        }
-        float bestScore = -MAX_ABS_AB_RANGE;
         for (int i = 0; i < moveCount; i++) {
             final PerformedMove performedMove =
                     game.getMovePerformer().perform(moves.get(i), board);
@@ -111,7 +107,6 @@ System.out.println("Searched in " + timeTakenMs + "ms ");
             performedMove.undo();
             bestScore = Math.max(bestScore, moveVal);
             alpha = Math.max(alpha, moveVal);
-//            if (alpha >= beta) { // Need better evaluation function for this.
             if (alpha >= beta) {
                 break;
             }

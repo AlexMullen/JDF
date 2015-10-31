@@ -5,14 +5,19 @@ import java.util.Arrays;
 
 /**
  * Represents a board for the game of draughts.
+ * <p>
+ * The flat arrays used for this can be accessed like a 2D array using the
+ * following formula.
+ * <p>
+ * <code>y + (height * x)</code>
  *
  * @author  Alex Mullen
  *
  */
 public class Board {
-    /** Holds the width of the board. */
+    /** The width of the board. */
     public final int width;
-    /** Holds the height of the board. */
+    /** The height of the board. */
     public final int height;
     /** The piece positions represented by a one-dimensional array. */
     public final Piece[] pieces;

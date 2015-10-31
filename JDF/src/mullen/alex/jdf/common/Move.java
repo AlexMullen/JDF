@@ -11,15 +11,17 @@ import java.util.List;
  *
  */
 public class Move {
-    /** Holds the original position before the move. */
+    /** The original position before the move. */
     public final BoardPosition from;
-    /** Holds the destination position for the move. */
+    /** The destination position for the move. */
     public final BoardPosition to;
-    /** Holds the list of jumps for this move if any. */
+    /** The jumps for this move if any. */
     public final List<Jump> jumps;
     /**
      * Creates a new instance using the specified source and destination
      * position.
+     * <p>
+     * An empty list is assigned to {@link #jumps}.
      *
      * @param fromPosition     the source position of the move
      * @param toPosition       the destination position of the move
@@ -46,9 +48,10 @@ public class Move {
             final BoardPosition toPosition, final List<Jump> jumpedPositions) {
         from = fromPosition;
         to = toPosition;
-        // If the move has no jumps then assign an empty list.
-        jumps = (jumpedPositions == null ?
-                Collections.<Jump>emptyList() : jumpedPositions);
+        jumps = jumpedPositions;
+//        // If the move has no jumps then assign an empty list.
+//        jumps = (jumpedPositions == null ?
+//                Collections.<Jump>emptyList() : jumpedPositions);
     }
     @Override
     public final String toString() {

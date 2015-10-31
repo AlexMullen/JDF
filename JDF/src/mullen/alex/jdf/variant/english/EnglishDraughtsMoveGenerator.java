@@ -120,8 +120,6 @@ public class EnglishDraughtsMoveGenerator implements MoveGenerator {
                 // Only get downward jumps.
                 findJumpBottomLeft(board, piecePosition, pieceOwner, jumps);
                 findJumpBottomRight(board, piecePosition, pieceOwner, jumps);
-            } else {
-                throw new IllegalStateException("Unhandled move direction.");
             }
         }
     }
@@ -152,8 +150,6 @@ public class EnglishDraughtsMoveGenerator implements MoveGenerator {
                 // Only get downward moves.
                 findMoveBottomLeft(board, piecePosition, moves);
                 findMoveBottomRight(board, piecePosition, moves);
-            } else {
-                throw new IllegalStateException("Unhandled move direction.");
             }
         }
     }

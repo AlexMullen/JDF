@@ -7,11 +7,11 @@ package mullen.alex.jdf.common;
  *
  */
 public class Jump {
-    /** Holds the original position before the jump. */
+    /** The original position before the jump. */
     public final BoardPosition from;
-    /** Holds the destination position for the jump. */
+    /** The destination position for the jump. */
     public final BoardPosition to;
-    /** Holds the position that was jumped over. */
+    /** The position that was jumped over. */
     public final BoardPosition jumped;
     /**
      * Creates a new instance using the specified source, destination
