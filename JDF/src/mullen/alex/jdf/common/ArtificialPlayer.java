@@ -53,7 +53,13 @@ public class ArtificialPlayer implements Player {
      * @return      the move to perform for this player
      */
     public final Move requestMove(final Game game) {
-        return moveSearch.search(game, this, game.getOpponent(this));
+        final long startTime = System.nanoTime();
+        final int nsInMs = 1000000;
+        final Move moveToPerform =
+                moveSearch.search(game, this, game.getOpponent(this));
+        long timeTakenMs = (System.nanoTime() - startTime) / nsInMs;
+        System.out.println("Searched in " + timeTakenMs + "ms ");
+        return moveToPerform;
     }
     @Override
     public final String toString() {

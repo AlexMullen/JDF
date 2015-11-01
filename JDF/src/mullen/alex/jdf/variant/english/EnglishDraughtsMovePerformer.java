@@ -19,7 +19,7 @@ public class EnglishDraughtsMovePerformer implements MovePerformer {
     @Override
     public final PerformedMove perform(final Move move, final Board board) {
         final int jumpsSize = move.jumps.size();
-        final List<UndoOperation> undoOperations =
+        final List<SetUndoOperation> undoOperations =
                 new ArrayList<>(3 + jumpsSize);
         final Piece pieceToMove = board.getPieceAt(move.from);
         undoOperations.add(setPieceAt(board, move.from, null));
@@ -39,15 +39,7 @@ public class EnglishDraughtsMovePerformer implements MovePerformer {
             pieceToMoveCopy.crown();
             undoOperations.add(setPieceAt(board, move.to, pieceToMoveCopy));
         }
-        return new PerformedMove() {
-            @Override
-            public void undo() {
-                // Go backwards.
-                for (int i = undoOperations.size() - 1; i >= 0; i--) {
-                    undoOperations.get(i).undo();
-                }
-            }
-        };
+        return new EnglishDraughtsPerformedMove(undoOperations);
     }
     /**
      * Gets whether the specified Y position is a kings row.
@@ -62,37 +54,25 @@ public class EnglishDraughtsMovePerformer implements MovePerformer {
     }
     /**
      * Sets the piece at the specified position on the given board and returns
-     * a <code>UndoOperation</code> for it so that it can be rolled-back.
+     * a <code>SetUndoOperation</code> for it so that it can be rolled-back.
      *
      * @param board     the board to set on
      * @param position  the position to set at
      * @param piece     the piece to set at the position
-     * @return          an <code>UndoOperation</code> that can rollback this
+     * @return          an <code>SetUndoOperation</code> that can rollback this
      *                  operation
      */
-    private static UndoOperation setPieceAt(final Board board,
+    private static SetUndoOperation setPieceAt(final Board board,
             final BoardPosition position, final Piece piece) {
         return new SetUndoOperation(board, position,
                 board.setPieceAndGetAt(position, piece));
-    }
-    /**
-     * An interface that represents an operation that will undo a single
-     * modification made to a board.
-     *
-     * @author  Alex Mullen
-     */
-    private interface UndoOperation {
-        /**
-         * Undoes an operation.
-         */
-        void undo();
     }
     /**
      * A class that represents an operation to undo a set operation on a board.
      *
      * @author  Alex Mullen
      */
-    private static final class SetUndoOperation implements UndoOperation {
+    private static final class SetUndoOperation {
         /** Holds the piece to set at the position. */
         private final Piece pieceToSet;
         /** Holds the board to perform the operation on. */
@@ -113,9 +93,38 @@ public class EnglishDraughtsMovePerformer implements MovePerformer {
             positionToSet = position;
             pieceToSet = piece;
         }
-        @Override
+        /**
+         * Undoes a set operation.
+         */
         public void undo() {
             boardToSet.setPieceAt(positionToSet, pieceToSet);
+        }
+    }
+    /**
+     * The {@link PerformedMove} implementation for this variation.
+     *
+     * @author  Alex Mullen
+     */
+    private static final class EnglishDraughtsPerformedMove
+            implements PerformedMove {
+        /** Holds the list of operations that were performed. */
+        private final List<SetUndoOperation> undoOperations;
+        /**
+         * Creates a new instance using the specified operations.
+         *
+         * @param undoOps  the list of operations of the move
+         */
+        protected EnglishDraughtsPerformedMove(
+                final List<SetUndoOperation> undoOps) {
+            undoOperations = undoOps;
+        }
+        @Override
+        public void undo() {
+            // Undo backwards.
+            final int size = undoOperations.size();
+            for (int i = size - 1; i >= 0; i--) {
+                undoOperations.get(i).undo();
+            }
         }
     }
 }
