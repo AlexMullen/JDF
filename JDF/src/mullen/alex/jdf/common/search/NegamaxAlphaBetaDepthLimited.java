@@ -10,7 +10,6 @@ import java.util.Random;
 import mullen.alex.jdf.common.Board;
 import mullen.alex.jdf.common.Game;
 import mullen.alex.jdf.common.Move;
-import mullen.alex.jdf.common.MovePerformer;
 import mullen.alex.jdf.common.Player;
 import mullen.alex.jdf.common.MovePerformer.PerformedMove;
 import mullen.alex.jdf.common.evaluation.BoardEvaluator;
@@ -35,7 +34,7 @@ public class NegamaxAlphaBetaDepthLimited implements MoveSearch {
     private static final Comparator<Move> DESCENDING_JUMP_COMPARATOR =
             new Comparator<Move>() {
         @Override
-        public final int compare(final Move o1, final Move o2) {
+        public int compare(final Move o1, final Move o2) {
             return o2.jumps.size() - o1.jumps.size();
         }
     };
@@ -121,15 +120,14 @@ public class NegamaxAlphaBetaDepthLimited implements MoveSearch {
                 game.getMoveGenerator().findMoves(board, maxPlayer);
         final int moveCount = moves.size();
         // If the moves are jumps, sort them in descending order.
-        if (moveCount > 1 && moves.get(0).jumps.size() > 0) {
-            Collections.sort(moves, DESCENDING_JUMP_COMPARATOR);
-        }
+//        if (moveCount > 1 && !moves.get(0).jumps.isEmpty()) {
+//            Collections.sort(moves, DESCENDING_JUMP_COMPARATOR);
+//        }
         // Check each successive state.
-        final MovePerformer movePerformer = game.getMovePerformer();
         for (int i = 0; i < moveCount; i++) {
             // Apply the move.
             final PerformedMove performedMove =
-                    movePerformer.perform(moves.get(i), board);
+                    game.getMovePerformer().perform(moves.get(i), board);
             // Evaluate it.
             final int moveVal = -negamax(board, game, minPlayer, maxPlayer,
                     depth - 1, -beta, -alpha);
@@ -172,12 +170,11 @@ public class NegamaxAlphaBetaDepthLimited implements MoveSearch {
                 game.getMoveGenerator().findMoves(board, maxPlayer);
         // Make sure there are no captures.
         final int moveCount = moves.size();
-        final MovePerformer movePerformer = game.getMovePerformer();
         if (moveCount >= 1 && !moves.get(0).jumps.isEmpty()) {
             int bestScore = -MAX_ABS_AB_RANGE;
             for (int i = 0; i < moveCount; i++) {
                 final PerformedMove performedMove =
-                        movePerformer.perform(moves.get(i), board);
+                        game.getMovePerformer().perform(moves.get(i), board);
                 final int moveVal =
                         -quiescence(board, game, minPlayer, maxPlayer,
                                 -beta, -alpha);
