@@ -194,9 +194,10 @@ public class EnglishDraughtsMoveGenerator implements MoveGenerator {
             sequences.add(new Move(path.get(0).from, jump.to, path));
         } else {
 //          possibly optimization to avoid memory allocation
-            exploreJump(board, piece, furtherJumps.get(0), path, sequences);
+            // TODO: Possible bug here
+//            exploreJump(board, piece, furtherJumps.get(0), path, sequences);
             final int furtherJumpsSize = furtherJumps.size();
-            for (int i = 1; i < furtherJumpsSize; i++) {
+            for (int i = 0; i < furtherJumpsSize; i++) {
                 final Jump furtherJump = furtherJumps.get(i);
                 exploreJump(board, piece, furtherJump, new ArrayList<>(path),
                         sequences);
@@ -242,12 +243,10 @@ public class EnglishDraughtsMoveGenerator implements MoveGenerator {
                 // Only get upward jumps.
                 findJumpAboveLeft(board, piecePosition, pieceOwner, jumps);
                 findJumpAboveRight(board, piecePosition, pieceOwner, jumps);
-            } else if (piece.getMoveDirection() == MoveDirection.DOWN) {
+            } else {
                 // Only get downward jumps.
                 findJumpBottomLeft(board, piecePosition, pieceOwner, jumps);
                 findJumpBottomRight(board, piecePosition, pieceOwner, jumps);
-            } else {
-                throw new IllegalStateException("Unhandled move direction.");
             }
         }
         return jumps;

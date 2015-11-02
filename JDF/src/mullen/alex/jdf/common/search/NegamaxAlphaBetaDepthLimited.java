@@ -3,6 +3,7 @@ package mullen.alex.jdf.common.search;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Deque;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
@@ -30,14 +31,15 @@ public class NegamaxAlphaBetaDepthLimited implements MoveSearch {
     private final int maxSearchDepth;
     /** The random number generator to use when choosing equal moves. */
     private final Random rng;
-    /** The comparator to use for sorting jumps in descending order. */
-    private static final Comparator<Move> DESCENDING_JUMP_COMPARATOR =
-            new Comparator<Move>() {
-        @Override
-        public int compare(final Move o1, final Move o2) {
-            return o2.jumps.size() - o1.jumps.size();
-        }
-    };
+    private int nodesEvaluated = 0;
+//    /** The comparator to use for sorting jumps in descending order. */
+//    private static final Comparator<Move> DESCENDING_JUMP_COMPARATOR =
+//            new Comparator<Move>() {
+//        @Override
+//        public int compare(final Move o1, final Move o2) {
+//            return o2.jumps.size() - o1.jumps.size();
+//        }
+//    };
     /**
      * Creates a new instance that uses the specified board evaluator
      * and searches to the specified depth.
@@ -72,16 +74,15 @@ public class NegamaxAlphaBetaDepthLimited implements MoveSearch {
             System.out.println(moves.get(0));
             return moves.get(0);
         }
+        nodesEvaluated = 0;
         int bestMoveScore = -MAX_ABS_AB_RANGE;
         final List<Move> bestMoves = new ArrayList<>(20);
         for (int i = 0; i < moveCount; i++) {
             final Move currentMove = moves.get(i);
             final PerformedMove performedMove =
                     game.getMovePerformer().perform(currentMove, board);
-            final int currentMoveValue =
-                    -negamax(board, game, minPlayer, maxPlayer,
-                            maxSearchDepth - 1, -MAX_ABS_AB_RANGE,
-                            MAX_ABS_AB_RANGE);
+            final int currentMoveValue = -MTDF(board, game, minPlayer, maxPlayer,
+                    maxSearchDepth - 1, 0);
             performedMove.undo();
             System.out.println(currentMove + " = " + currentMoveValue);
             if (currentMoveValue > bestMoveScore) {
@@ -92,6 +93,7 @@ public class NegamaxAlphaBetaDepthLimited implements MoveSearch {
                 bestMoves.add(currentMove);
             }
         }
+        System.out.println("nodes evaluated: " + nodesEvaluated);
         return bestMoves.get(rng.nextInt(bestMoves.size()));
     }
     /**
@@ -111,8 +113,8 @@ public class NegamaxAlphaBetaDepthLimited implements MoveSearch {
             int alpha, int beta) {
         if (depth == 0) {
             // Perform quiescence search until the position is 'quiet'.
-            return quiescence(board, game, maxPlayer, minPlayer, alpha, beta);
-//            return boardEvaluator.evaluate(board, maxPlayer);
+//            return quiescence(board, game, maxPlayer, minPlayer, alpha, beta);
+            return boardEvaluator.evaluate(board, maxPlayer);
         }
         int bestScore = -MAX_ABS_AB_RANGE;
         // Generate the legal moves for the current player.
@@ -141,6 +143,27 @@ public class NegamaxAlphaBetaDepthLimited implements MoveSearch {
         }
         return bestScore;
     }
+    private int MTDF(final Board board, final Game game, final Player maxPlayer,
+            final Player minPlayer, final int depth, final int firstGuess) {
+        int g = firstGuess;
+        int upperbound = MAX_ABS_AB_RANGE;
+        int lowerbound = -MAX_ABS_AB_RANGE;
+        int beta;
+        do {
+            if (g == lowerbound) {
+                beta = g + 1;
+            } else {
+                beta = g;
+            }
+            g = negamax(board, game, maxPlayer, minPlayer, depth, beta - 1, beta);
+            if (g < beta) {
+                upperbound = g;
+            } else {
+                lowerbound = g;
+            }
+        } while (lowerbound < upperbound);
+        return g;
+    }
     /**
      * Performs a quiescence negamax search that stops when it reaches a 'quiet'
      * position.
@@ -160,9 +183,10 @@ public class NegamaxAlphaBetaDepthLimited implements MoveSearch {
             final Player maxPlayer, final Player minPlayer, int alpha,
             int beta) {
         final int standPat = boardEvaluator.evaluate(board, maxPlayer);
-        if (standPat >= beta) {
-            return standPat;
-        }
+        nodesEvaluated++;
+//        if (standPat >= beta) {
+//            return standPat;
+//        }
 //        if (alpha < stand_pat) {
 //            alpha = stand_pat;
 //        }
