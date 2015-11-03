@@ -1,7 +1,6 @@
 package mullen.alex.jdf.common.evaluation;
 
 import mullen.alex.jdf.common.Board;
-import mullen.alex.jdf.common.Player;
 
 
 /**
@@ -14,14 +13,14 @@ import mullen.alex.jdf.common.Player;
 public interface BoardEvaluator {
     /**
      * Evaluates the specified board from the specified
-     * <code>PieceOwner</code>'s perspective and returns a score value.
+     * colour's perspective and returns a score value.
      * <p>
      * The higher the value, the better the state of the board is for the
-     * given owner.
+     * given colour.
      *
-     * @param board  the board to evaluate
-     * @param owner  the piece owner the score applies to
-     * @return       the score given
+     * @param board   the board to evaluate
+     * @param colour  the colour the score applies to
+     * @return        the score given
      */
-    int evaluate(Board board, Player owner);
+    int evaluate(Board board, int colour);
 }

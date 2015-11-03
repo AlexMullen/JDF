@@ -2,7 +2,6 @@ package mullen.alex.jdf.common.evaluation;
 
 import mullen.alex.jdf.common.Board;
 import mullen.alex.jdf.common.Piece;
-import mullen.alex.jdf.common.Player;
 
 /**
  * A basic board evaluator implementation that simply returns the difference in
@@ -13,7 +12,7 @@ import mullen.alex.jdf.common.Player;
  */
 public class MaterialDifferenceBoardEvaluator implements BoardEvaluator {
     @Override
-    public final int evaluate(final Board board, final Player owner) {
+    public final int evaluate(final Board board, final int colour) {
         int ownerPieceCrownedCount = 0;
         int ownerPieceNonCrownedCount = 0;
         int opponentPieceCrownedCount = 0;
@@ -24,7 +23,7 @@ public class MaterialDifferenceBoardEvaluator implements BoardEvaluator {
         for (int i = 0; i < piecesArrayLength; i++) {
             final Piece foundPiece = pieces[i];
             if (foundPiece != null) {
-                if (foundPiece.owner == owner) {
+                if (foundPiece.colour == colour) {
                     // Owner piece.
                     if (foundPiece.isCrowned()) {
                         ownerPieceCrownedCount++;

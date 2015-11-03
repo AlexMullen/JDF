@@ -101,13 +101,13 @@ public final class MoveGeneratorUtil {
      *
      * @param board         the board to use
      * @param fromPosition  the position
-     * @param owner         the owner of the piece any found jump is for
+     * @param colour        the colour of the piece any found jump is for
      * @param outJumps      the collection any found jump will be added to
      */
     public static void findJumpAboveLeft(
             final Board board,
             final BoardPosition fromPosition,
-            final Player owner, final Collection<Jump> outJumps) {
+            final int colour, final Collection<Jump> outJumps) {
         final int landPosX = fromPosition.x - 2;
         final int landPosY = fromPosition.y - 2;
         /*
@@ -121,7 +121,7 @@ public final class MoveGeneratorUtil {
             final Piece pieceToJumpOver =
                     board.getPieceAt(jumpedPosX, jumpedPosY);
             // Check if the piece that can be jumped (if any) is an enemy piece.
-            if (pieceToJumpOver != null && owner != pieceToJumpOver.owner) {
+            if (pieceToJumpOver != null && colour != pieceToJumpOver.colour) {
                 // This is a jump move.
                 outJumps.add(new Jump(
                         fromPosition,
@@ -136,13 +136,13 @@ public final class MoveGeneratorUtil {
      *
      * @param board         the board to use
      * @param fromPosition  the position
-     * @param owner         the owner of the piece any found jump is for
+     * @param colour        the colour of the piece any found jump is for
      * @param outJumps      the collection any found jump will be added to
      */
     public static void findJumpAboveRight(
             final Board board,
             final BoardPosition fromPosition,
-            final Player owner, final Collection<Jump> outJumps) {
+            final int colour, final Collection<Jump> outJumps) {
         final int landPosX = fromPosition.x + 2;
         final int landPosY = fromPosition.y - 2;
         /*
@@ -156,7 +156,7 @@ public final class MoveGeneratorUtil {
             final Piece pieceToJumpOver =
                     board.getPieceAt(jumpedPosX, jumpedPosY);
             // Check if the piece that can be jumped (if any) is an enemy piece.
-            if (pieceToJumpOver != null && owner != pieceToJumpOver.owner) {
+            if (pieceToJumpOver != null && colour != pieceToJumpOver.colour) {
                 // This is a jump move.
                 outJumps.add(new Jump(
                         fromPosition,
@@ -171,13 +171,13 @@ public final class MoveGeneratorUtil {
      *
      * @param board         the board to use
      * @param fromPosition  the position
-     * @param owner         the owner of the piece any found jump is for
+     * @param colour        the colour of the piece any found jump is for
      * @param outJumps      the collection any found jump will be added to
      */
     public static void findJumpBottomLeft(
             final Board board,
             final BoardPosition fromPosition,
-            final Player owner, final Collection<Jump> outJumps) {
+            final int colour, final Collection<Jump> outJumps) {
         final int landPosX = fromPosition.x - 2;
         final int landPosY = fromPosition.y + 2;
         /*
@@ -192,7 +192,7 @@ public final class MoveGeneratorUtil {
                     board.getPieceAt(jumpedPosX, jumpedPosY);
             // Check if the piece that can be jumped (if any) is an enemy piece.
             if (pieceToJumpOver != null
-                    && owner != pieceToJumpOver.owner) {
+                    && colour != pieceToJumpOver.colour) {
                 // This is a jump move.
                 outJumps.add(new Jump(
                         fromPosition,
@@ -207,13 +207,13 @@ public final class MoveGeneratorUtil {
      *
      * @param board         the board to use
      * @param fromPosition  the position
-     * @param owner         the owner of the piece any found jump is for
+     * @param colour        the colour of the piece any found jump is for
      * @param outJumps      the collection any found jump will be added to
      */
     public static void findJumpBottomRight(
             final Board board,
             final BoardPosition fromPosition,
-            final Player owner, final Collection<Jump> outJumps) {
+            final int colour, final Collection<Jump> outJumps) {
         final int landPosX = fromPosition.x + 2;
         final int landPosY = fromPosition.y + 2;
         /*
@@ -227,7 +227,7 @@ public final class MoveGeneratorUtil {
             final Piece pieceToJumpOver =
                     board.getPieceAt(jumpedPosX, jumpedPosY);
             // Check if the piece that can be jumped (if any) is an enemy piece.
-            if (pieceToJumpOver != null && owner != pieceToJumpOver.owner) {
+            if (pieceToJumpOver != null && colour != pieceToJumpOver.colour) {
                 // This is a jump move.
                 outJumps.add(new Jump(
                         fromPosition,
@@ -326,11 +326,11 @@ public final class MoveGeneratorUtil {
      *
      * @param board         the board to use
      * @param fromPosition  the position
-     * @param owner         the owner of the piece any found jump is for
+     * @param colour        the colour of the piece any found jump is for
      * @param outJumps      the collection any found jumps are added to
      */
     public static void findFlyingJumpsAboveLeft(final Board board,
-            final BoardPosition fromPosition, final Player owner,
+            final BoardPosition fromPosition, final int colour,
             final Collection<Jump> outJumps) {
         int squareX = fromPosition.x;
         int squareY = fromPosition.y;
@@ -338,7 +338,7 @@ public final class MoveGeneratorUtil {
         while (board.isPositionWithinBounds(--squareX, --squareY)) {
             final Piece foundPiece = board.getPieceAt(squareX, squareY);
             if (foundPiece != null) {
-                if (foundPiece.owner != owner) {
+                if (foundPiece.colour != colour) {
                     final BoardPosition foundPiecePosition =
                             board.getBoardPositionFor(squareX, squareY);
                     // Create a jump for each empty space beyond it
@@ -364,11 +364,11 @@ public final class MoveGeneratorUtil {
      *
      * @param board         the board to use
      * @param fromPosition  the position
-     * @param owner         the owner of the piece any found jump is for
+     * @param colour        the colour of the piece any found jump is for
      * @param outJumps      the collection any found jumps are added to
      */
     public static void findFlyingJumpsAboveRight(final Board board,
-            final BoardPosition fromPosition, final Player owner,
+            final BoardPosition fromPosition, final int colour,
             final Collection<Jump> outJumps) {
         int squareX = fromPosition.x;
         int squareY = fromPosition.y;
@@ -376,7 +376,7 @@ public final class MoveGeneratorUtil {
         while (board.isPositionWithinBounds(++squareX, --squareY)) {
             final Piece foundPiece = board.getPieceAt(squareX, squareY);
             if (foundPiece != null) {
-                if (foundPiece.owner != owner) {
+                if (foundPiece.colour != colour) {
                     final BoardPosition foundPiecePosition =
                             board.getBoardPositionFor(squareX, squareY);
                     // Create a jump for each empty space beyond it
@@ -402,11 +402,11 @@ public final class MoveGeneratorUtil {
      *
      * @param board         the board to use
      * @param fromPosition  the position
-     * @param owner         the owner of the piece any found jump is for
+     * @param colour        the colour of the piece any found jump is for
      * @param outJumps      the collection any found jumps are added to
      */
     public static void findFlyingJumpsBottomLeft(final Board board,
-            final BoardPosition fromPosition, final Player owner,
+            final BoardPosition fromPosition, final int colour,
             final Collection<Jump> outJumps) {
         int squareX = fromPosition.x;
         int squareY = fromPosition.y;
@@ -414,7 +414,7 @@ public final class MoveGeneratorUtil {
         while (board.isPositionWithinBounds(--squareX, ++squareY)) {
             final Piece foundPiece = board.getPieceAt(squareX, squareY);
             if (foundPiece != null) {
-                if (foundPiece.owner != owner) {
+                if (foundPiece.colour != colour) {
                     final BoardPosition foundPiecePosition =
                             board.getBoardPositionFor(squareX, squareY);
                     // Create a jump for each empty space beyond it
@@ -440,11 +440,11 @@ public final class MoveGeneratorUtil {
      *
      * @param board         the board to use
      * @param fromPosition  the position
-     * @param owner         the owner of the piece any found jump is for
+     * @param colour        the colour of the piece any found jump is for
      * @param outJumps      the collection any found jumps are added to
      */
     public static void findFlyingJumpsBottomRight(final Board board,
-            final BoardPosition fromPosition, final Player owner,
+            final BoardPosition fromPosition, final int colour,
             final Collection<Jump> outJumps) {
         int squareX = fromPosition.x;
         int squareY = fromPosition.y;
@@ -452,7 +452,7 @@ public final class MoveGeneratorUtil {
         while (board.isPositionWithinBounds(++squareX, ++squareY)) {
             final Piece foundPiece = board.getPieceAt(squareX, squareY);
             if (foundPiece != null) {
-                if (foundPiece.owner != owner) {
+                if (foundPiece.colour != colour) {
                     final BoardPosition foundPiecePosition =
                             board.getBoardPositionFor(squareX, squareY);
                     // Create a jump for each empty space beyond it

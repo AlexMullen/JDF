@@ -9,7 +9,6 @@ import mullen.alex.jdf.common.Move;
 import mullen.alex.jdf.common.MoveGenerator;
 import mullen.alex.jdf.common.MovePerformer;
 import mullen.alex.jdf.common.Piece;
-import mullen.alex.jdf.common.Player;
 import mullen.alex.jdf.common.MovePerformer.PerformedMove;
 import mullen.alex.jdf.common.Piece.MoveDirection;
 
@@ -24,22 +23,18 @@ public class TestEnglishDraughtsMovePerformer {
     /** The move performer to use for each test. */
     private final MovePerformer movePerformer =
             new EnglishDraughtsMovePerformer();
-    /** The dark piece owner used for testing. */
-    private final Player darkPieceOwner = new EmptyMockPieceOwner();
-    /** The light piece owner used for testing. */
-    private final Player lightPieceOwner = new EmptyMockPieceOwner();
     /** The dark pieces used for testing. */
     private final Piece darkPiece =
-            new Piece(darkPieceOwner, MoveDirection.DOWN);
+            new Piece(Piece.DARK, MoveDirection.DOWN);
 //    /** The dark crowned pieces used for testing. */
 //    private final Piece darkPieceCrowned =
 //            new Piece(darkPieceOwner, MoveDirection.BOTH);
     /** The light pieces used for testing. */
     private final Piece lightPiece =
-            new Piece(lightPieceOwner, MoveDirection.UP);
+            new Piece(Piece.LIGHT, MoveDirection.UP);
     /** The light crowned pieces used for testing. */
     private final Piece lightPieceCrowned =
-            new Piece(lightPieceOwner, MoveDirection.BOTH);
+            new Piece(Piece.LIGHT, MoveDirection.BOTH);
     /** The move generator to use for getting available moves to perform. */
     private final MoveGenerator moveGenerator =
             new EnglishDraughtsMoveGenerator();
@@ -65,7 +60,7 @@ public class TestEnglishDraughtsMovePerformer {
         board1ExpectedStateAfterMove.setPieceAndGetAt(5, 1, lightPiece);
         // Get the move and perform it.
         final List<Move> foundMoves =
-                moveGenerator.findMoves(board1, lightPieceOwner);
+                moveGenerator.findMoves(board1, Piece.LIGHT);
         // There should be one move found.
         assertEquals(1, foundMoves.size());
         final Move moveToPerform = foundMoves.get(0);
@@ -102,7 +97,7 @@ public class TestEnglishDraughtsMovePerformer {
         board1ExpectedStateAfterMove.setPieceAndGetAt(2, 0, lightPieceCrowned);
         // Get the move and perform it.
         final List<Move> foundMoves =
-                moveGenerator.findMoves(board1, lightPieceOwner);
+                moveGenerator.findMoves(board1, Piece.LIGHT);
         // There should be one move found.
         assertEquals(1, foundMoves.size());
         final Move moveToPerform = foundMoves.get(0);
@@ -113,17 +108,5 @@ public class TestEnglishDraughtsMovePerformer {
         // Undoing the move should make the board look like its original state.
         performedMove.undo();
         assertEquals(board1OriginalState, board1);
-    }
-    /**
-     * An empty mock <code>Player</code> instance used as a place holder
-     * for testing.
-     *
-     * @author  Alex Mullen
-     */
-    private static class EmptyMockPieceOwner implements Player {
-        @Override
-        public boolean isArtificial() {
-            return false;
-        }
     }
 }

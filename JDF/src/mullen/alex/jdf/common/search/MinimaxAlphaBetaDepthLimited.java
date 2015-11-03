@@ -8,7 +8,7 @@ import java.util.Random;
 import mullen.alex.jdf.common.Board;
 import mullen.alex.jdf.common.Game;
 import mullen.alex.jdf.common.Move;
-import mullen.alex.jdf.common.Player;
+import mullen.alex.jdf.common.Piece;
 import mullen.alex.jdf.common.MovePerformer.PerformedMove;
 import mullen.alex.jdf.common.evaluation.BoardEvaluator;
 
@@ -48,13 +48,12 @@ public class MinimaxAlphaBetaDepthLimited implements MoveSearch {
         maxSearchDepth = depth;
     }
     @Override
-    public final Move search(final Game game, final Player max,
-            final Player min) {
+    public final Move search(final Game game, final int colour) {
         System.out.println("---------------------------------------------------"
                 + "---------------------------------------------------");
         final Board board = game.getBoard();
         final List<Move> moves =
-                game.getMoveGenerator().findMoves(board, max);
+                game.getMoveGenerator().findMoves(board, colour);
         if (moves.size() == 1) {
             // No point evaluating only one move.
             System.out.println(moves.get(0));
@@ -66,7 +65,8 @@ public class MinimaxAlphaBetaDepthLimited implements MoveSearch {
             final PerformedMove performedMove =
                     game.getMovePerformer().perform(currentMove, board);
             final int currentMoveValue =
-                    minimax(board, 1, false, game, max, min,
+                    minimax(board, 1, false, game, colour,
+                            Piece.getOpposingColourOf(colour),
                             -MAX_ABS_AB_RANGE, MAX_ABS_AB_RANGE);
             System.out.println(currentMove + " = " + currentMoveValue);
             performedMove.undo();
@@ -102,7 +102,7 @@ public class MinimaxAlphaBetaDepthLimited implements MoveSearch {
      */
     private int minimax(final Board board, final int currentDepth,
             final boolean maximisingPlayer, final Game game,
-            final Player max, final Player min, int alpha,
+            final int max, final int min, int alpha,
             int beta) {
         if (currentDepth == maxSearchDepth) {
             return boardEvaluator.evaluate(board, max);

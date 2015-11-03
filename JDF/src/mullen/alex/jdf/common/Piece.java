@@ -9,25 +9,30 @@ import java.util.Objects;
  *
  */
 public class Piece {
-    /** Holds the owner of this piece. */
-    public final Player owner;
+    /** Represents the dark coloured pieces. */
+    public static final int DARK = 0;
+    /** Represents the light coloured pieces. */
+    public static final int LIGHT = 1;
+    /** Holds the colour of this piece. */
+    public final int colour;
     /** Holds the movement direction this piece can do. */
     private MoveDirection moveDirection;
     /**
-     * Creates a new instance that belongs to the specified owner and is set to
-     * only be allowed to move in the specified direction.
+     * Creates a new instance that is of the specified colour and is
+     * only to be allowed to move in the specified direction.
      * <p>
      * A <code>direction</code> value of {@link MoveDirection#BOTH} effectively
      * crowns this piece and {@link #isCrowned()} will return <code>true</code>.
      *
-     * @param player     the <code>Player</code> the piece will belong to
-     * @param direction  the direction this piece is allowed to move in
+     * @param pieceColour  the colour of the piece - either {@link #DARK} or
+     *                     {@link #LIGHT}
+     * @param direction    the direction this piece is allowed to move in
      *
      * @throws NullPointerException  if <code>owner</code> or
      *                               <code>direction</code> is <code>null</code>
      */
-    public Piece(final Player player, final MoveDirection direction) {
-        owner = Objects.requireNonNull(player, "Who owns dis?");
+    public Piece(final int pieceColour, final MoveDirection direction) {
+        colour = pieceColour;
         moveDirection = Objects.requireNonNull(direction, "Move nowhere?");
     }
     /**
@@ -36,11 +41,22 @@ public class Piece {
      * @param piece  the piece to copy
      * @throws NullPointerException  if <code>piece</code> is <code>null</code>
      *
-     * @see #Piece(Player, MoveDirection)
+     * @see #Piece(int, MoveDirection)
      */
     public Piece(final Piece piece) {
-        owner = piece.owner;
+        colour = piece.colour;
         moveDirection = piece.moveDirection;
+    }
+    /**
+     * Gets the opposing colour of the specified colour.
+     * <p>
+     * The opposing colour of {@link #DARK} is {@link #LIGHT} and vice versa.
+     *
+     * @param colour  either {@link #DARK} or {@link #LIGHT}
+     * @return        the opposing colour
+     */
+    public static int getOpposingColourOf(final int colour) {
+        return colour == DARK ? LIGHT : DARK;
     }
     /**
      * Gets the direction this piece is allowed to move in.
@@ -73,7 +89,7 @@ public class Piece {
         final int prime = 31;
         int result = 1;
         result = prime * result + moveDirection.hashCode();
-        result = prime * result + owner.hashCode();
+        result = prime * result + colour;
         return result;
     }
     /**
@@ -94,11 +110,11 @@ public class Piece {
         if (moveDirection != other.moveDirection) {
             return false;
         }
-        return owner == other.owner;
+        return colour == other.colour;
     }
     @Override
     public final String toString() {
-        return "Piece [owner=" + owner + ", getMoveDirection()="
+        return "Piece [colour=" + colour + ", getMoveDirection()="
                 + getMoveDirection() + ", isCrowned()=" + isCrowned() + "]";
     }
     /**

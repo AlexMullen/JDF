@@ -11,6 +11,8 @@ import mullen.alex.jdf.common.search.MoveSearch;
  *
  */
 public class ArtificialPlayer implements Player {
+    /** The colour of the pieces this player owns/controls. */
+    private final int colour;
     /** The search algorithm implementation to use for finding the best move. */
     private final MoveSearch moveSearch;
     /** The name of this AI. */
@@ -19,12 +21,21 @@ public class ArtificialPlayer implements Player {
      * Creates a new instance using the specified search
      * algorithm.
      *
-     * @param search    the search algorithm
-     * @param aiName    the name to give this
+     * @param pieceColour    the colour of the pieces this player owns/controls
+     *                       - either {@link Piece#DARK} or {@link Piece#LIGHT}
+     * @param search         the search algorithm
+     * @param aiName         the name to give this
      */
-    public ArtificialPlayer(final MoveSearch search, final String aiName) {
+    public ArtificialPlayer(final int pieceColour, final MoveSearch search,
+            final String aiName) {
+        colour = pieceColour;
         moveSearch = Objects.requireNonNull(search);
         name = aiName;
+    }
+    @Override
+    public final int getColour() {
+        // TODO Auto-generated method stub
+        return 0;
     }
     @Override
     public final boolean isArtificial() {
@@ -56,7 +67,7 @@ public class ArtificialPlayer implements Player {
         final long startTime = System.nanoTime();
         final int nsInMs = 1000000;
         final Move moveToPerform =
-                moveSearch.search(game, this, game.getOpponent(this));
+                moveSearch.search(game, colour);
         final long timeTakenMs = (System.nanoTime() - startTime) / nsInMs;
         System.out.println("Searched in " + timeTakenMs + "ms ");
         return moveToPerform;

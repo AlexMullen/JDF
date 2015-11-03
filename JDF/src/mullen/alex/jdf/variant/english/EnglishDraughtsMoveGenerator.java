@@ -11,7 +11,6 @@ import mullen.alex.jdf.common.Jump;
 import mullen.alex.jdf.common.Move;
 import mullen.alex.jdf.common.MoveGenerator;
 import mullen.alex.jdf.common.Piece;
-import mullen.alex.jdf.common.Player;
 import mullen.alex.jdf.common.Piece.MoveDirection;
 
 import static mullen.alex.jdf.common.MoveGeneratorUtil.*;
@@ -25,7 +24,7 @@ import static mullen.alex.jdf.common.MoveGeneratorUtil.*;
  */
 public class EnglishDraughtsMoveGenerator implements MoveGenerator {
     @Override
-    public final List<Move> findMoves(final Board board, final Player player) {
+    public final List<Move> findMoves(final Board board, final int colour) {
         final List<Jump> foundJumps = new ArrayList<>();
         final List<Move> foundSimpleMoves = new ArrayList<>(20);
         /*
@@ -37,7 +36,7 @@ public class EnglishDraughtsMoveGenerator implements MoveGenerator {
         final int piecesArrayLength = pieces.length;
         for (int i = 0; i < piecesArrayLength; i++) {
             final Piece foundPiece = pieces[i];
-            if (foundPiece != null && foundPiece.owner == player) {
+            if (foundPiece != null && foundPiece.colour == colour) {
                 final BoardPosition piecePosition = positions[i];
                 findJumpsForPiece(board, foundPiece, piecePosition, foundJumps);
                 if (foundJumps.isEmpty()) {
@@ -59,7 +58,7 @@ public class EnglishDraughtsMoveGenerator implements MoveGenerator {
                 board, foundJumps);
     }
     @Override
-    public final boolean hasAnyMoves(final Board board, final Player player) {
+    public final boolean hasAnyMoves(final Board board, final int colour) {
         final List<Jump> jumps = new ArrayList<>(4);
         final List<Move> moves = new ArrayList<>(4);
         final Piece[] pieces = board.pieces;
@@ -67,7 +66,7 @@ public class EnglishDraughtsMoveGenerator implements MoveGenerator {
         final int piecesArrayLength = pieces.length;
         for (int i = 0; i < piecesArrayLength; i++) {
             final Piece foundPiece = pieces[i];
-            if (foundPiece != null && foundPiece.owner == player) {
+            if (foundPiece != null && foundPiece.colour == colour) {
                 final BoardPosition piecePosition = positions[i];
                 /*
                  * Check for any simple moves. Statistically, there will
@@ -99,27 +98,27 @@ public class EnglishDraughtsMoveGenerator implements MoveGenerator {
      */
     private static void findJumpsForPiece(final Board board, final Piece piece,
             final BoardPosition piecePosition, final Collection<Jump> jumps) {
-        final Player pieceOwner = piece.owner;
+        final int pieceColour = piece.colour;
         if (piece.isCrowned()) {
             /*
              * The piece is crowned so can move in any direction.
              */
-            findJumpAboveLeft(board, piecePosition, pieceOwner, jumps);
-            findJumpAboveRight(board, piecePosition, pieceOwner, jumps);
-            findJumpBottomLeft(board, piecePosition, pieceOwner, jumps);
-            findJumpBottomRight(board, piecePosition, pieceOwner, jumps);
+            findJumpAboveLeft(board, piecePosition, pieceColour, jumps);
+            findJumpAboveRight(board, piecePosition, pieceColour, jumps);
+            findJumpBottomLeft(board, piecePosition, pieceColour, jumps);
+            findJumpBottomRight(board, piecePosition, pieceColour, jumps);
         } else {
             /*
              * The piece is not crowned so the direction needs to be determined.
              */
             if (piece.getMoveDirection() == MoveDirection.UP) {
                 // Only get upward jumps.
-                findJumpAboveLeft(board, piecePosition, pieceOwner, jumps);
-                findJumpAboveRight(board, piecePosition, pieceOwner, jumps);
+                findJumpAboveLeft(board, piecePosition, pieceColour, jumps);
+                findJumpAboveRight(board, piecePosition, pieceColour, jumps);
             } else if (piece.getMoveDirection() == MoveDirection.DOWN) {
                 // Only get downward jumps.
-                findJumpBottomLeft(board, piecePosition, pieceOwner, jumps);
-                findJumpBottomRight(board, piecePosition, pieceOwner, jumps);
+                findJumpBottomLeft(board, piecePosition, pieceColour, jumps);
+                findJumpBottomRight(board, piecePosition, pieceColour, jumps);
             }
         }
     }
@@ -219,16 +218,16 @@ public class EnglishDraughtsMoveGenerator implements MoveGenerator {
             final Piece piece, final BoardPosition piecePosition,
             final List<Jump> previousJumps) {
         List<Jump> jumps;
-        final Player pieceOwner = piece.owner;
+        final int pieceColour = piece.colour;
         if (piece.isCrowned()) {
             jumps = new ArrayList<>(4);
             /*
              * The piece is crowned so can move in any direction.
              */
-            findJumpAboveLeft(board, piecePosition, pieceOwner, jumps);
-            findJumpAboveRight(board, piecePosition, pieceOwner, jumps);
-            findJumpBottomLeft(board, piecePosition, pieceOwner, jumps);
-            findJumpBottomRight(board, piecePosition, pieceOwner, jumps);
+            findJumpAboveLeft(board, piecePosition, pieceColour, jumps);
+            findJumpAboveRight(board, piecePosition, pieceColour, jumps);
+            findJumpBottomLeft(board, piecePosition, pieceColour, jumps);
+            findJumpBottomRight(board, piecePosition, pieceColour, jumps);
             /*
              * Need to remove jumps that have already been done. This will
              * happen with crown pieces as they can go back and forth.
@@ -241,12 +240,12 @@ public class EnglishDraughtsMoveGenerator implements MoveGenerator {
              */
             if (piece.getMoveDirection() == MoveDirection.UP) {
                 // Only get upward jumps.
-                findJumpAboveLeft(board, piecePosition, pieceOwner, jumps);
-                findJumpAboveRight(board, piecePosition, pieceOwner, jumps);
+                findJumpAboveLeft(board, piecePosition, pieceColour, jumps);
+                findJumpAboveRight(board, piecePosition, pieceColour, jumps);
             } else {
                 // Only get downward jumps.
-                findJumpBottomLeft(board, piecePosition, pieceOwner, jumps);
-                findJumpBottomRight(board, piecePosition, pieceOwner, jumps);
+                findJumpBottomLeft(board, piecePosition, pieceColour, jumps);
+                findJumpBottomRight(board, piecePosition, pieceColour, jumps);
             }
         }
         return jumps;

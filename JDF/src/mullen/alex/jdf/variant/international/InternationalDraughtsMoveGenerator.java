@@ -11,7 +11,6 @@ import mullen.alex.jdf.common.Jump;
 import mullen.alex.jdf.common.Move;
 import mullen.alex.jdf.common.MoveGenerator;
 import mullen.alex.jdf.common.Piece;
-import mullen.alex.jdf.common.Player;
 import mullen.alex.jdf.common.Piece.MoveDirection;
 import static mullen.alex.jdf.common.MoveGeneratorUtil.*;
 
@@ -24,7 +23,7 @@ import static mullen.alex.jdf.common.MoveGeneratorUtil.*;
  */
 public class InternationalDraughtsMoveGenerator implements MoveGenerator {
     @Override
-    public final List<Move> findMoves(final Board board, final Player player) {
+    public final List<Move> findMoves(final Board board, final int colour) {
         final List<Jump> foundJumps = new ArrayList<>();
         final List<Move> foundSimpleMoves = new ArrayList<>(40);
         /*
@@ -36,7 +35,7 @@ public class InternationalDraughtsMoveGenerator implements MoveGenerator {
         final int piecesArrayLength = pieces.length;
         for (int i = 0; i < piecesArrayLength; i++) {
             final Piece foundPiece = pieces[i];
-            if (foundPiece != null && foundPiece.owner == player) {
+            if (foundPiece != null && foundPiece.colour == colour) {
                 final BoardPosition piecePosition = positions[i];
                 findJumpsForPiece(board, foundPiece, piecePosition, foundJumps);
                 if (foundJumps.isEmpty()) {
@@ -58,7 +57,7 @@ public class InternationalDraughtsMoveGenerator implements MoveGenerator {
                 board, foundJumps);
     }
     @Override
-    public final boolean hasAnyMoves(final Board board, final Player player) {
+    public final boolean hasAnyMoves(final Board board, final int colour) {
         final List<Jump> jumps = new ArrayList<>(4);
         final List<Move> moves = new ArrayList<>(4);
         final Piece[] pieces = board.pieces;
@@ -66,7 +65,7 @@ public class InternationalDraughtsMoveGenerator implements MoveGenerator {
         final int piecesArrayLength = pieces.length;
         for (int i = 0; i < piecesArrayLength; i++) {
             final Piece foundPiece = pieces[i];
-            if (foundPiece != null && foundPiece.owner == player) {
+            if (foundPiece != null && foundPiece.colour == colour) {
                 final BoardPosition piecePosition = positions[i];
                 /*
                  * Check for any simple moves. Statistically, there will
@@ -98,24 +97,24 @@ public class InternationalDraughtsMoveGenerator implements MoveGenerator {
      */
     private static void findJumpsForPiece(final Board board, final Piece piece,
             final BoardPosition piecePosition, final Collection<Jump> jumps) {
-        final Player owner = piece.owner;
+        final int colour = piece.colour;
         if (piece.isCrowned()) {
             /*
              * The piece is crowned so can 'fly' along a diagonal.
              */
-            findFlyingJumpsAboveLeft(board, piecePosition, owner, jumps);
-            findFlyingJumpsAboveRight(board, piecePosition, owner, jumps);
-            findFlyingJumpsBottomLeft(board, piecePosition, owner, jumps);
-            findFlyingJumpsBottomRight(board, piecePosition, owner, jumps);
+            findFlyingJumpsAboveLeft(board, piecePosition, colour, jumps);
+            findFlyingJumpsAboveRight(board, piecePosition, colour, jumps);
+            findFlyingJumpsBottomLeft(board, piecePosition, colour, jumps);
+            findFlyingJumpsBottomRight(board, piecePosition, colour, jumps);
         } else {
             /*
              * Get jumps for all directions as men can jump in any direction in
              * International Draughts.
              */
-            findJumpAboveLeft(board, piecePosition, owner, jumps);
-            findJumpAboveRight(board, piecePosition, owner, jumps);
-            findJumpBottomLeft(board, piecePosition, owner, jumps);
-            findJumpBottomRight(board, piecePosition, owner, jumps);
+            findJumpAboveLeft(board, piecePosition, colour, jumps);
+            findJumpAboveRight(board, piecePosition, colour, jumps);
+            findJumpBottomLeft(board, piecePosition, colour, jumps);
+            findJumpBottomRight(board, piecePosition, colour, jumps);
         }
     }
     /**

@@ -8,7 +8,7 @@ import java.util.Random;
 import mullen.alex.jdf.common.Board;
 import mullen.alex.jdf.common.Game;
 import mullen.alex.jdf.common.Move;
-import mullen.alex.jdf.common.Player;
+import mullen.alex.jdf.common.Piece;
 import mullen.alex.jdf.common.MovePerformer.PerformedMove;
 import mullen.alex.jdf.common.evaluation.BoardEvaluator;
 
@@ -43,8 +43,7 @@ public class MinimaxDepthLimited implements MoveSearch {
         maxSearchDepth = depth;
     }
     @Override
-    public final Move search(final Game game, final Player owner,
-            final Player opponent) {
+    public final Move search(final Game game, final int owner) {
         final Board board = game.getBoard();
         final List<Move> moves =
                 game.getMoveGenerator().findMoves(board, owner);
@@ -59,7 +58,8 @@ public class MinimaxDepthLimited implements MoveSearch {
                     game.getMovePerformer().perform(currentMove, board);
             // This is depth 0, so call min at depth 1.
             final int currentMoveValue =
-                    minimax(board, 1, false, game, owner, opponent);
+                    minimax(board, 1, false, game, owner,
+                            Piece.getOpposingColourOf(owner));
             System.out.println(currentMove + " = " + currentMoveValue);
             if (currentBestScore < currentMoveValue) {
                 currentBestScore = currentMoveValue;
@@ -91,7 +91,7 @@ public class MinimaxDepthLimited implements MoveSearch {
      */
     private int minimax(final Board board, final int currentDepth,
             final boolean maximisingPlayer, final Game game,
-            final Player owner, final Player opponent) {
+            final int owner, final int opponent) {
         if (currentDepth == maxSearchDepth) {
             return boardEvaluator.evaluate(board, owner);
         } else {

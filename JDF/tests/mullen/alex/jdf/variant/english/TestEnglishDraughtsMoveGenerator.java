@@ -11,7 +11,6 @@ import mullen.alex.jdf.common.Jump;
 import mullen.alex.jdf.common.Move;
 import mullen.alex.jdf.common.MoveGenerator;
 import mullen.alex.jdf.common.Piece;
-import mullen.alex.jdf.common.Player;
 import mullen.alex.jdf.common.Piece.MoveDirection;
 
 import org.junit.Test;
@@ -25,16 +24,12 @@ public class TestEnglishDraughtsMoveGenerator {
     /** The move generator to use for each test. */
     private final MoveGenerator moveGenerator =
             new EnglishDraughtsMoveGenerator();
-    /** The dark piece owner used for testing. */
-    private final Player darkPieceOwner = new EmptyMockPieceOwner();
-    /** The light piece owner used for testing. */
-    private final Player lightPieceOwner = new EmptyMockPieceOwner();
     /** The dark pieces used for testing. */
     private final Piece darkPiece =
-            new Piece(darkPieceOwner, MoveDirection.DOWN);
+            new Piece(Piece.DARK, MoveDirection.DOWN);
     /** The light pieces used for testing. */
     private final Piece lightPiece =
-            new Piece(lightPieceOwner, MoveDirection.UP);
+            new Piece(Piece.LIGHT, MoveDirection.UP);
     /**
      * A test for making sure a simple move can be properly found.
      */
@@ -46,7 +41,7 @@ public class TestEnglishDraughtsMoveGenerator {
         assertNull(board.setPieceAndGetAt(5, 5, darkPiece));
         assertNull(board.setPieceAndGetAt(5, 7, darkPiece));
         final List<Move> foundMoves =
-                moveGenerator.findMoves(board, lightPieceOwner);
+                moveGenerator.findMoves(board, Piece.LIGHT);
         // There should only be one found.
         assertEquals(1, foundMoves.size());
         final Move foundMove = foundMoves.get(0);
@@ -64,7 +59,7 @@ public class TestEnglishDraughtsMoveGenerator {
         final Board board = new Board(8, 8);
         assertNull(board.setPieceAndGetAt(3, 1, lightPiece));
         final List<Move> foundMoves =
-                moveGenerator.findMoves(board, lightPieceOwner);
+                moveGenerator.findMoves(board, Piece.LIGHT);
         // There should only be two found.
         assertEquals(2, foundMoves.size());
         final Move firstfoundMove = foundMoves.get(0);
@@ -88,7 +83,7 @@ public class TestEnglishDraughtsMoveGenerator {
         assertNull(board.setPieceAndGetAt(0, 1, lightPiece));
         assertNull(board.setPieceAndGetAt(1, 0, lightPiece));
         final List<Move> foundMoves =
-                moveGenerator.findMoves(board, lightPieceOwner);
+                moveGenerator.findMoves(board, Piece.LIGHT);
         // There should be no moves found.
         assertEquals(0, foundMoves.size());
     }
@@ -105,7 +100,7 @@ public class TestEnglishDraughtsMoveGenerator {
         assertNull(board.setPieceAndGetAt(3, 7, lightPiece));
         assertNull(board.setPieceAndGetAt(2, 6, darkPiece));
         final List<Move> foundMoves =
-                moveGenerator.findMoves(board, lightPieceOwner);
+                moveGenerator.findMoves(board, Piece.LIGHT);
         // There should only be one found.
         assertEquals(1, foundMoves.size());
         final Move jumpMove = foundMoves.get(0);
@@ -131,7 +126,7 @@ public class TestEnglishDraughtsMoveGenerator {
         assertNull(board.setPieceAndGetAt(1, 6, darkPiece));
         assertNull(board.setPieceAndGetAt(3, 4, darkPiece));
         final List<Move> foundMoves =
-                moveGenerator.findMoves(board, lightPieceOwner);
+                moveGenerator.findMoves(board, Piece.LIGHT);
         // There should only be one found.
         assertEquals(1, foundMoves.size());
         final Move foundJumpMove = foundMoves.get(0);
@@ -160,7 +155,7 @@ public class TestEnglishDraughtsMoveGenerator {
         assertNull(board.setPieceAndGetAt(3, 4, darkPiece));
         assertNull(board.setPieceAndGetAt(5, 2, darkPiece));
         final List<Move> foundMoves =
-                moveGenerator.findMoves(board, lightPieceOwner);
+                moveGenerator.findMoves(board, Piece.LIGHT);
         // There should only be one found.
         assertEquals(1, foundMoves.size());
         final Move foundJumpMove = foundMoves.get(0);
@@ -181,17 +176,5 @@ public class TestEnglishDraughtsMoveGenerator {
         assertEquals(new BoardPosition(4, 3), thirdJump.from);
         assertEquals(new BoardPosition(6, 1), thirdJump.to);
         assertEquals(new BoardPosition(5, 2), thirdJump.jumped);
-    }
-    /**
-     * An empty mock <code>Player</code> instance used as a place holder
-     * for testing.
-     *
-     * @author  Alex Mullen
-     */
-    private static class EmptyMockPieceOwner implements Player {
-        @Override
-        public boolean isArtificial() {
-            return false;
-        }
     }
 }

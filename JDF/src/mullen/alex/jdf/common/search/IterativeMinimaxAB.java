@@ -5,10 +5,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+
 import mullen.alex.jdf.common.Board;
 import mullen.alex.jdf.common.Game;
 import mullen.alex.jdf.common.Move;
-import mullen.alex.jdf.common.Player;
+import mullen.alex.jdf.common.Piece;
 import mullen.alex.jdf.common.MovePerformer.PerformedMove;
 import mullen.alex.jdf.common.evaluation.BoardEvaluator;
 
@@ -32,13 +33,12 @@ public class IterativeMinimaxAB implements MoveSearch {
     }
 
     @Override
-    public final Move search(final Game game, final Player maxPlayer,
-            final Player minPlayer) {
+    public final Move search(final Game game, final int colour) {
         System.out.println("---------------------------------------------------"
                 + "---------------------------------------------------");
         final Board board = game.getBoard();
         final List<ScoredMove> moves = movesToScoredMoves(
-                game.getMoveGenerator().findMoves(board, maxPlayer));
+                game.getMoveGenerator().findMoves(board, colour));
         // Search each depth broadly.
         int firstGuess = 0;
         for (int depth = 0; depth < maxSearchDepth; depth++) {
@@ -53,10 +53,9 @@ public class IterativeMinimaxAB implements MoveSearch {
                 // This is depth 0, so call min at depth 1.
                 final int previousMoveScore = currentMove.score;
                 firstGuess = previousMoveScore;
-                currentMove.score = mtdf(board, game, true, maxPlayer,
-                        minPlayer, depth, firstGuess);
+                currentMove.score = mtdf(board, game, true, colour, Piece.getOpposingColourOf(colour), depth, firstGuess);
 //                currentMove.score = alphabeta(board, game, false, maxPlayer,
-//                        minPlayer, depth, -MAX_ABS_AB_RANGE, MAX_ABS_AB_RANGE, pv);
+//                        depth, -MAX_ABS_AB_RANGE, MAX_ABS_AB_RANGE, pv);
                 performedMove.undo();
                 System.out.println(currentMove.move + " | depth=" + depth + " | score = " + currentMove.score + 
                         "  (" + (currentMove.score > previousMoveScore ? "+" : "-") + Math.abs(currentMove.score - previousMoveScore) + ")");
@@ -67,8 +66,8 @@ public class IterativeMinimaxAB implements MoveSearch {
         return moves.get(0).move;
     }
     private int alphabeta(final Board board, final Game game,
-            final boolean maximisingPlayer, final Player maxPlayer,
-            final Player minPlayer, final int depth,
+            final boolean maximisingPlayer, final int maxPlayer,
+            final int minPlayer, final int depth,
             int alpha, int beta) {
         if (depth == 0) {
             return boardEvaluator.evaluate(board, maxPlayer);
@@ -120,8 +119,8 @@ public class IterativeMinimaxAB implements MoveSearch {
     }
     
     private int mtdf(final Board board, final Game game, final boolean maximisingPlayer, 
-            final Player maxPlayer,
-            final Player minPlayer, final int depth, final int firstGuess) {
+            final int maxPlayer,
+            final int minPlayer, final int depth, final int firstGuess) {
         int g = firstGuess;
         int upperbound = MAX_ABS_AB_RANGE;
         int lowerbound = -MAX_ABS_AB_RANGE;

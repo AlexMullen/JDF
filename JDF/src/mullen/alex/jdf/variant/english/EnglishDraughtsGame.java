@@ -119,7 +119,7 @@ public class EnglishDraughtsGame extends Game {
         // Next player's turn.
         turnOwner = getOpponent(turnOwner);
         // Check if the next player has any moves left.
-        if (!moveGenerator.hasAnyMoves(board, turnOwner)) {
+        if (!moveGenerator.hasAnyMoves(board, turnOwner.getColour())) {
          // Their turn but they have no moves left so the opposing player wins.
             result = new GameResult(getOpponent(turnOwner));
         }
@@ -138,34 +138,34 @@ public class EnglishDraughtsGame extends Game {
      * positions.
      */
     private void initPieces() {
-//      board.setPieceAt(7, 4, new Piece(lightPieceOwner, MoveDirection.BOTH));
+//      board.setPieceAt(7, 4, new Piece(Piece.LIGHT, MoveDirection.BOTH));
 //
-//      board.setPieceAt(0, 3, new Piece(darkPieceOwner, MoveDirection.BOTH));
-//      board.setPieceAt(0, 5, new Piece(darkPieceOwner, MoveDirection.BOTH));
+//      board.setPieceAt(0, 3, new Piece(Piece.DARK, MoveDirection.BOTH));
+//      board.setPieceAt(0, 5, new Piece(Piece.DARK, MoveDirection.BOTH));
 
-        board.setPieceAt(1, 0, new Piece(darkPieceOwner, MoveDirection.DOWN));
-        board.setPieceAt(3, 0, new Piece(darkPieceOwner, MoveDirection.DOWN));
-        board.setPieceAt(5, 0, new Piece(darkPieceOwner, MoveDirection.DOWN));
-        board.setPieceAt(7, 0, new Piece(darkPieceOwner, MoveDirection.DOWN));
-        board.setPieceAt(0, 1, new Piece(darkPieceOwner, MoveDirection.DOWN));
-        board.setPieceAt(2, 1, new Piece(darkPieceOwner, MoveDirection.DOWN));
-        board.setPieceAt(4, 1, new Piece(darkPieceOwner, MoveDirection.DOWN));
-        board.setPieceAt(6, 1, new Piece(darkPieceOwner, MoveDirection.DOWN));
-        board.setPieceAt(1, 2, new Piece(darkPieceOwner, MoveDirection.DOWN));
-        board.setPieceAt(3, 2, new Piece(darkPieceOwner, MoveDirection.DOWN));
-        board.setPieceAt(5, 2, new Piece(darkPieceOwner, MoveDirection.DOWN));
-        board.setPieceAt(7, 2, new Piece(darkPieceOwner, MoveDirection.DOWN));
-        board.setPieceAt(0, 5, new Piece(lightPieceOwner, MoveDirection.UP));
-        board.setPieceAt(2, 5, new Piece(lightPieceOwner, MoveDirection.UP));
-        board.setPieceAt(4, 5, new Piece(lightPieceOwner, MoveDirection.UP));
-        board.setPieceAt(6, 5, new Piece(lightPieceOwner, MoveDirection.UP));
-        board.setPieceAt(1, 6, new Piece(lightPieceOwner, MoveDirection.UP));
-        board.setPieceAt(3, 6, new Piece(lightPieceOwner, MoveDirection.UP));
-        board.setPieceAt(5, 6, new Piece(lightPieceOwner, MoveDirection.UP));
-        board.setPieceAt(7, 6, new Piece(lightPieceOwner, MoveDirection.UP));
-        board.setPieceAt(0, 7, new Piece(lightPieceOwner, MoveDirection.UP));
-        board.setPieceAt(2, 7, new Piece(lightPieceOwner, MoveDirection.UP));
-        board.setPieceAt(4, 7, new Piece(lightPieceOwner, MoveDirection.UP));
-        board.setPieceAt(6, 7, new Piece(lightPieceOwner, MoveDirection.UP));
+        board.setPieceAt(1, 0, new Piece(Piece.DARK, MoveDirection.DOWN));
+        board.setPieceAt(3, 0, new Piece(Piece.DARK, MoveDirection.DOWN));
+        board.setPieceAt(5, 0, new Piece(Piece.DARK, MoveDirection.DOWN));
+        board.setPieceAt(7, 0, new Piece(Piece.DARK, MoveDirection.DOWN));
+        board.setPieceAt(0, 1, new Piece(Piece.DARK, MoveDirection.DOWN));
+        board.setPieceAt(2, 1, new Piece(Piece.DARK, MoveDirection.DOWN));
+        board.setPieceAt(4, 1, new Piece(Piece.DARK, MoveDirection.DOWN));
+        board.setPieceAt(6, 1, new Piece(Piece.DARK, MoveDirection.DOWN));
+        board.setPieceAt(1, 2, new Piece(Piece.DARK, MoveDirection.DOWN));
+        board.setPieceAt(3, 2, new Piece(Piece.DARK, MoveDirection.DOWN));
+        board.setPieceAt(5, 2, new Piece(Piece.DARK, MoveDirection.DOWN));
+        board.setPieceAt(7, 2, new Piece(Piece.DARK, MoveDirection.DOWN));
+        board.setPieceAt(0, 5, new Piece(Piece.LIGHT, MoveDirection.UP));
+        board.setPieceAt(2, 5, new Piece(Piece.LIGHT, MoveDirection.UP));
+        board.setPieceAt(4, 5, new Piece(Piece.LIGHT, MoveDirection.UP));
+        board.setPieceAt(6, 5, new Piece(Piece.LIGHT, MoveDirection.UP));
+        board.setPieceAt(1, 6, new Piece(Piece.LIGHT, MoveDirection.UP));
+        board.setPieceAt(3, 6, new Piece(Piece.LIGHT, MoveDirection.UP));
+        board.setPieceAt(5, 6, new Piece(Piece.LIGHT, MoveDirection.UP));
+        board.setPieceAt(7, 6, new Piece(Piece.LIGHT, MoveDirection.UP));
+        board.setPieceAt(0, 7, new Piece(Piece.LIGHT, MoveDirection.UP));
+        board.setPieceAt(2, 7, new Piece(Piece.LIGHT, MoveDirection.UP));
+        board.setPieceAt(4, 7, new Piece(Piece.LIGHT, MoveDirection.UP));
+        board.setPieceAt(6, 7, new Piece(Piece.LIGHT, MoveDirection.UP));
     }
 }

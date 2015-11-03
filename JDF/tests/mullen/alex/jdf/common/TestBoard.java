@@ -45,8 +45,7 @@ public class TestBoard {
          * Check a placed piece is equal to its copied counterpart but does not
          * share the same reference.
          */
-        final Piece piece1 = new Piece(
-                new EmptyMockPieceOwner(), MoveDirection.DOWN);
+        final Piece piece1 = new Piece(Piece.DARK, MoveDirection.DOWN);
         final Board board2 = new Board(5, 8);
         final int piecePosX = 2;
         final int piecePosY = 3;
@@ -181,8 +180,7 @@ public class TestBoard {
         final int positionPlacedX = 4;
         final int positionPlacedY = 3;
         final Board board = new Board(width, height);
-        final Piece piece = new Piece(
-                new EmptyMockPieceOwner(), MoveDirection.DOWN);
+        final Piece piece = new Piece(Piece.DARK, MoveDirection.DOWN);
         Piece retrievedPiece =
                 board.setPieceAndGetAt(positionPlacedX, positionPlacedY, piece);
         // This should be null as there should not be a piece there yet.
@@ -203,8 +201,7 @@ public class TestBoard {
         final int positionPlacedX = 0;
         final int positionPlacedY = 3;
         final Board board = new Board(width, height);
-        final Piece piece = new Piece(
-                new EmptyMockPieceOwner(), MoveDirection.DOWN);
+        final Piece piece = new Piece(Piece.DARK, MoveDirection.DOWN);
         Piece retrievedPiece =
                 board.setPieceAndGetAt(positionPlacedX, positionPlacedY, piece);
         // This should be null as there should not be a piece there yet.
@@ -225,8 +222,7 @@ public class TestBoard {
         final int positionPlacedX = 4;
         final int positionPlacedY = 0;
         final Board board = new Board(width, height);
-        final Piece piece = new Piece(
-                new EmptyMockPieceOwner(), MoveDirection.DOWN);
+        final Piece piece = new Piece(Piece.DARK, MoveDirection.DOWN);
         Piece retrievedPiece =
                 board.setPieceAndGetAt(positionPlacedX, positionPlacedY, piece);
         // This should be null as there should not be a piece there yet.
@@ -247,8 +243,7 @@ public class TestBoard {
         final int positionPlacedX = width - 1;
         final int positionPlacedY = 3;
         final Board board = new Board(width, height);
-        final Piece piece = new Piece(
-                new EmptyMockPieceOwner(), MoveDirection.DOWN);
+        final Piece piece = new Piece(Piece.DARK, MoveDirection.DOWN);
         Piece retrievedPiece =
                 board.setPieceAndGetAt(positionPlacedX, positionPlacedY, piece);
         // This should be null as there should not be a piece there yet.
@@ -269,8 +264,7 @@ public class TestBoard {
         final int positionPlacedX = 4;
         final int positionPlacedY = height - 1;
         final Board board = new Board(width, height);
-        final Piece piece = new Piece(
-                new EmptyMockPieceOwner(), MoveDirection.DOWN);
+        final Piece piece = new Piece(Piece.DARK, MoveDirection.DOWN);
         Piece retrievedPiece =
                 board.setPieceAndGetAt(positionPlacedX, positionPlacedY, piece);
         // This should be null as there should not be a piece there yet.
@@ -291,8 +285,7 @@ public class TestBoard {
         final int positionPlacedX = -1;
         final int positionPlacedY = 5;
         final Board board = new Board(width, height);
-        final Piece piece = new Piece(
-                new EmptyMockPieceOwner(), MoveDirection.DOWN);
+        final Piece piece = new Piece(Piece.DARK, MoveDirection.DOWN);
         board.setPieceAndGetAt(positionPlacedX, positionPlacedY, piece);
         fail("The X value should not be accepted!");
     }
@@ -308,8 +301,7 @@ public class TestBoard {
 //        final int positionPlacedX = 3;
 //        final int positionPlacedY = -1;
 //        final Board board = new Board(width, height);
-//        final Piece piece = new Piece(
-//                new EmptyMockPieceOwner(), MoveDirection.DOWN);
+//        final Piece piece = new Piece(Piece.DARK, MoveDirection.DOWN);
 //        board.setPieceAndGetAt(positionPlacedX, positionPlacedY, piece);
 //        fail("The Y value should not be accepted!");
 //    }
@@ -325,8 +317,7 @@ public class TestBoard {
         final int positionPlacedX = width;
         final int positionPlacedY = 5;
         final Board board = new Board(width, height);
-        final Piece piece = new Piece(
-                new EmptyMockPieceOwner(), MoveDirection.DOWN);
+        final Piece piece = new Piece(Piece.DARK, MoveDirection.DOWN);
         board.setPieceAndGetAt(positionPlacedX, positionPlacedY, piece);
         fail("The X value should not be accepted!");
     }
@@ -342,8 +333,7 @@ public class TestBoard {
 //        final int positionPlacedX = 3;
 //        final int positionPlacedY = height;
 //        final Board board = new Board(width, height);
-//        final Piece piece = new Piece(
-//                new EmptyMockPieceOwner(), MoveDirection.DOWN);
+//        final Piece piece = new Piece(Piece.DARK, MoveDirection.DOWN);
 //        board.setPieceAndGetAt(positionPlacedX, positionPlacedY, piece);
 //        fail("The Y value should not be accepted!");
 //    }
@@ -358,8 +348,7 @@ public class TestBoard {
         final int positionPlacedX = 4;
         final int positionPlacedY = 3;
         final Board board = new Board(width, height);
-        final Piece piece = new Piece(
-                new EmptyMockPieceOwner(), MoveDirection.DOWN);
+        final Piece piece = new Piece(Piece.DARK, MoveDirection.DOWN);
         Piece retrievedPiece =
                 board.setPieceAndGetAt(positionPlacedX, positionPlacedY, piece);
         // This should be null as there should not be a piece there yet.
@@ -381,8 +370,7 @@ public class TestBoard {
         final int positionPlacedX = 4;
         final int positionPlacedY = 3;
         final Board board = new Board(width, height);
-        final Piece piece = new Piece(
-                new EmptyMockPieceOwner(), MoveDirection.DOWN);
+        final Piece piece = new Piece(Piece.DARK, MoveDirection.DOWN);
         Piece retrievedPiece =
                 board.setPieceAndGetAt(positionPlacedX, positionPlacedY, piece);
         // This should be null as there should not be a piece there yet.
@@ -420,8 +408,7 @@ public class TestBoard {
         final int positionPlacedX = 7;
         final int positionPlacedY = 2;
         final Board board = new Board(width, height);
-        final Piece piece = new Piece(
-                new EmptyMockPieceOwner(), MoveDirection.DOWN);
+        final Piece piece = new Piece(Piece.DARK, MoveDirection.DOWN);
         board.setPieceAndGetAt(positionPlacedX, positionPlacedY, piece);
         final Piece retrievedPiece =
                 board.setPieceAndGetAt(positionPlacedX, positionPlacedY, null);
@@ -440,8 +427,7 @@ public class TestBoard {
         final int positionPlacedX = 7;
         final int positionPlacedY = 2;
         final Board board = new Board(width, height);
-        final Piece piece = new Piece(
-                new EmptyMockPieceOwner(), MoveDirection.DOWN);
+        final Piece piece = new Piece(Piece.DARK, MoveDirection.DOWN);
         assertNull(board.setPieceAndGetAt(
                 new BoardPosition(positionPlacedX, positionPlacedY), piece));
         final Piece retrievedPiece =
@@ -459,8 +445,7 @@ public class TestBoard {
         final int width = 8;
         final int height = 8;
         final Board board = new Board(width, height);
-        final Piece piece = new Piece(
-                new EmptyMockPieceOwner(), MoveDirection.DOWN);
+        final Piece piece = new Piece(Piece.DARK, MoveDirection.DOWN);
         board.setPieceAndGetAt(null, piece);
         fail("NPE should have been thrown!");
     }
@@ -476,8 +461,7 @@ public class TestBoard {
 //        final int positionPlacedX = -1;
 //        final int positionPlacedY = 8;
 //        final Board board = new Board(width, height);
-//        final Piece piece = new Piece(
-//                new EmptyMockPieceOwner(), MoveDirection.DOWN);
+//        final Piece piece = new Piece(Piece.DARK, MoveDirection.DOWN);
 //        board.setPieceAndGetAt(positionPlacedX, positionPlacedY, piece);
 //        fail("Exception should have been thrown!");
 //    }
@@ -493,8 +477,7 @@ public class TestBoard {
         final int positionPlacedX = 7;
         final int positionPlacedY = 2;
         final Board board = new Board(width, height);
-        final Piece piece = new Piece(
-                new EmptyMockPieceOwner(), MoveDirection.DOWN);
+        final Piece piece = new Piece(Piece.DARK, MoveDirection.DOWN);
         Piece retrievedPiece;
         // There should be no piece at the position yet.
         assertFalse(board.isPieceAt(positionPlacedX, positionPlacedY));
@@ -554,8 +537,7 @@ public class TestBoard {
         assertTrue(board1.equals(board2));
         assertTrue(board2.equals(board1));
         // Test non-identity equality when adding a piece to a board.
-        final Piece piece1 =
-                new Piece(new EmptyMockPieceOwner(), MoveDirection.DOWN);
+        final Piece piece1 = new Piece(Piece.DARK, MoveDirection.DOWN);
         final Piece piece1Copy = new Piece(piece1);
         // Add a piece to board 1 and assert board1 and board2 are not equal.
         assertNull(board1.setPieceAndGetAt(0, 7, piece1));
@@ -608,8 +590,7 @@ public class TestBoard {
          * Adding the same piece to the same position on them all should make
          * no difference.
          */
-        final Piece piece =
-                new Piece(new EmptyMockPieceOwner(), MoveDirection.DOWN);
+        final Piece piece = new Piece(Piece.DARK, MoveDirection.DOWN);
         assertNull(board88.setPieceAndGetAt(1, 2, piece));
         assertNull(board78.setPieceAndGetAt(1, 2, piece));
         assertNull(board87.setPieceAndGetAt(1, 2, piece));
@@ -620,17 +601,5 @@ public class TestBoard {
         assertFalse(board78.equals(board87));
         assertFalse(board87.equals(board88));
         assertFalse(board87.equals(board78));
-    }
-    /**
-     * An empty mock <code>Player</code> instance used as a place holder
-     * for testing.
-     *
-     * @author  Alex Mullen
-     */
-    private static class EmptyMockPieceOwner implements Player {
-        @Override
-        public boolean isArtificial() {
-            return false;
-        }
     }
 }

@@ -12,26 +12,26 @@ import java.util.List;
 public interface MoveGenerator {
     /**
      * Generates all the available moves on the specified board for the
-     * specified player.
+     * specified colour.
      *
      * @param board   the board
-     * @param player  the player
+     * @param colour  the colour
      * @return        a list of all the available moves; if there are no moves
      *                an empty list should be returned rather than
      *               <code>null</code>.
      */
-    List<Move> findMoves(Board board, Player player);
+    List<Move> findMoves(Board board, int colour);
     /**
-     * Checks if the specified player has any moves on the given board.
+     * Checks if the specified colour has any moves on the given board.
      * <p>
      * Using this for checking if there are any moves is preferable than
-     * invoking {@link #findMoves(Board, Player)} for efficiency as this can
+     * invoking {@link #findMoves(Board, int)} for efficiency as this can
      * stop searching when at least one move is found.
      *
      * @param board   the board
-     * @param player  the player
+     * @param colour  the colour
      * @return        <code>true</code> if there is at least <code>1</code> move
-     *                available for the player; <code>false</code> otherwise
+     *                available for the colour; <code>false</code> otherwise
      */
-    boolean hasAnyMoves(Board board, Player player);
+    boolean hasAnyMoves(Board board, int colour);
 }
