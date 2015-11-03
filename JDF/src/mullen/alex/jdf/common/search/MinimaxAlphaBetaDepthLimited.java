@@ -108,12 +108,12 @@ public class MinimaxAlphaBetaDepthLimited implements MoveSearch {
             return boardEvaluator.evaluate(board, max);
         } else {
             if (maximisingPlayer) {
-                int currentBestValue = -MAX_ABS_AB_RANGE;
                 final List<Move> moves =
                         game.getMoveGenerator().findMoves(board, max);
                 if (moves.isEmpty()) {
                     return boardEvaluator.evaluate(board, max);
                 }
+                int currentBestValue = -MAX_ABS_AB_RANGE;
                 for (final Move currentMove : moves) {
                     final PerformedMove performedMove =
                             game.getMovePerformer().perform(currentMove, board);
@@ -130,12 +130,12 @@ public class MinimaxAlphaBetaDepthLimited implements MoveSearch {
                 return currentBestValue;
             } else {
                 // Minimising player.
-                int currentBestValue = MAX_ABS_AB_RANGE;
                 final List<Move> moves =
                         game.getMoveGenerator().findMoves(board, min);
                 if (moves.isEmpty()) {
                     return boardEvaluator.evaluate(board, max);
                 }
+                int currentBestValue = MAX_ABS_AB_RANGE;
                 for (final Move currentMove : moves) {
                     final PerformedMove performedMove =
                             game.getMovePerformer().perform(currentMove, board);

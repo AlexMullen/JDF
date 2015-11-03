@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
-import java.util.Random;
 import mullen.alex.jdf.common.Board;
 import mullen.alex.jdf.common.Game;
 import mullen.alex.jdf.common.Move;
@@ -21,7 +20,7 @@ public class IterativeMinimaxAB implements MoveSearch {
     /** Holds the maximum depth to search to. */
     private final int maxSearchDepth;
     /** The random number generator to use when choosing equal moves. */
-    private final Random rng;
+//    private final Random rng;
     public IterativeMinimaxAB(final BoardEvaluator evaluator,
             final int depth) {
         boardEvaluator = Objects.requireNonNull(evaluator);
@@ -29,7 +28,7 @@ public class IterativeMinimaxAB implements MoveSearch {
             throw new IllegalArgumentException("depth(" + depth + ") < 1");
         }
         maxSearchDepth = depth;
-        rng = new Random();
+//        rng = new Random();
     }
 
     @Override
@@ -54,7 +53,7 @@ public class IterativeMinimaxAB implements MoveSearch {
                 // This is depth 0, so call min at depth 1.
                 final int previousMoveScore = currentMove.score;
                 firstGuess = previousMoveScore;
-                currentMove.score = MTDF(board, game, true, maxPlayer,
+                currentMove.score = mtdf(board, game, true, maxPlayer,
                         minPlayer, depth, firstGuess);
 //                currentMove.score = alphabeta(board, game, false, maxPlayer,
 //                        minPlayer, depth, -MAX_ABS_AB_RANGE, MAX_ABS_AB_RANGE, pv);
@@ -120,7 +119,7 @@ public class IterativeMinimaxAB implements MoveSearch {
         }
     }
     
-    private int MTDF(final Board board, final Game game, final boolean maximisingPlayer, 
+    private int mtdf(final Board board, final Game game, final boolean maximisingPlayer, 
             final Player maxPlayer,
             final Player minPlayer, final int depth, final int firstGuess) {
         int g = firstGuess;
@@ -173,12 +172,12 @@ public class IterativeMinimaxAB implements MoveSearch {
             return o2.score - o1.score;
         }
     };
-    /** The comparator to use for sorting jumps in descending order. */
-    private static final Comparator<Move> DESCENDING_JUMP_COMPARATOR =
-            new Comparator<Move>() {
-        @Override
-        public int compare(final Move o1, final Move o2) {
-            return o2.jumps.size() - o1.jumps.size();
-        }
-    };
+//    /** The comparator to use for sorting jumps in descending order. */
+//    private static final Comparator<Move> DESCENDING_JUMP_COMPARATOR =
+//            new Comparator<Move>() {
+//        @Override
+//        public int compare(final Move o1, final Move o2) {
+//            return o2.jumps.size() - o1.jumps.size();
+//        }
+//    };
 }

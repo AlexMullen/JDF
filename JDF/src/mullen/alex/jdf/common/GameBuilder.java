@@ -49,12 +49,6 @@ public interface GameBuilder {
         /** Holds the player who will play the light pieces. */
         private Player lightPlayer;
         /**
-         * Creates a new instance.
-         */
-        public Config() {
-            // Empty.
-        }
-        /**
          * Gets whether forced captures is enabled or disabled.
          *
          * @return  the value

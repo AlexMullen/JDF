@@ -58,7 +58,7 @@ public class InternationalDraughtsMovePerformer implements MovePerformer {
         if (pieceMoveDir == MoveDirection.UP) {
             return y == 0;
         } else if (pieceMoveDir == MoveDirection.DOWN) {
-            return y == (board.height - 1);
+            return y == board.height - 1;
         } else {
             throw new IllegalStateException("Passed in a unhandled direction");
         }

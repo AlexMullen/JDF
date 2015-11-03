@@ -57,7 +57,7 @@ public class ArtificialPlayer implements Player {
         final int nsInMs = 1000000;
         final Move moveToPerform =
                 moveSearch.search(game, this, game.getOpponent(this));
-        long timeTakenMs = (System.nanoTime() - startTime) / nsInMs;
+        final long timeTakenMs = (System.nanoTime() - startTime) / nsInMs;
         System.out.println("Searched in " + timeTakenMs + "ms ");
         return moveToPerform;
     }
