@@ -21,7 +21,7 @@ import mullen.alex.jdf.common.Piece.MoveDirection;
  * @author  Alex Mullen
  *
  */
-public class EnglishDraughtsGame extends Game {
+public class EnglishDraughtsGame implements Game {
     /** The width of the board. */
     private static final int BOARD_WIDTH = 8;
     /** The height of the board. */

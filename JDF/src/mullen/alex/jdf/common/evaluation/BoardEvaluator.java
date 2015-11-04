@@ -5,7 +5,7 @@ import mullen.alex.jdf.common.Board;
 
 /**
  * An implementation that defines a class that evaluates and gives a board a
- * score from a specific <code>PieceOwner</code>'s perspective.
+ * score from a specific colour's perspective.
  *
  * @author     Alex Mullen
  *

@@ -15,9 +15,9 @@ import java.util.Arrays;
  *
  */
 public class Board {
-    /** The width of the board. */
+    /** The width of the board (left-to-right). */
     public final int width;
-    /** The height of the board. */
+    /** The height of the board (top-to-bottom). */
     public final int height;
     /** The piece positions represented by a one-dimensional array. */
     public final Piece[] pieces;
@@ -63,7 +63,7 @@ public class Board {
         height = boardToCopy.height;
         pieces = new Piece[width * height];
         positions = boardToCopy.positions;
-        for (int i = 1; i < pieces.length; i++) {
+        for (int i = 0; i < pieces.length; i++) {
             final Piece foundPiece = boardToCopy.pieces[i];
             if (foundPiece != null) {
                 pieces[i] = new Piece(foundPiece);
@@ -72,7 +72,8 @@ public class Board {
     }
     /**
      * Gets a cached {@link BoardPosition} instance for the specified position
-     * so as to limit the amount of garbage.
+     * which is useful for limiting the amount of garbage produced when
+     * generating moves.
      *
      * @param x  the X position (left-to-right)
      * @param y  the Y position (top-to-bottom)
@@ -116,7 +117,7 @@ public class Board {
      * @see #getPieceAt(int, int)
      */
     public final Piece getPieceAt(final BoardPosition position) {
-        return getPieceAt(position.x, position.y);
+        return pieces[position.y + (height * position.x)];
     }
     /**
      * Sets the piece at the specified position.
@@ -189,7 +190,10 @@ public class Board {
      */
     public final Piece setPieceAndGetAt(final BoardPosition position,
             final Piece newPiece) {
-        return setPieceAndGetAt(position.x, position.y, newPiece);
+        final int index = position.y + (height * position.x);
+        final Piece previousPiece = pieces[index];
+        pieces[index] = newPiece;
+        return previousPiece;
     }
     /**
      * Gets whether there is a piece at the specified position.
@@ -200,7 +204,7 @@ public class Board {
      *           there is no piece
      */
     public final boolean isPieceAt(final int x, final int y) {
-        return getPieceAt(x, y) != null;
+        return pieces[y + (height * x)] != null;
     }
     /**
      * Gets whether the specified position exists on this board and is not
@@ -212,7 +216,7 @@ public class Board {
      *           if it is not valid
      */
     public final boolean isPositionWithinBounds(final int x, final int y) {
-        return x >= 0 && y >= 0 && x < width && y < height;
+        return x >= 0 && x < width && y < height && y >= 0;
     }
     @Override
     public final int hashCode() {
@@ -248,14 +252,12 @@ public class Board {
         final StringBuilder sb = new StringBuilder(128);
         sb.append("Board [width=").append(width).append(", height=")
           .append(height).append(']');
-        for (int x = 0; x < width; x++) {
-            final int heightByX = height * x;
-            for (int y = 0; y < height; y++) {
-                final Piece foundPiece = pieces[y + heightByX];
-                if (foundPiece != null) {
-                    sb.append("\n    (").append(x).append(',')
-                      .append(y).append(") = ").append(foundPiece);
-                }
+        for (int i = 0; i < pieces.length; i++) {
+            final Piece foundPiece = pieces[i];
+            if (foundPiece != null) {
+                final BoardPosition pos = positions[i];
+                sb.append("\n    (").append(pos.x).append(',')
+                  .append(pos.y).append(") = ").append(foundPiece);
             }
         }
         return sb.toString();

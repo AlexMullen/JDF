@@ -1,7 +1,7 @@
 package mullen.alex.jdf.common;
 
 /**
- * An interface for defining a class that can apply a move to a board.
+ * An interface for defining a class that applies a move to a board.
  *
  * @author  Alex Mullen
  *

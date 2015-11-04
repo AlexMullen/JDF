@@ -57,8 +57,8 @@ public class IterativeMinimaxAB implements MoveSearch {
 //                currentMove.score = alphabeta(board, game, false, maxPlayer,
 //                        depth, -MAX_ABS_AB_RANGE, MAX_ABS_AB_RANGE, pv);
                 performedMove.undo();
-                System.out.println(currentMove.move + " | depth=" + depth + " | score = " + currentMove.score + 
-                        "  (" + (currentMove.score > previousMoveScore ? "+" : "-") + Math.abs(currentMove.score - previousMoveScore) + ")");
+                System.out.println(currentMove.move + " | depth=" + depth + " | score = " + currentMove.score
+                        + "  (" + (currentMove.score > previousMoveScore ? "+" : "-") + Math.abs(currentMove.score - previousMoveScore) + ")");
             }
         }
         // TODO Auto-generated method stub

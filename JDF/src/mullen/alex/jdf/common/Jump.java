@@ -22,8 +22,7 @@ public class Jump {
      * @param jumpedPosition  the position that was jumped over
      *
      */
-    public Jump(
-            final BoardPosition fromPosition,
+    public Jump(final BoardPosition fromPosition,
             final BoardPosition toPosition,
             final BoardPosition jumpedPosition) {
         from = fromPosition;

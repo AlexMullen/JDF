@@ -3,10 +3,10 @@ package mullen.alex.jdf.common;
 import java.util.List;
 
 /**
- * An interface for defining a class that generates the valid moves for a
- * specified position on a board.
+ * An interface for defining a class that generates the valid moves given a
+ * board configuration.
  *
- * @author     Alex Mullen
+ * @author  Alex Mullen
  *
  */
 public interface MoveGenerator {

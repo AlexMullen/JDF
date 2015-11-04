@@ -30,6 +30,7 @@ public class NegamaxAlphaBetaDepthLimited implements MoveSearch {
     private final int maxSearchDepth;
     /** The random number generator to use when choosing equal moves. */
     private final Random rng;
+    /** Holds the current number of nodes searched. */
     private int nodesEvaluated;
     /** The comparator to use for sorting jumps in descending order. */
     private static final Comparator<Move> DESCENDING_JUMP_COMPARATOR =
@@ -93,8 +94,8 @@ public class NegamaxAlphaBetaDepthLimited implements MoveSearch {
             }
         }
         System.out.println("nodes evaluated: " + nodesEvaluated);
-        return bestMoves.isEmpty() ? null :
-            bestMoves.get(rng.nextInt(bestMoves.size()));
+        return bestMoves.isEmpty() ? null
+                : bestMoves.get(rng.nextInt(bestMoves.size()));
     }
     /**
      * Performs a recursive negamax search.
@@ -113,8 +114,9 @@ public class NegamaxAlphaBetaDepthLimited implements MoveSearch {
             int alpha, int beta) {
         if (depth == 0) {
             // Perform quiescence search until the position is 'quiet'.
-            return quiescence(board, game, maxPlayer, minPlayer, alpha, beta);
-//            return boardEvaluator.evaluate(board, maxPlayer);
+//            return quiescence(board, game, maxPlayer, minPlayer, alpha, beta);
+//            nodesEvaluated++;
+            return boardEvaluator.evaluate(board, maxPlayer);
         }
         int bestScore = -MAX_ABS_AB_RANGE;
         // Generate the legal moves for the current player.
@@ -155,7 +157,8 @@ public class NegamaxAlphaBetaDepthLimited implements MoveSearch {
             } else {
                 beta = g;
             }
-            g = negamax(board, game, maxPlayer, minPlayer, depth, beta - 1, beta);
+            g = negamax(board, game, maxPlayer, minPlayer, depth,
+                    beta - 1, beta);
             if (g < beta) {
                 upperbound = g;
             } else {
