@@ -49,9 +49,6 @@ public class Move {
         from = fromPosition;
         to = toPosition;
         jumps = jumpedPositions;
-//        // If the move has no jumps then assign an empty list.
-//        jumps = (jumpedPositions == null ?
-//                Collections.<Jump>emptyList() : jumpedPositions);
     }
     @Override
     public final String toString() {
