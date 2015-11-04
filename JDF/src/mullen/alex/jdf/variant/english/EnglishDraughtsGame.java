@@ -13,7 +13,6 @@ import mullen.alex.jdf.common.MoveGenerator;
 import mullen.alex.jdf.common.MovePerformer;
 import mullen.alex.jdf.common.Piece;
 import mullen.alex.jdf.common.Player;
-import mullen.alex.jdf.common.Piece.MoveDirection;
 
 /**
  * A draughts game that follows the rules and conventions of English Draughts.
@@ -138,34 +137,34 @@ public class EnglishDraughtsGame implements Game {
      * positions.
      */
     private void initPieces() {
-//      board.setPieceAt(7, 4, new Piece(Piece.LIGHT, MoveDirection.BOTH));
+//      board.setPieceAt(7, 4, new Piece(Piece.LIGHT, Piece.BOTH));
 //
-//      board.setPieceAt(0, 3, new Piece(Piece.DARK, MoveDirection.BOTH));
-//      board.setPieceAt(0, 5, new Piece(Piece.DARK, MoveDirection.BOTH));
+//      board.setPieceAt(0, 3, new Piece(Piece.DARK, Piece.BOTH));
+//      board.setPieceAt(0, 5, new Piece(Piece.DARK, Piece.BOTH));
 
-        board.setPieceAt(1, 0, new Piece(Piece.DARK, MoveDirection.DOWN));
-        board.setPieceAt(3, 0, new Piece(Piece.DARK, MoveDirection.DOWN));
-        board.setPieceAt(5, 0, new Piece(Piece.DARK, MoveDirection.DOWN));
-        board.setPieceAt(7, 0, new Piece(Piece.DARK, MoveDirection.DOWN));
-        board.setPieceAt(0, 1, new Piece(Piece.DARK, MoveDirection.DOWN));
-        board.setPieceAt(2, 1, new Piece(Piece.DARK, MoveDirection.DOWN));
-        board.setPieceAt(4, 1, new Piece(Piece.DARK, MoveDirection.DOWN));
-        board.setPieceAt(6, 1, new Piece(Piece.DARK, MoveDirection.DOWN));
-        board.setPieceAt(1, 2, new Piece(Piece.DARK, MoveDirection.DOWN));
-        board.setPieceAt(3, 2, new Piece(Piece.DARK, MoveDirection.DOWN));
-        board.setPieceAt(5, 2, new Piece(Piece.DARK, MoveDirection.DOWN));
-        board.setPieceAt(7, 2, new Piece(Piece.DARK, MoveDirection.DOWN));
-        board.setPieceAt(0, 5, new Piece(Piece.LIGHT, MoveDirection.UP));
-        board.setPieceAt(2, 5, new Piece(Piece.LIGHT, MoveDirection.UP));
-        board.setPieceAt(4, 5, new Piece(Piece.LIGHT, MoveDirection.UP));
-        board.setPieceAt(6, 5, new Piece(Piece.LIGHT, MoveDirection.UP));
-        board.setPieceAt(1, 6, new Piece(Piece.LIGHT, MoveDirection.UP));
-        board.setPieceAt(3, 6, new Piece(Piece.LIGHT, MoveDirection.UP));
-        board.setPieceAt(5, 6, new Piece(Piece.LIGHT, MoveDirection.UP));
-        board.setPieceAt(7, 6, new Piece(Piece.LIGHT, MoveDirection.UP));
-        board.setPieceAt(0, 7, new Piece(Piece.LIGHT, MoveDirection.UP));
-        board.setPieceAt(2, 7, new Piece(Piece.LIGHT, MoveDirection.UP));
-        board.setPieceAt(4, 7, new Piece(Piece.LIGHT, MoveDirection.UP));
-        board.setPieceAt(6, 7, new Piece(Piece.LIGHT, MoveDirection.UP));
+        board.setPieceAt(1, 0, new Piece(Piece.DARK, Piece.DOWN));
+        board.setPieceAt(3, 0, new Piece(Piece.DARK, Piece.DOWN));
+        board.setPieceAt(5, 0, new Piece(Piece.DARK, Piece.DOWN));
+        board.setPieceAt(7, 0, new Piece(Piece.DARK, Piece.DOWN));
+        board.setPieceAt(0, 1, new Piece(Piece.DARK, Piece.DOWN));
+        board.setPieceAt(2, 1, new Piece(Piece.DARK, Piece.DOWN));
+        board.setPieceAt(4, 1, new Piece(Piece.DARK, Piece.DOWN));
+        board.setPieceAt(6, 1, new Piece(Piece.DARK, Piece.DOWN));
+        board.setPieceAt(1, 2, new Piece(Piece.DARK, Piece.DOWN));
+        board.setPieceAt(3, 2, new Piece(Piece.DARK, Piece.DOWN));
+        board.setPieceAt(5, 2, new Piece(Piece.DARK, Piece.DOWN));
+        board.setPieceAt(7, 2, new Piece(Piece.DARK, Piece.DOWN));
+        board.setPieceAt(0, 5, new Piece(Piece.LIGHT, Piece.UP));
+        board.setPieceAt(2, 5, new Piece(Piece.LIGHT, Piece.UP));
+        board.setPieceAt(4, 5, new Piece(Piece.LIGHT, Piece.UP));
+        board.setPieceAt(6, 5, new Piece(Piece.LIGHT, Piece.UP));
+        board.setPieceAt(1, 6, new Piece(Piece.LIGHT, Piece.UP));
+        board.setPieceAt(3, 6, new Piece(Piece.LIGHT, Piece.UP));
+        board.setPieceAt(5, 6, new Piece(Piece.LIGHT, Piece.UP));
+        board.setPieceAt(7, 6, new Piece(Piece.LIGHT, Piece.UP));
+        board.setPieceAt(0, 7, new Piece(Piece.LIGHT, Piece.UP));
+        board.setPieceAt(2, 7, new Piece(Piece.LIGHT, Piece.UP));
+        board.setPieceAt(4, 7, new Piece(Piece.LIGHT, Piece.UP));
+        board.setPieceAt(6, 7, new Piece(Piece.LIGHT, Piece.UP));
     }
 }

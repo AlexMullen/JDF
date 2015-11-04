@@ -2,10 +2,8 @@ package mullen.alex.jdf.common;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import mullen.alex.jdf.common.Piece.MoveDirection;
 
 import org.junit.Test;
 
@@ -24,25 +22,25 @@ public class TestPiece {
 //    public final void testConstructorWithNullOwnerArg() {
 //        new Piece(Piece.DARK, MoveDirection.DOWN);
 //    }
-    /**
-     * Tests the constructor with the parameter <code>direction</code> being
-     * <code>null</code>. This should not be accepted.
-     */
-    @SuppressWarnings({ "static-method", "unused" })
-    @Test (expected = NullPointerException.class)
-    public final void testConstructorWithNullDirectionArg() {
-        new Piece(Piece.DARK, null);
-    }
-    /**
-     * Tests the constructor with the parameters <code>owner</code> and
-     * <code>direction</code> being <code>null</code>. This should not be
-     * accepted.
-     */
-    @SuppressWarnings({ "static-method", "unused" })
-    @Test (expected = NullPointerException.class)
-    public final void testConstructorWithNullOwnerAndNullDirectionArgs() {
-        new Piece(Piece.DARK, null);
-    }
+//    /**
+//     * Tests the constructor with the parameter <code>direction</code> being
+//     * <code>null</code>. This should not be accepted.
+//     */
+//    @SuppressWarnings({ "static-method", "unused" })
+//    @Test (expected = NullPointerException.class)
+//    public final void testConstructorWithNullDirectionArg() {
+//        new Piece(Piece.DARK, null);
+//    }
+//    /**
+//     * Tests the constructor with the parameters <code>owner</code> and
+//     * <code>direction</code> being <code>null</code>. This should not be
+//     * accepted.
+//     */
+//    @SuppressWarnings({ "static-method", "unused" })
+//    @Test (expected = NullPointerException.class)
+//    public final void testConstructorWithNullOwnerAndNullDirectionArgs() {
+//        new Piece(Piece.DARK, null);
+//    }
     /**
      * Tests the copy constructor to make sure it produces a copy that is
      * exactly the same and does not change its state when the original
@@ -51,7 +49,7 @@ public class TestPiece {
     @SuppressWarnings("static-method")
     @Test
     public final void testCopyConstructor() {
-        final Piece originalPiece = new Piece(Piece.DARK, MoveDirection.DOWN);
+        final Piece originalPiece = new Piece(Piece.DARK, Piece.DOWN);
         // Now create a clone.
         final Piece clonedPiece = new Piece(originalPiece);
         // Check the fields are the same.
@@ -64,8 +62,8 @@ public class TestPiece {
         assertTrue(originalPiece.isCrowned());
         // Assert that the clone has not changed.
         assertEquals(originalPiece.colour, clonedPiece.colour);
-        assertNotSame(originalPiece.getMoveDirection(),
-                clonedPiece.getMoveDirection());
+        assertTrue(originalPiece.getMoveDirection()
+                != clonedPiece.getMoveDirection());
         assertTrue(originalPiece.isCrowned() != clonedPiece.isCrowned());
     }
     /**
@@ -85,12 +83,12 @@ public class TestPiece {
     @SuppressWarnings("static-method")
     @Test
     public final void testGetMoveDirection() {
-        final MoveDirection expectedMoveDirection = MoveDirection.DOWN;
+        final int expectedMoveDirection = Piece.DOWN;
         final Piece piece = new Piece(Piece.DARK, expectedMoveDirection);
         assertEquals(expectedMoveDirection, piece.getMoveDirection());
         // Test the move direction has changed after crowning.
         piece.crown();
-        assertEquals(MoveDirection.BOTH, piece.getMoveDirection());
+        assertEquals(Piece.BOTH, piece.getMoveDirection());
     }
     /**
      * Tests that {@link Piece#isCrowned()} returns expected values.
@@ -98,42 +96,42 @@ public class TestPiece {
     @SuppressWarnings("static-method")
     @Test
     public final void testIsCrowned() {
-        final Piece piece = new Piece(Piece.DARK, MoveDirection.UP);
+        final Piece piece = new Piece(Piece.DARK, Piece.UP);
         assertFalse(piece.isCrowned());
         /*
          * A piece that is not crowned should not be able to move in both
          * directions.
          */
-        assertNotSame(MoveDirection.BOTH, piece.getMoveDirection());
+        assertTrue(Piece.BOTH != piece.getMoveDirection());
         piece.crown();
         // Should be now crowned.
         assertTrue(piece.isCrowned());
         // A piece that is crowned should be able to move in both directions.
-        assertEquals(MoveDirection.BOTH, piece.getMoveDirection());
+        assertEquals(Piece.BOTH, piece.getMoveDirection());
         // Test a piece is crowned when crowned in the constructor.
-        final Piece crownedPiece = new Piece(Piece.DARK, MoveDirection.BOTH);
+        final Piece crownedPiece = new Piece(Piece.DARK, Piece.BOTH);
         // Should be already crowned.
         assertTrue(crownedPiece.isCrowned());
         // A piece that is crowned should be able to move in both directions.
-        assertEquals(MoveDirection.BOTH, crownedPiece.getMoveDirection());
+        assertEquals(Piece.BOTH, crownedPiece.getMoveDirection());
     }
     /**
      * Tests that {@link Piece#crown()} causes
      * {@link Piece#isCrowned()} to return <code>true</code> and
      * {@link Piece#getMoveDirection()} to return
-     * {@link MoveDirection#BOTH}.
+     * {@link Piece#BOTH}.
      */
     @SuppressWarnings("static-method")
     @Test
     public final void testCrown() {
-        final Piece piece = new Piece(Piece.DARK, MoveDirection.UP);
+        final Piece piece = new Piece(Piece.DARK, Piece.UP);
         // Should not be crowned yet.
         assertFalse(piece.isCrowned());
         piece.crown();
         // Should be now crowned.
         assertTrue(piece.isCrowned());
         // A piece that is crowned should be able to move in both directions.
-        assertEquals(MoveDirection.BOTH, piece.getMoveDirection());
+        assertTrue(Piece.BOTH == piece.getMoveDirection());
     }
     /**
      * Tests that {@link Piece#equals(Object)} tests for equality correctly.
@@ -143,8 +141,8 @@ public class TestPiece {
     public final void testEquals() {
         final int colour1 = Piece.DARK;
         final int colour2 = Piece.LIGHT;
-        final Piece piece1 = new Piece(colour1, MoveDirection.DOWN);
-        final Piece piece2 = new Piece(colour2, MoveDirection.UP);
+        final Piece piece1 = new Piece(colour1, Piece.DOWN);
+        final Piece piece2 = new Piece(colour2, Piece.UP);
         final Piece piece1Copy = new Piece(piece1);
         final Piece piece2Copy = new Piece(piece2);
         // Test null.

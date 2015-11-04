@@ -1,7 +1,5 @@
 package mullen.alex.jdf.common;
 
-import java.util.Objects;
-
 /**
  * An abstract implementation that represents a piece on a board.
  *
@@ -13,35 +11,38 @@ public class Piece {
     public static final int DARK = 0;
     /** Represents the light coloured pieces. */
     public static final int LIGHT = 1;
+    /** Represents the up direction on a board a piece can move in. */
+    public static final int UP = 2;
+    /** Represents the down direction on a board a piece can move in. */
+    public static final int DOWN = 3;
+    /** Represents the up and down directions on a board a piece can move in. */
+    public static final int BOTH = 4;
     /** Holds the colour of this piece. */
     public final int colour;
     /** Holds the movement direction this piece can do. */
-    private MoveDirection moveDirection;
+    private int moveDirection;
     /**
      * Creates a new instance that is of the specified colour and is
      * only to be allowed to move in the specified direction.
      * <p>
-     * A <code>direction</code> value of {@link MoveDirection#BOTH} effectively
+     * A <code>direction</code> value of {@link #BOTH} effectively
      * crowns this piece and {@link #isCrowned()} will return <code>true</code>.
      *
      * @param pieceColour  the colour of the piece - either {@link #DARK} or
      *                     {@link #LIGHT}
-     * @param direction    the direction this piece is allowed to move in
-     *
-     * @throws NullPointerException  if <code>owner</code> or
-     *                               <code>direction</code> is <code>null</code>
+     * @param direction    the direction this piece is allowed to move in -
+     *                     either {@link #UP}, {@link #DOWN} or {@link #BOTH}
      */
-    public Piece(final int pieceColour, final MoveDirection direction) {
+    public Piece(final int pieceColour, final int direction) {
         colour = pieceColour;
-        moveDirection = Objects.requireNonNull(direction, "Move nowhere?");
+        moveDirection = direction;
     }
     /**
      * Creates a new instance that is a copy of the specified piece.
      *
      * @param piece  the piece to copy
-     * @throws NullPointerException  if <code>piece</code> is <code>null</code>
      *
-     * @see #Piece(int, MoveDirection)
+     * @see #Piece(int, int)
      */
     public Piece(final Piece piece) {
         colour = piece.colour;
@@ -63,7 +64,7 @@ public class Piece {
      *
      * @return  the allowed direction
      */
-    public final MoveDirection getMoveDirection() {
+    public final int getMoveDirection() {
         return moveDirection;
     }
     /**
@@ -74,7 +75,7 @@ public class Piece {
      * @see     #crown()
      */
     public final boolean isCrowned() {
-        return moveDirection == MoveDirection.BOTH;
+        return moveDirection == BOTH;
     }
     /**
      * Crowns this piece.
@@ -82,13 +83,13 @@ public class Piece {
      * @see  #isCrowned()
      */
     public final void crown() {
-        moveDirection = MoveDirection.BOTH;
+        moveDirection = BOTH;
     }
     @Override
     public final int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + moveDirection.hashCode();
+        result = prime * result + moveDirection;
         result = prime * result + colour;
         return result;
     }
@@ -116,18 +117,5 @@ public class Piece {
     public final String toString() {
         return "Piece [colour=" + colour + ", getMoveDirection()="
                 + getMoveDirection() + ", isCrowned()=" + isCrowned() + "]";
-    }
-    /**
-     * Defines movement directions a draughts piece can move in.
-     *
-     * @author  Alex Mullen
-     */
-    public enum MoveDirection {
-        /** The piece can only move upwards in 2D space. */
-        UP,
-        /** The piece can only move downwards in 2D space. */
-        DOWN,
-        /** The piece can move up and down (crowned) in 2D space. */
-        BOTH
     }
 }

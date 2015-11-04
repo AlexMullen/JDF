@@ -9,7 +9,6 @@ import mullen.alex.jdf.common.Move;
 import mullen.alex.jdf.common.MovePerformer;
 import mullen.alex.jdf.common.Piece;
 import mullen.alex.jdf.common.MovePerformer.PerformedMove;
-import mullen.alex.jdf.common.Piece.MoveDirection;
 
 /**
  * A move performer implementation for English draughts rules.
@@ -54,10 +53,10 @@ public class InternationalDraughtsMovePerformer implements MovePerformer {
      *                      not
      */
     public static final boolean isPieceInOpposingKingsRow(
-            final Board board, final int y, final MoveDirection pieceMoveDir) {
-        if (pieceMoveDir == MoveDirection.UP) {
+            final Board board, final int y, final int pieceMoveDir) {
+        if (pieceMoveDir == Piece.UP) {
             return y == 0;
-        } else if (pieceMoveDir == MoveDirection.DOWN) {
+        } else if (pieceMoveDir == Piece.DOWN) {
             return y == board.height - 1;
         } else {
             throw new IllegalStateException("Passed in a unhandled direction");

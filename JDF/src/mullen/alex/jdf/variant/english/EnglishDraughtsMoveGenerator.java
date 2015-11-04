@@ -11,7 +11,6 @@ import mullen.alex.jdf.common.Jump;
 import mullen.alex.jdf.common.Move;
 import mullen.alex.jdf.common.MoveGenerator;
 import mullen.alex.jdf.common.Piece;
-import mullen.alex.jdf.common.Piece.MoveDirection;
 
 import static mullen.alex.jdf.common.MoveGeneratorUtil.*;
 
@@ -111,11 +110,11 @@ public class EnglishDraughtsMoveGenerator implements MoveGenerator {
             /*
              * The piece is not crowned so the direction needs to be determined.
              */
-            if (piece.getMoveDirection() == MoveDirection.UP) {
+            if (piece.getMoveDirection() == Piece.UP) {
                 // Only get upward jumps.
                 findJumpAboveLeft(board, piecePosition, pieceColour, jumps);
                 findJumpAboveRight(board, piecePosition, pieceColour, jumps);
-            } else if (piece.getMoveDirection() == MoveDirection.DOWN) {
+            } else if (piece.getMoveDirection() == Piece.DOWN) {
                 // Only get downward jumps.
                 findJumpBottomLeft(board, piecePosition, pieceColour, jumps);
                 findJumpBottomRight(board, piecePosition, pieceColour, jumps);
@@ -141,11 +140,11 @@ public class EnglishDraughtsMoveGenerator implements MoveGenerator {
             findMoveBottomRight(board, piecePosition, moves);
         } else {
             // The piece is not crowned so the direction needs to be determined.
-            if (piece.getMoveDirection() == MoveDirection.UP) {
+            if (piece.getMoveDirection() == Piece.UP) {
                 // Only get upward moves.
                 findMoveAboveLeft(board, piecePosition, moves);
                 findMoveAboveRight(board, piecePosition, moves);
-            } else if (piece.getMoveDirection() == MoveDirection.DOWN) {
+            } else if (piece.getMoveDirection() == Piece.DOWN) {
                 // Only get downward moves.
                 findMoveBottomLeft(board, piecePosition, moves);
                 findMoveBottomRight(board, piecePosition, moves);
@@ -238,7 +237,7 @@ public class EnglishDraughtsMoveGenerator implements MoveGenerator {
             /*
              * The piece is not crowned so the direction needs to be determined.
              */
-            if (piece.getMoveDirection() == MoveDirection.UP) {
+            if (piece.getMoveDirection() == Piece.UP) {
                 // Only get upward jumps.
                 findJumpAboveLeft(board, piecePosition, pieceColour, jumps);
                 findJumpAboveRight(board, piecePosition, pieceColour, jumps);

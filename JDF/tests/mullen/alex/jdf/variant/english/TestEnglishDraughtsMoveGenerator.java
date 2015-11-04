@@ -11,7 +11,6 @@ import mullen.alex.jdf.common.Jump;
 import mullen.alex.jdf.common.Move;
 import mullen.alex.jdf.common.MoveGenerator;
 import mullen.alex.jdf.common.Piece;
-import mullen.alex.jdf.common.Piece.MoveDirection;
 
 import org.junit.Test;
 
@@ -26,10 +25,10 @@ public class TestEnglishDraughtsMoveGenerator {
             new EnglishDraughtsMoveGenerator();
     /** The dark pieces used for testing. */
     private final Piece darkPiece =
-            new Piece(Piece.DARK, MoveDirection.DOWN);
+            new Piece(Piece.DARK, Piece.DOWN);
     /** The light pieces used for testing. */
     private final Piece lightPiece =
-            new Piece(Piece.LIGHT, MoveDirection.UP);
+            new Piece(Piece.LIGHT, Piece.UP);
     /**
      * A test for making sure a simple move can be properly found.
      */

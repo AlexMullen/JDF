@@ -10,7 +10,6 @@ import mullen.alex.jdf.common.MoveGenerator;
 import mullen.alex.jdf.common.MovePerformer;
 import mullen.alex.jdf.common.Piece;
 import mullen.alex.jdf.common.MovePerformer.PerformedMove;
-import mullen.alex.jdf.common.Piece.MoveDirection;
 
 import org.junit.Test;
 
@@ -25,16 +24,16 @@ public class TestEnglishDraughtsMovePerformer {
             new EnglishDraughtsMovePerformer();
     /** The dark pieces used for testing. */
     private final Piece darkPiece =
-            new Piece(Piece.DARK, MoveDirection.DOWN);
+            new Piece(Piece.DARK, Piece.DOWN);
 //    /** The dark crowned pieces used for testing. */
 //    private final Piece darkPieceCrowned =
 //            new Piece(darkPieceOwner, MoveDirection.BOTH);
     /** The light pieces used for testing. */
     private final Piece lightPiece =
-            new Piece(Piece.LIGHT, MoveDirection.UP);
+            new Piece(Piece.LIGHT, Piece.UP);
     /** The light crowned pieces used for testing. */
     private final Piece lightPieceCrowned =
-            new Piece(Piece.LIGHT, MoveDirection.BOTH);
+            new Piece(Piece.LIGHT, Piece.BOTH);
     /** The move generator to use for getting available moves to perform. */
     private final MoveGenerator moveGenerator =
             new EnglishDraughtsMoveGenerator();
