@@ -46,9 +46,9 @@ public class CheckeredBoardPattern implements BoardPattern {
         int squareColour = WHITE_SQUARE;
         if (!areCoordinatesOutOfBounds(x, y)) {
             if (initialColour == WHITE_SQUARE) {
-                squareColour = ((x + y) % 2 == 0) ? WHITE_SQUARE : BLACK_SQUARE;
+                squareColour = (((x + y) & 1) == 0) ? WHITE_SQUARE : BLACK_SQUARE;
             } else if (initialColour == BLACK_SQUARE) {
-                squareColour = ((x + y) % 2 == 0) ? BLACK_SQUARE : WHITE_SQUARE;
+                squareColour = (((x + y) & 1) == 0) ? BLACK_SQUARE : WHITE_SQUARE;
             } else {
                 // Should not happen.
                 throw new IllegalStateException("Unknown board colour!");
