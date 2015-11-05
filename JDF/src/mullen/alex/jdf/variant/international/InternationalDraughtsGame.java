@@ -78,7 +78,7 @@ public class InternationalDraughtsGame implements Game {
         return boardPattern;
     }
     @Override
-    public final Player getTurnOwner() {
+    public final Player getTurn() {
         return turnOwner;
     }
     @Override

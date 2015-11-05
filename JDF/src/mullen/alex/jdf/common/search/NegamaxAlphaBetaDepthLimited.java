@@ -42,9 +42,23 @@ public class NegamaxAlphaBetaDepthLimited implements MoveSearch {
             return o2.jumps.size() - o1.jumps.size();
         }
     };
-    
-    private final Map<Integer, Integer> tt = new HashMap<>();
-    
+
+    private final Map<Integer, TranspositionEntry> tt = new HashMap<>(1000000);
+    private static class TranspositionEntry {
+        public static final int EXACT = 0;
+        public static final int UPPER = 1;
+        public static final int LOWER = 2;
+//        public Move move;
+        public int depth;
+        public int score;
+        public int flag;
+        public TranspositionEntry(final int d, final int s, final int f) {
+//            move = m;
+            depth = d;
+            score = s;
+            flag = f;
+        }
+    }
     /**
      * Creates a new instance that uses the specified board evaluator
      * and searches to the specified depth.
@@ -118,16 +132,36 @@ public class NegamaxAlphaBetaDepthLimited implements MoveSearch {
     private int negamax(final Board board, final Game game,
             final int maxPlayer, final int minPlayer, final int depth,
             int alpha, int beta) {
-//        if (tt.containsKey(board.hashCode())) {
-//            return tt.get(board.hashCode());
+//        final TranspositionEntry entry = tt.get(Integer.valueOf(board.hashCode()));
+//        if (entry != null && depth <= entry.depth) {
+//            switch (entry.flag) {
+//                case TranspositionEntry.EXACT:
+//                    return entry.score;
+//                case TranspositionEntry.LOWER:
+//                    if (alpha < entry.score) {
+//                        alpha = entry.score;
+//                    }
+//                    break;
+//                case TranspositionEntry.UPPER:
+//                    if (beta < entry.score) {
+//                        beta = entry.score;
+//                    }
+//                    break;
+//                default:
+//                    break;
+//            }
+//            if (alpha >= beta) {
+//                return entry.score;
+//            }
 //        }
+        int a = alpha;
+        int b = beta;
         if (depth == 0) {
             // Perform quiescence search until the position is 'quiet'.
-            final int score =
-                    quiescence(board, game, maxPlayer, minPlayer, alpha, beta);
-//            tt.put(board.hashCode(), score);
-            return score;
-//            return boardEvaluator.evaluate(board, maxPlayer);
+//            final int score =
+//                    quiescence(board, game, maxPlayer, minPlayer, a, b);
+//            return score;
+            return boardEvaluator.evaluate(board, maxPlayer);
         }
         int bestScore = -MAX_ABS_AB_RANGE;
         // Generate the legal moves for the current player.
@@ -138,6 +172,8 @@ public class NegamaxAlphaBetaDepthLimited implements MoveSearch {
         if (moveCount > 1 && !moves.get(0).jumps.isEmpty()) {
             Collections.sort(moves, DESCENDING_JUMP_COMPARATOR);
         }
+        // Pre-calculate and cache some parameters to further calls.
+        final int nextDepth = depth - 1;
         // Check each successive state.
         for (int i = 0; i < moveCount; i++) {
             // Apply the move.
@@ -145,15 +181,68 @@ public class NegamaxAlphaBetaDepthLimited implements MoveSearch {
                     game.getMovePerformer().perform(moves.get(i), board);
             // Evaluate it.
             final int moveVal = -negamax(board, game, minPlayer, maxPlayer,
-                        depth - 1, -beta, -alpha);
+                    nextDepth, -b, -a);
             // Revert the move.
             performedMove.undo();
             bestScore = Math.max(bestScore, moveVal);
-            alpha = Math.max(alpha, moveVal);
-            if (alpha >= beta) {
+            a = Math.max(a, moveVal);
+            if (a >= b) {
                 break;
             }
         }
+//        if (bestScore >= beta && tt.size() <= 1000000) {
+//            final TranspositionEntry existingEntry = tt.get(
+//                    Integer.valueOf(board.hashCode()));
+//            if (existingEntry != null) {
+//                if (existingEntry.depth < depth) {
+//                    final TranspositionEntry newEntry =
+//                            new TranspositionEntry(depth, bestScore,
+//                                    TranspositionEntry.LOWER);
+//                    tt.put(Integer.valueOf(board.hashCode()), newEntry);
+//                }
+//            } else {
+//                final TranspositionEntry newEntry =
+//                        new TranspositionEntry(depth, bestScore,
+//                                TranspositionEntry.LOWER);
+//                tt.put(Integer.valueOf(board.hashCode()), newEntry);
+//            }
+//        } else if (bestScore <= alpha && tt.size() <= 1000000) {
+//            final TranspositionEntry existingEntry = tt.get(
+//                    Integer.valueOf(board.hashCode()));
+//            if (existingEntry != null) {
+//                if (existingEntry.depth < depth) {
+//                    final TranspositionEntry newEntry =
+//                            new TranspositionEntry(depth, bestScore,
+//                                    TranspositionEntry.UPPER);
+//                    tt.put(Integer.valueOf(board.hashCode()), newEntry);
+//                }
+//            } else {
+//                final TranspositionEntry newEntry =
+//                        new TranspositionEntry(depth, bestScore,
+//                                TranspositionEntry.UPPER);
+//                tt.put(Integer.valueOf(board.hashCode()), newEntry);
+//            }
+//        } 
+//        else {
+//            if (tt.size() <= 1000000) {
+//                final TranspositionEntry existingEntry =
+//                        tt.get(Integer.valueOf(board.hashCode()));
+//                if (existingEntry != null) {
+//                    if (existingEntry.depth < depth) {
+//                        final TranspositionEntry newEntry =
+//                                new TranspositionEntry(depth, bestScore,
+//                                        TranspositionEntry.EXACT);
+//                        tt.put(Integer.valueOf(board.hashCode()), newEntry);
+//                    }
+//                } else {
+//                    final TranspositionEntry newEntry =
+//                            new TranspositionEntry(depth, bestScore,
+//                                    TranspositionEntry.EXACT);
+//                    tt.put(Integer.valueOf(board.hashCode()), newEntry);
+//                }
+//            }
+//        }
+
         return bestScore;
     }
     private int mtdf(final Board board, final Game game, final int maxPlayer,

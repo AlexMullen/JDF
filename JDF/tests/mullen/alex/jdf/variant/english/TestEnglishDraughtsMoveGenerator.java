@@ -24,11 +24,9 @@ public class TestEnglishDraughtsMoveGenerator {
     private final MoveGenerator moveGenerator =
             new EnglishDraughtsMoveGenerator();
     /** The dark pieces used for testing. */
-    private final Piece darkPiece =
-            new Piece(Piece.DARK, Piece.DOWN);
+    private final Piece darkPiece = new Piece(Piece.DARK, Piece.DOWN);
     /** The light pieces used for testing. */
-    private final Piece lightPiece =
-            new Piece(Piece.LIGHT, Piece.UP);
+    private final Piece lightPiece = new Piece(Piece.LIGHT, Piece.UP);
     /**
      * A test for making sure a simple move can be properly found.
      */
@@ -116,7 +114,7 @@ public class TestEnglishDraughtsMoveGenerator {
     }
     /**
      * A test for making sure a double jump in the same diagonal direction works
-     * returns the correct move.
+     * and returns the correct move.
      */
     @Test
     public final void testFindMovesWithDoubleJumpSameDirection1() {
@@ -158,7 +156,7 @@ public class TestEnglishDraughtsMoveGenerator {
         // There should only be one found.
         assertEquals(1, foundMoves.size());
         final Move foundJumpMove = foundMoves.get(0);
-        // There should be two jumps in the sequence.
+        // There should be three jumps in the sequence.
         assertEquals(3, foundJumpMove.jumps.size());
         // Check the first jump in the sequence is what we expect.
         final Jump firstJump = foundJumpMove.jumps.get(0);

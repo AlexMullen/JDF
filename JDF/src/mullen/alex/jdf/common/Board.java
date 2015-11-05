@@ -32,8 +32,6 @@ public class Board {
      * @throws IllegalArgumentException  if <code>boardWidth</code> or
      *                                   <code>boardHeight</code> is less than
      *                                   <code>1</code>
-     * @throws NullPointerException      if <code>boardPattern</code> is
-     *                                   <code>null</code>
      */
     public Board(final int boardWidth, final int boardHeight) {
         if (boardWidth < 1 || boardHeight < 1) {
@@ -78,6 +76,7 @@ public class Board {
      * @param x  the X position (left-to-right)
      * @param y  the Y position (top-to-bottom)
      * @return   a <code>BoardPosition</code> instance for the position
+     *
      * @throws ArrayIndexOutOfBoundsException  if the location specified with
      *                                         <code>x</code> and <code>y</code>
      *                                         is out of bounds on this board
@@ -93,6 +92,7 @@ public class Board {
      * @return   the piece at the specified position - this could be
      *           <code>null</code> if there is no piece at the specified
      *           position
+     *
      * @throws ArrayIndexOutOfBoundsException  if the location specified with
      *                                         <code>x</code> and <code>y</code>
      *                                         is out of bounds on this board
@@ -109,6 +109,7 @@ public class Board {
      * @return          the piece at the specified position - this could be
      *                  <code>null</code> if there is no piece at the specified
      *                  position
+     *
      * @throws ArrayIndexOutOfBoundsException  if the location specified with
      *                                         <code>position</code> is out of
      *                                         bounds on this board
@@ -126,6 +127,7 @@ public class Board {
      * @param y         the Y position (top-to-bottom)
      * @param newPiece  the piece to place at the specified position
      *                  (this can be <code>null</code>)
+     *
      * @throws ArrayIndexOutOfBoundsException  if the location specified with
      *                                         <code>x</code> and <code>y</code>
      *                                         is out of bounds on this board
@@ -140,6 +142,7 @@ public class Board {
      * @param position  the position
      * @param newPiece  the piece to place at the specified position
      *                  (this can be <code>null</code>)
+     *
      * @throws ArrayIndexOutOfBoundsException  if the location specified with
      *                                         <code>x</code> and <code>y</code>
      *                                         is out of bounds on this board
@@ -161,6 +164,7 @@ public class Board {
      * @return          the piece that was replaced at the specified position
      *                  - this could be <code>null</code> if there was no piece
      *                  at the set position
+     *
      * @throws ArrayIndexOutOfBoundsException  if the location specified with
      *                                         <code>x</code> and <code>y</code>
      *                                         is out of bounds on this board
@@ -182,6 +186,7 @@ public class Board {
      * @return          the piece that was replaced at the specified position
      *                  - this could be <code>null</code> if there was no piece
      *                  at the set position
+     *
      * @throws ArrayIndexOutOfBoundsException  if the location specified with
      *                                         <code>position</code> is out of
      *                                         bounds on this board

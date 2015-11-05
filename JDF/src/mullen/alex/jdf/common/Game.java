@@ -24,7 +24,7 @@ public interface Game {
      *
      * @return  the owner of the turn
      */
-    Player getTurnOwner();
+    Player getTurn();
     /**
      * Gets the player who is playing the dark pieces.
      *

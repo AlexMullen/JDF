@@ -123,10 +123,12 @@ public final class MoveGeneratorUtil {
             // Check if the piece that can be jumped (if any) is an enemy piece.
             if (pieceToJumpOver != null && colour != pieceToJumpOver.colour) {
                 // This is a jump move.
+                final int boardHeight = board.height;
+                final BoardPosition[] positions = board.positions;
                 outJumps.add(new Jump(
                         fromPosition,
-                        board.getBoardPositionFor(landPosX, landPosY),
-                        board.getBoardPositionFor(jumpedPosX, jumpedPosY)));
+                        positions[landPosY + (boardHeight * landPosX)],
+                        positions[jumpedPosY + (boardHeight * jumpedPosX)]));
             }
         }
     }
@@ -158,10 +160,12 @@ public final class MoveGeneratorUtil {
             // Check if the piece that can be jumped (if any) is an enemy piece.
             if (pieceToJumpOver != null && colour != pieceToJumpOver.colour) {
                 // This is a jump move.
+                final int boardHeight = board.height;
+                final BoardPosition[] positions = board.positions;
                 outJumps.add(new Jump(
                         fromPosition,
-                        board.getBoardPositionFor(landPosX, landPosY),
-                        board.getBoardPositionFor(jumpedPosX, jumpedPosY)));
+                        positions[landPosY + (boardHeight * landPosX)],
+                        positions[jumpedPosY + (boardHeight * jumpedPosX)]));
             }
         }
     }
@@ -191,13 +195,14 @@ public final class MoveGeneratorUtil {
             final Piece pieceToJumpOver =
                     board.getPieceAt(jumpedPosX, jumpedPosY);
             // Check if the piece that can be jumped (if any) is an enemy piece.
-            if (pieceToJumpOver != null
-                    && colour != pieceToJumpOver.colour) {
+            if (pieceToJumpOver != null && colour != pieceToJumpOver.colour) {
                 // This is a jump move.
+                final int boardHeight = board.height;
+                final BoardPosition[] positions = board.positions;
                 outJumps.add(new Jump(
                         fromPosition,
-                        board.getBoardPositionFor(landPosX, landPosY),
-                        board.getBoardPositionFor(jumpedPosX, jumpedPosY)));
+                        positions[landPosY + (boardHeight * landPosX)],
+                        positions[jumpedPosY + (boardHeight * jumpedPosX)]));
             }
         }
     }
@@ -229,10 +234,12 @@ public final class MoveGeneratorUtil {
             // Check if the piece that can be jumped (if any) is an enemy piece.
             if (pieceToJumpOver != null && colour != pieceToJumpOver.colour) {
                 // This is a jump move.
+                final int boardHeight = board.height;
+                final BoardPosition[] positions = board.positions;
                 outJumps.add(new Jump(
                         fromPosition,
-                        board.getBoardPositionFor(landPosX, landPosY),
-                        board.getBoardPositionFor(jumpedPosX, jumpedPosY)));
+                        positions[landPosY + (boardHeight * landPosX)],
+                        positions[jumpedPosY + (boardHeight * jumpedPosX)]));
             }
         }
     }
@@ -334,19 +341,22 @@ public final class MoveGeneratorUtil {
             final Collection<Jump> outJumps) {
         int squareX = fromPosition.x;
         int squareY = fromPosition.y;
+        final int boardHeight = board.height;
         // Loop until a piece is found or the edge of board is reached.
         while (board.isPositionWithinBounds(--squareX, --squareY)) {
-            final Piece foundPiece = board.getPieceAt(squareX, squareY);
+            final Piece foundPiece =
+                    board.pieces[squareY + (boardHeight * squareX)];
             if (foundPiece != null) {
                 if (foundPiece.colour != colour) {
                     final BoardPosition foundPiecePosition =
                             board.getBoardPositionFor(squareX, squareY);
                     // Create a jump for each empty space beyond it
+                    final BoardPosition[] positions = board.positions;
                     while (board.isPositionWithinBounds(--squareX, --squareY)
                             && !board.isPieceAt(squareX, squareY)) {
                         outJumps.add(new Jump(
                                 fromPosition,
-                                board.getBoardPositionFor(squareX, squareY),
+                                positions[squareY + (boardHeight * squareX)],
                                 foundPiecePosition));
                     }
                 }
@@ -372,19 +382,22 @@ public final class MoveGeneratorUtil {
             final Collection<Jump> outJumps) {
         int squareX = fromPosition.x;
         int squareY = fromPosition.y;
+        final int boardHeight = board.height;
         // Loop until a piece is found or the edge of board is reached.
         while (board.isPositionWithinBounds(++squareX, --squareY)) {
-            final Piece foundPiece = board.getPieceAt(squareX, squareY);
+            final Piece foundPiece =
+                    board.pieces[squareY + (boardHeight * squareX)];
             if (foundPiece != null) {
                 if (foundPiece.colour != colour) {
                     final BoardPosition foundPiecePosition =
                             board.getBoardPositionFor(squareX, squareY);
                     // Create a jump for each empty space beyond it
+                    final BoardPosition[] positions = board.positions;
                     while (board.isPositionWithinBounds(++squareX, --squareY)
                             && !board.isPieceAt(squareX, squareY)) {
                         outJumps.add(new Jump(
                                 fromPosition,
-                                board.getBoardPositionFor(squareX, squareY),
+                                positions[squareY + (boardHeight * squareX)],
                                 foundPiecePosition));
                     }
                 }
@@ -410,19 +423,22 @@ public final class MoveGeneratorUtil {
             final Collection<Jump> outJumps) {
         int squareX = fromPosition.x;
         int squareY = fromPosition.y;
+        final int boardHeight = board.height;
         // Loop until a piece is found or the edge of board is reached.
         while (board.isPositionWithinBounds(--squareX, ++squareY)) {
-            final Piece foundPiece = board.getPieceAt(squareX, squareY);
+            final Piece foundPiece =
+                    board.pieces[squareY + (boardHeight * squareX)];
             if (foundPiece != null) {
                 if (foundPiece.colour != colour) {
                     final BoardPosition foundPiecePosition =
                             board.getBoardPositionFor(squareX, squareY);
                     // Create a jump for each empty space beyond it
+                    final BoardPosition[] positions = board.positions;
                     while (board.isPositionWithinBounds(--squareX, ++squareY)
                             && !board.isPieceAt(squareX, squareY)) {
                         outJumps.add(new Jump(
                                 fromPosition,
-                                board.getBoardPositionFor(squareX, squareY),
+                                positions[squareY + (boardHeight * squareX)],
                                 foundPiecePosition));
                     }
                 }
@@ -448,19 +464,22 @@ public final class MoveGeneratorUtil {
             final Collection<Jump> outJumps) {
         int squareX = fromPosition.x;
         int squareY = fromPosition.y;
+        final int boardHeight = board.height;
         // Loop until a piece is found or the edge of board is reached.
         while (board.isPositionWithinBounds(++squareX, ++squareY)) {
-            final Piece foundPiece = board.getPieceAt(squareX, squareY);
+            final Piece foundPiece =
+                    board.pieces[squareY + (boardHeight * squareX)];
             if (foundPiece != null) {
                 if (foundPiece.colour != colour) {
                     final BoardPosition foundPiecePosition =
                             board.getBoardPositionFor(squareX, squareY);
                     // Create a jump for each empty space beyond it
+                    final BoardPosition[] positions = board.positions;
                     while (board.isPositionWithinBounds(++squareX, ++squareY)
                             && !board.isPieceAt(squareX, squareY)) {
                         outJumps.add(new Jump(
                                 fromPosition,
-                                board.getBoardPositionFor(squareX, squareY),
+                                positions[squareY + (boardHeight * squareX)],
                                 foundPiecePosition));
                     }
                 }

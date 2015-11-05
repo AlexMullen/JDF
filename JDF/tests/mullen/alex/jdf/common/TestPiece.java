@@ -13,34 +13,6 @@ import org.junit.Test;
  * @author  Alex Mullen
  */
 public class TestPiece {
-//    /**
-//     * Tests the constructor with the parameter <code>owner</code> being
-//     * <code>null</code>. This should not be accepted.
-//     */
-//    @SuppressWarnings({ "static-method", "unused" })
-//    @Test (expected = NullPointerException.class)
-//    public final void testConstructorWithNullOwnerArg() {
-//        new Piece(Piece.DARK, MoveDirection.DOWN);
-//    }
-//    /**
-//     * Tests the constructor with the parameter <code>direction</code> being
-//     * <code>null</code>. This should not be accepted.
-//     */
-//    @SuppressWarnings({ "static-method", "unused" })
-//    @Test (expected = NullPointerException.class)
-//    public final void testConstructorWithNullDirectionArg() {
-//        new Piece(Piece.DARK, null);
-//    }
-//    /**
-//     * Tests the constructor with the parameters <code>owner</code> and
-//     * <code>direction</code> being <code>null</code>. This should not be
-//     * accepted.
-//     */
-//    @SuppressWarnings({ "static-method", "unused" })
-//    @Test (expected = NullPointerException.class)
-//    public final void testConstructorWithNullOwnerAndNullDirectionArgs() {
-//        new Piece(Piece.DARK, null);
-//    }
     /**
      * Tests the copy constructor to make sure it produces a copy that is
      * exactly the same and does not change its state when the original

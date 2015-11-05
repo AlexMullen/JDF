@@ -23,17 +23,11 @@ public class TestEnglishDraughtsMovePerformer {
     private final MovePerformer movePerformer =
             new EnglishDraughtsMovePerformer();
     /** The dark pieces used for testing. */
-    private final Piece darkPiece =
-            new Piece(Piece.DARK, Piece.DOWN);
-//    /** The dark crowned pieces used for testing. */
-//    private final Piece darkPieceCrowned =
-//            new Piece(darkPieceOwner, MoveDirection.BOTH);
+    private final Piece darkPiece = new Piece(Piece.DARK, Piece.DOWN);
     /** The light pieces used for testing. */
-    private final Piece lightPiece =
-            new Piece(Piece.LIGHT, Piece.UP);
+    private final Piece lightPiece = new Piece(Piece.LIGHT, Piece.UP);
     /** The light crowned pieces used for testing. */
-    private final Piece lightPieceCrowned =
-            new Piece(Piece.LIGHT, Piece.BOTH);
+    private final Piece lightPieceCrowned = new Piece(Piece.LIGHT, Piece.BOTH);
     /** The move generator to use for getting available moves to perform. */
     private final MoveGenerator moveGenerator =
             new EnglishDraughtsMoveGenerator();
