@@ -59,8 +59,8 @@ public class Board {
     public Board(final Board boardToCopy) {
         width = boardToCopy.width;
         height = boardToCopy.height;
-        pieces = new Piece[width * height];
         positions = boardToCopy.positions;
+        pieces = new Piece[boardToCopy.pieces.length];
         for (int i = 0; i < pieces.length; i++) {
             final Piece foundPiece = boardToCopy.pieces[i];
             if (foundPiece != null) {
