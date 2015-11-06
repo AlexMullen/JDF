@@ -7,7 +7,6 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-
 import org.junit.Test;
 
 /**
@@ -23,10 +22,34 @@ public class TestBoard {
     @Test
     public final void testBoard() {
         final int width = 8;
-        final int height = 8;
+        final int height = 7;
         final Board board = new Board(width, height);
         assertEquals(width, board.width);
         assertEquals(height, board.height);
+    }
+    /**
+     * Tests that the backing piece array is of the expected length.
+     */
+    @SuppressWarnings("static-method")
+    @Test
+    public final void testBoardPieceArrayLength() {
+        final int width = 7;
+        final int height = 8;
+        final Board board = new Board(width, height);
+        final int expectedPieceArrayLength = width * height;
+        assertEquals(expectedPieceArrayLength, board.pieces.length);
+    }
+    /**
+     * Tests that the backing position array is of the expected length.
+     */
+    @SuppressWarnings("static-method")
+    @Test
+    public final void testBoardPositionArrayLength() {
+        final int width = 6;
+        final int height = 8;
+        final Board board = new Board(width, height);
+        final int expectedPieceArrayLength = width * height;
+        assertEquals(expectedPieceArrayLength, board.positions.length);
     }
     /**
      * Tests the copy constructor to make sure it produces a copy that is
@@ -558,5 +581,21 @@ public class TestBoard {
         assertFalse(board78.equals(board87));
         assertFalse(board87.equals(board88));
         assertFalse(board87.equals(board78));
+    }
+    /**
+     * Tests that {@link Board#hashCode()} returns a different hashcode value
+     * for different sized empty boards.
+     */
+    @SuppressWarnings("static-method")
+    @Test
+    public final void testHashCodeIsDifferentForDifferentSizedEmptyBoards() {
+        final Board board88 = new Board(8, 8);
+        final Board board78 = new Board(7, 8);
+        final Board board87 = new Board(8, 7);
+        // It should have the same hashcode when called twice.
+        assertTrue(board88.hashCode() == board88.hashCode());
+        // It should have a different hashcode to the other boards.
+        assertTrue(board88.hashCode() != board78.hashCode());
+        assertTrue(board88.hashCode() != board87.hashCode());
     }
 }
