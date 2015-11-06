@@ -39,8 +39,9 @@ public class Board {
         }
         width = boardWidth;
         height = boardHeight;
-        pieces = new Piece[width * height];
-        positions = new BoardPosition[width * height];
+        final int boardArrayLength = width * height;
+        pieces = new Piece[boardArrayLength];
+        positions = new BoardPosition[boardArrayLength];
         for (int x = 0; x < width; x++) {
             final int heightByX = height * x;
             for (int y = 0; y < height; y++) {
