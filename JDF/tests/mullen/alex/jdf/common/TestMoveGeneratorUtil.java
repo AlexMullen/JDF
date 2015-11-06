@@ -43,8 +43,8 @@ public class TestMoveGeneratorUtil {
     }
     /**
      * Tests {@link MoveGeneratorUtil#findMoveAboveLeft(Board, BoardPosition,
-     * Collection)} works as expected when the piece
-     * is on the left-most side which means no move should be returned.
+     * Collection)} works as expected when the piece is on the left-most side
+     * which means no move should be returned.
      */
     @SuppressWarnings("static-method")
     @Test
@@ -85,8 +85,8 @@ public class TestMoveGeneratorUtil {
     }
     /**
      * Tests {@link MoveGeneratorUtil#findMoveAboveRight(Board, BoardPosition,
-     * Collection)} works as expected when the piece
-     * is on the right-most side which means no move should be returned.
+     * Collection)} works as expected when the piece is on the right-most side
+     * which means no move should be returned.
      */
     @SuppressWarnings("static-method")
     @Test
@@ -394,27 +394,239 @@ public class TestMoveGeneratorUtil {
         }
     }
     ////////////////////////////////////////////////////////////////////////////
+    /**
+     * Tests {@link MoveGeneratorUtil#findFlyingJumpsAboveLeft(Board,
+     * BoardPosition, int, Collection)} returns the expected jumps when there
+     * is a gap between the piece performing the jump and the piece being
+     * jumped.
+     */
     @SuppressWarnings("static-method")
     @Test
-    public final void testFindFlyingJumpsAboveLeft() {
-        fail("Not yet implemented");
+    public final void testFindFlyingJumpsAboveLeftWithGapBetweenJump() {
+        // Setup the board.
+        final Board board = new Board(10, 10);
+        final BoardPosition jumpFromPos = board.getBoardPositionFor(8, 9);
+        final BoardPosition jumpOverPos = board.getBoardPositionFor(4, 5);
+        board.setPieceAt(jumpFromPos, new Piece(LIGHT, UP));
+        board.setPieceAt(jumpOverPos, new Piece(DARK, DOWN));
+        // Generate the jumps.
+        final List<Jump> jumps = new ArrayList<>();
+        findFlyingJumpsAboveLeft(board, jumpFromPos, LIGHT, jumps);
+        // Four jumps (landing positions) should have been found.
+        assertEquals(4, jumps.size());
+        // Check each jump is what we expect.
+        int x = jumpOverPos.x - 1;
+        int y = jumpOverPos.y - 1;
+        for (final Jump curJump : jumps) {
+            assertEquals(jumpFromPos, curJump.from);
+            assertEquals(jumpOverPos, curJump.jumped);
+            assertEquals(board.getBoardPositionFor(x--, y--), curJump.to);
+        }
+    }
+    /**
+     * Tests {@link MoveGeneratorUtil#findFlyingJumpsAboveLeft(Board,
+     * BoardPosition, int, Collection)} returns the expected jumps when there
+     * is no gap between the piece performing the jump and the piece being
+     * jumped.
+     */
+    @SuppressWarnings("static-method")
+    @Test
+    public final void testFindFlyingJumpsAboveLeftWithNoGapBetweenJump() {
+        // Setup the board.
+        final Board board = new Board(10, 10);
+        final BoardPosition jumpFromPos = board.getBoardPositionFor(8, 9);
+        final BoardPosition jumpOverPos = board.getBoardPositionFor(7, 8);
+        board.setPieceAt(jumpFromPos, new Piece(LIGHT, UP));
+        board.setPieceAt(jumpOverPos, new Piece(DARK, DOWN));
+        // Generate the jumps.
+        final List<Jump> jumps = new ArrayList<>();
+        findFlyingJumpsAboveLeft(board, jumpFromPos, LIGHT, jumps);
+        // Seven jumps (landing positions) should have been found.
+        assertEquals(7, jumps.size());
+        // Check each jump is what we expect.
+        int x = jumpOverPos.x - 1;
+        int y = jumpOverPos.y - 1;
+        for (final Jump curJump : jumps) {
+            assertEquals(jumpFromPos, curJump.from);
+            assertEquals(jumpOverPos, curJump.jumped);
+            assertEquals(board.getBoardPositionFor(x--, y--), curJump.to);
+        }
     }
     ////////////////////////////////////////////////////////////////////////////
+    /**
+     * Tests {@link MoveGeneratorUtil#findFlyingJumpsAboveRight(Board,
+     * BoardPosition, int, Collection)} returns the expected jumps when there
+     * is a gap between the piece performing the jump and the piece being
+     * jumped.
+     */
     @SuppressWarnings("static-method")
     @Test
-    public final void testFindFlyingJumpsAboveRight() {
-        fail("Not yet implemented");
+    public final void testFindFlyingJumpsAboveRightWithGapBetweenJump() {
+        // Setup the board.
+        final Board board = new Board(10, 10);
+        final BoardPosition jumpFromPos = board.getBoardPositionFor(1, 8);
+        final BoardPosition jumpOverPos = board.getBoardPositionFor(7, 2);
+        board.setPieceAt(jumpFromPos, new Piece(LIGHT, UP));
+        board.setPieceAt(jumpOverPos, new Piece(DARK, DOWN));
+        // Generate the jumps.
+        final List<Jump> jumps = new ArrayList<>();
+        findFlyingJumpsAboveRight(board, jumpFromPos, LIGHT, jumps);
+        // Two jumps (landing positions) should have been found.
+        assertEquals(2, jumps.size());
+        // Check each jump is what we expect.
+        int x = jumpOverPos.x + 1;
+        int y = jumpOverPos.y - 1;
+        for (final Jump curJump : jumps) {
+            assertEquals(jumpFromPos, curJump.from);
+            assertEquals(jumpOverPos, curJump.jumped);
+            assertEquals(board.getBoardPositionFor(x++, y--), curJump.to);
+        }
+    }
+    /**
+     * Tests {@link MoveGeneratorUtil#findFlyingJumpsAboveRight(Board,
+     * BoardPosition, int, Collection)} returns the expected jumps when there
+     * is no gap between the piece performing the jump and the piece being
+     * jumped.
+     */
+    @SuppressWarnings("static-method")
+    @Test
+    public final void testFindFlyingJumpsAboveRightWithNoGapBetweenJump() {
+        // Setup the board.
+        final Board board = new Board(10, 10);
+        final BoardPosition jumpFromPos = board.getBoardPositionFor(0, 9);
+        final BoardPosition jumpOverPos = board.getBoardPositionFor(1, 8);
+        board.setPieceAt(jumpFromPos, new Piece(LIGHT, UP));
+        board.setPieceAt(jumpOverPos, new Piece(DARK, DOWN));
+        // Generate the jumps.
+        final List<Jump> jumps = new ArrayList<>();
+        findFlyingJumpsAboveRight(board, jumpFromPos, LIGHT, jumps);
+        // Eight jumps (landing positions) should have been found.
+        assertEquals(8, jumps.size());
+        // Check each jump is what we expect.
+        int x = jumpOverPos.x + 1;
+        int y = jumpOverPos.y - 1;
+        for (final Jump curJump : jumps) {
+            assertEquals(jumpFromPos, curJump.from);
+            assertEquals(jumpOverPos, curJump.jumped);
+            assertEquals(board.getBoardPositionFor(x++, y--), curJump.to);
+        }
     }
     ////////////////////////////////////////////////////////////////////////////
+    /**
+     * Tests {@link MoveGeneratorUtil#findFlyingJumpsBottomLeft(Board,
+     * BoardPosition, int, Collection)} returns the expected jumps when there
+     * is a gap between the piece performing the jump and the piece being
+     * jumped.
+     */
     @SuppressWarnings("static-method")
     @Test
-    public final void testFindFlyingJumpsBottomLeft() {
-        fail("Not yet implemented");
+    public final void testFindFlyingJumpsBottomLeftWithGapBetweenJump() {
+        // Setup the board.
+        final Board board = new Board(10, 10);
+        final BoardPosition jumpFromPos = board.getBoardPositionFor(5, 4);
+        final BoardPosition jumpOverPos = board.getBoardPositionFor(3, 6);
+        board.setPieceAt(jumpFromPos, new Piece(DARK, DOWN));
+        board.setPieceAt(jumpOverPos, new Piece(LIGHT, UP));
+        // Generate the jumps.
+        final List<Jump> jumps = new ArrayList<>();
+        findFlyingJumpsBottomLeft(board, jumpFromPos, DARK, jumps);
+        // Three jumps (landing positions) should have been found.
+        assertEquals(3, jumps.size());
+        // Check each jump is what we expect.
+        int x = jumpOverPos.x - 1;
+        int y = jumpOverPos.y + 1;
+        for (final Jump curJump : jumps) {
+            assertEquals(jumpFromPos, curJump.from);
+            assertEquals(jumpOverPos, curJump.jumped);
+            assertEquals(board.getBoardPositionFor(x--, y++), curJump.to);
+        }
+    }
+    /**
+     * Tests {@link MoveGeneratorUtil#findFlyingJumpsBottomLeft(Board,
+     * BoardPosition, int, Collection)} returns the expected jumps when there
+     * is no gap between the piece performing the jump and the piece being
+     * jumped.
+     */
+    @SuppressWarnings("static-method")
+    @Test
+    public final void testFindFlyingJumpsBottomLeftWithNoGapBetweenJump() {
+        // Setup the board.
+        final Board board = new Board(10, 10);
+        final BoardPosition jumpFromPos = board.getBoardPositionFor(9, 0);
+        final BoardPosition jumpOverPos = board.getBoardPositionFor(8, 1);
+        board.setPieceAt(jumpFromPos, new Piece(DARK, DOWN));
+        board.setPieceAt(jumpOverPos, new Piece(LIGHT, UP));
+        // Generate the jumps.
+        final List<Jump> jumps = new ArrayList<>();
+        findFlyingJumpsBottomLeft(board, jumpFromPos, DARK, jumps);
+        // Eight jumps (landing positions) should have been found.
+        assertEquals(8, jumps.size());
+        // Check each jump is what we expect.
+        int x = jumpOverPos.x - 1;
+        int y = jumpOverPos.y + 1;
+        for (final Jump curJump : jumps) {
+            assertEquals(jumpFromPos, curJump.from);
+            assertEquals(jumpOverPos, curJump.jumped);
+            assertEquals(board.getBoardPositionFor(x--, y++), curJump.to);
+        }
     }
     ////////////////////////////////////////////////////////////////////////////
+    /**
+     * Tests {@link MoveGeneratorUtil#findFlyingJumpsBottomRight(Board,
+     * BoardPosition, int, Collection)} returns the expected jumps when there
+     * is a gap between the piece performing the jump and the piece being
+     * jumped.
+     */
     @SuppressWarnings("static-method")
     @Test
-    public final void testFindFlyingJumpsBottomRight() {
-        fail("Not yet implemented");
+    public final void testFindFlyingJumpsBottomRightWithGapBetweenJump() {
+        // Setup the board.
+        final Board board = new Board(10, 10);
+        final BoardPosition jumpFromPos = board.getBoardPositionFor(0, 1);
+        final BoardPosition jumpOverPos = board.getBoardPositionFor(3, 4);
+        board.setPieceAt(jumpFromPos, new Piece(DARK, DOWN));
+        board.setPieceAt(jumpOverPos, new Piece(LIGHT, UP));
+        // Generate the jumps.
+        final List<Jump> jumps = new ArrayList<>();
+        findFlyingJumpsBottomRight(board, jumpFromPos, DARK, jumps);
+        // Five jumps (landing positions) should have been found.
+        assertEquals(5, jumps.size());
+        // Check each jump is what we expect.
+        int x = jumpOverPos.x + 1;
+        int y = jumpOverPos.y + 1;
+        for (final Jump curJump : jumps) {
+            assertEquals(jumpFromPos, curJump.from);
+            assertEquals(jumpOverPos, curJump.jumped);
+            assertEquals(board.getBoardPositionFor(x++, y++), curJump.to);
+        }
+    }
+    /**
+     * Tests {@link MoveGeneratorUtil#findFlyingJumpsBottomRight(Board,
+     * BoardPosition, int, Collection)} returns the expected jumps when there
+     * is no gap between the piece performing the jump and the piece being
+     * jumped.
+     */
+    @SuppressWarnings("static-method")
+    @Test
+    public final void testFindFlyingJumpsBottomRightWithNoGapBetweenJump() {
+        // Setup the board.
+        final Board board = new Board(10, 10);
+        final BoardPosition jumpFromPos = board.getBoardPositionFor(1, 0);
+        final BoardPosition jumpOverPos = board.getBoardPositionFor(2, 1);
+        board.setPieceAt(jumpFromPos, new Piece(DARK, DOWN));
+        board.setPieceAt(jumpOverPos, new Piece(LIGHT, UP));
+        // Generate the jumps.
+        final List<Jump> jumps = new ArrayList<>();
+        findFlyingJumpsBottomRight(board, jumpFromPos, DARK, jumps);
+        // Seven jumps (landing positions) should have been found.
+        assertEquals(7, jumps.size());
+        // Check each jump is what we expect.
+        int x = jumpOverPos.x + 1;
+        int y = jumpOverPos.y + 1;
+        for (final Jump curJump : jumps) {
+            assertEquals(jumpFromPos, curJump.from);
+            assertEquals(jumpOverPos, curJump.jumped);
+            assertEquals(board.getBoardPositionFor(x++, y++), curJump.to);
+        }
     }
 }
