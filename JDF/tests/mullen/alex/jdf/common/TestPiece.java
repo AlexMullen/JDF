@@ -3,9 +3,9 @@ package mullen.alex.jdf.common;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import org.junit.Test;
+
+import static mullen.alex.jdf.common.Piece.*;
 
 /**
  * Unit tests for {@link Piece}.
@@ -21,7 +21,7 @@ public class TestPiece {
     @SuppressWarnings("static-method")
     @Test
     public final void testCopyConstructor() {
-        final Piece originalPiece = new Piece(Piece.DARK, Piece.DOWN);
+        final Piece originalPiece = new Piece(DARK, DOWN);
         // Now create a clone.
         final Piece clonedPiece = new Piece(originalPiece);
         // Check the fields are the same.
@@ -46,7 +46,6 @@ public class TestPiece {
     @Test (expected = NullPointerException.class)
     public final void testCopyConstructorWithNull() {
         new Piece(null);
-        fail("NPE should have been thrown!");
     }
     /**
      * Tests that {@link Piece#getMoveDirection()} returns the expected
@@ -55,8 +54,8 @@ public class TestPiece {
     @SuppressWarnings("static-method")
     @Test
     public final void testGetMoveDirection() {
-        final int expectedMoveDirection = Piece.DOWN;
-        final Piece piece = new Piece(Piece.DARK, expectedMoveDirection);
+        final int expectedMoveDirection = DOWN;
+        final Piece piece = new Piece(DARK, expectedMoveDirection);
         assertEquals(expectedMoveDirection, piece.getMoveDirection());
         // Test the move direction has changed after crowning.
         piece.crown();
@@ -68,24 +67,24 @@ public class TestPiece {
     @SuppressWarnings("static-method")
     @Test
     public final void testIsCrowned() {
-        final Piece piece = new Piece(Piece.DARK, Piece.UP);
+        final Piece piece = new Piece(DARK, UP);
         assertFalse(piece.isCrowned());
         /*
          * A piece that is not crowned should not be able to move in both
          * directions.
          */
-        assertTrue(Piece.BOTH != piece.getMoveDirection());
+        assertTrue(BOTH != piece.getMoveDirection());
         piece.crown();
         // Should be now crowned.
         assertTrue(piece.isCrowned());
         // A piece that is crowned should be able to move in both directions.
-        assertEquals(Piece.BOTH, piece.getMoveDirection());
+        assertEquals(BOTH, piece.getMoveDirection());
         // Test a piece is crowned when crowned in the constructor.
-        final Piece crownedPiece = new Piece(Piece.DARK, Piece.BOTH);
+        final Piece crownedPiece = new Piece(DARK, BOTH);
         // Should be already crowned.
         assertTrue(crownedPiece.isCrowned());
         // A piece that is crowned should be able to move in both directions.
-        assertEquals(Piece.BOTH, crownedPiece.getMoveDirection());
+        assertEquals(BOTH, crownedPiece.getMoveDirection());
     }
     /**
      * Tests that {@link Piece#crown()} causes
@@ -96,14 +95,14 @@ public class TestPiece {
     @SuppressWarnings("static-method")
     @Test
     public final void testCrown() {
-        final Piece piece = new Piece(Piece.DARK, Piece.UP);
+        final Piece piece = new Piece(DARK, UP);
         // Should not be crowned yet.
         assertFalse(piece.isCrowned());
         piece.crown();
         // Should be now crowned.
         assertTrue(piece.isCrowned());
         // A piece that is crowned should be able to move in both directions.
-        assertTrue(Piece.BOTH == piece.getMoveDirection());
+        assertTrue(BOTH == piece.getMoveDirection());
     }
     /**
      * Tests that {@link Piece#equals(Object)} tests for equality correctly.
@@ -111,10 +110,10 @@ public class TestPiece {
     @SuppressWarnings("static-method")
     @Test
     public final void testEquals() {
-        final int colour1 = Piece.DARK;
-        final int colour2 = Piece.LIGHT;
-        final Piece piece1 = new Piece(colour1, Piece.DOWN);
-        final Piece piece2 = new Piece(colour2, Piece.UP);
+        final int colour1 = DARK;
+        final int colour2 = LIGHT;
+        final Piece piece1 = new Piece(colour1, DOWN);
+        final Piece piece2 = new Piece(colour2, UP);
         final Piece piece1Copy = new Piece(piece1);
         final Piece piece2Copy = new Piece(piece2);
         // Test null.

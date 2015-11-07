@@ -1,8 +1,6 @@
 package mullen.alex.jdf.common;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
 import org.junit.Test;
 
 /**
@@ -20,9 +18,9 @@ public class TestMove {
         final BoardPosition fromPos = new BoardPosition(1, 3);
         final BoardPosition toPos = new BoardPosition(1, 5);
         final Move move = new Move(fromPos, toPos);
-        assertNotNull(move.from);
-        assertNotNull(move.to);
+        // Check the state is correct.
         assertEquals(fromPos, move.from);
         assertEquals(toPos, move.to);
+        assertEquals(0, move.jumps.size());
     }
 }

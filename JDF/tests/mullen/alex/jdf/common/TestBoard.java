@@ -7,6 +7,9 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+
+import static mullen.alex.jdf.common.Piece.*;
+
 import org.junit.Test;
 
 /**
@@ -52,44 +55,57 @@ public class TestBoard {
         assertEquals(expectedPieceArrayLength, board.positions.length);
     }
     /**
+     * Tests that a copy of an empty board is equal to the original.
+     */
+    @SuppressWarnings("static-method")
+    @Test
+    public final void testBoardCopyConstructorWithEmptyBoard() {
+        final Board board = new Board(7, 8);
+        final Board boardCopy = new Board(board);
+        assertEquals(board, boardCopy);
+    }
+    /**
      * Tests the copy constructor to make sure it produces a copy that is
      * exactly the same and does not change its state when the original
      * changes.
+     * <p>
+     * This also tests that a piece changing state on one board is not mirrored
+     * on copies of that board to make sure references of the pieces are not
+     * being shared.
      */
     @SuppressWarnings("static-method")
     @Test
     public final void testBoardCopyConstructor() {
-        // Check an empty board copy is the same.
-        final Board board1 = new Board(7, 8);
-        final Board board1Copy = new Board(board1);
-        assertEquals(board1, board1Copy);
         /*
          * Check a placed piece is equal to its copied counterpart but does not
          * share the same reference.
          */
-        final Piece piece1 = new Piece(Piece.DARK, Piece.DOWN);
-        final Board board2 = new Board(5, 8);
+        final Board board = new Board(5, 8);
         final int piecePosX = 2;
         final int piecePosY = 3;
-        assertNull(board2.setPieceAndGetAt(piecePosX, piecePosY, piece1));
-        final Board board2Copy = new Board(board2);
-        // They should equal each other...
-        assertTrue(board2.equals(board2Copy));
-        assertTrue(board2Copy.equals(board2));
-        final Piece board2Piece = board2.getPieceAt(piecePosX, piecePosY);
-        final Piece board2CopyPiece =
-                board2Copy.getPieceAt(piecePosX, piecePosY);
-        assertEquals(board2Piece, board2CopyPiece);
-        // ... but not be the same reference.
-        assertNotSame(board2Piece, board2CopyPiece);
+        final Piece piece = new Piece(DARK, DOWN);
+        board.setPieceAndGetAt(piecePosX, piecePosY, piece);
+        // Create a copy.
+        final Board boardCopy = new Board(board);
+        // Both boards should be equal to each other...
+        assertTrue(board.equals(boardCopy));
+        assertTrue(boardCopy.equals(board));
+        // Retrieve references to the same positioned piece on each board.
+        final Piece boardCopyPiece1 = board.getPieceAt(piecePosX, piecePosY);
+        final Piece boardCopyPiece2 =
+                boardCopy.getPieceAt(piecePosX, piecePosY);
+        // They should be equal to each other...
+        assertEquals(boardCopyPiece1, boardCopyPiece2);
+        // ... but should not be the same reference.
+        assertNotSame(boardCopyPiece1, boardCopyPiece2);
         // Crowning one of them should mean both boards are no longer equal.
-        board2Piece.crown();
-        assertFalse(board2.equals(board2Copy));
-        assertFalse(board2Copy.equals(board2));
+        boardCopyPiece1.crown();
+        assertFalse(board.equals(boardCopy));
+        assertFalse(boardCopy.equals(board));
         // Crowning the other one should make them equal again.
-        board2CopyPiece.crown();
-        assertTrue(board2.equals(board2Copy));
-        assertTrue(board2Copy.equals(board2));
+        boardCopyPiece2.crown();
+        assertTrue(board.equals(boardCopy));
+        assertTrue(boardCopy.equals(board));
     }
     /**
      * Tests that the copy constructor throws an NPE if <code>null</code> is
@@ -202,12 +218,10 @@ public class TestBoard {
         final int positionPlacedX = 4;
         final int positionPlacedY = 3;
         final Board board = new Board(width, height);
-        final Piece piece = new Piece(Piece.DARK, Piece.DOWN);
-        Piece retrievedPiece =
-                board.setPieceAndGetAt(positionPlacedX, positionPlacedY, piece);
-        // This should be null as there should not be a piece there yet.
-        assertNull(retrievedPiece);
-        retrievedPiece = board.getPieceAt(positionPlacedX, positionPlacedY);
+        final Piece piece = new Piece(DARK, DOWN);
+        board.setPieceAt(positionPlacedX, positionPlacedY, piece);
+        final Piece retrievedPiece =
+                board.getPieceAt(positionPlacedX, positionPlacedY);
         // This should be the same one we placed.
         assertEquals(piece, retrievedPiece);
     }
@@ -223,12 +237,10 @@ public class TestBoard {
         final int positionPlacedX = 0;
         final int positionPlacedY = 3;
         final Board board = new Board(width, height);
-        final Piece piece = new Piece(Piece.DARK, Piece.DOWN);
-        Piece retrievedPiece =
-                board.setPieceAndGetAt(positionPlacedX, positionPlacedY, piece);
-        // This should be null as there should not be a piece there yet.
-        assertNull(retrievedPiece);
-        retrievedPiece = board.getPieceAt(positionPlacedX, positionPlacedY);
+        final Piece piece = new Piece(DARK, DOWN);
+        board.setPieceAt(positionPlacedX, positionPlacedY, piece);
+        final Piece retrievedPiece =
+                board.getPieceAt(positionPlacedX, positionPlacedY);
         // This should be the same one we placed.
         assertEquals(piece, retrievedPiece);
     }
@@ -244,12 +256,10 @@ public class TestBoard {
         final int positionPlacedX = 4;
         final int positionPlacedY = 0;
         final Board board = new Board(width, height);
-        final Piece piece = new Piece(Piece.DARK, Piece.DOWN);
-        Piece retrievedPiece =
-                board.setPieceAndGetAt(positionPlacedX, positionPlacedY, piece);
-        // This should be null as there should not be a piece there yet.
-        assertNull(retrievedPiece);
-        retrievedPiece = board.getPieceAt(positionPlacedX, positionPlacedY);
+        final Piece piece = new Piece(DARK, DOWN);
+        board.setPieceAt(positionPlacedX, positionPlacedY, piece);
+        final Piece retrievedPiece =
+                board.getPieceAt(positionPlacedX, positionPlacedY);
         // This should be the same one we placed.
         assertEquals(piece, retrievedPiece);
     }
@@ -265,12 +275,10 @@ public class TestBoard {
         final int positionPlacedX = width - 1;
         final int positionPlacedY = 3;
         final Board board = new Board(width, height);
-        final Piece piece = new Piece(Piece.DARK, Piece.DOWN);
-        Piece retrievedPiece =
-                board.setPieceAndGetAt(positionPlacedX, positionPlacedY, piece);
-        // This should be null as there should not be a piece there yet.
-        assertNull(retrievedPiece);
-        retrievedPiece = board.getPieceAt(positionPlacedX, positionPlacedY);
+        final Piece piece = new Piece(DARK, DOWN);
+        board.setPieceAt(positionPlacedX, positionPlacedY, piece);
+        final Piece retrievedPiece =
+                board.getPieceAt(positionPlacedX, positionPlacedY);
         // This should be the same one we placed.
         assertEquals(piece, retrievedPiece);
     }
@@ -286,12 +294,10 @@ public class TestBoard {
         final int positionPlacedX = 4;
         final int positionPlacedY = height - 1;
         final Board board = new Board(width, height);
-        final Piece piece = new Piece(Piece.DARK, Piece.DOWN);
-        Piece retrievedPiece =
-                board.setPieceAndGetAt(positionPlacedX, positionPlacedY, piece);
-        // This should be null as there should not be a piece there yet.
-        assertNull(retrievedPiece);
-        retrievedPiece = board.getPieceAt(positionPlacedX, positionPlacedY);
+        final Piece piece = new Piece(DARK, DOWN);
+        board.setPieceAt(positionPlacedX, positionPlacedY, piece);
+        final Piece retrievedPiece =
+                board.getPieceAt(positionPlacedX, positionPlacedY);
         // This should be the same one we placed.
         assertEquals(piece, retrievedPiece);
     }
@@ -307,8 +313,7 @@ public class TestBoard {
         final int positionPlacedX = -1;
         final int positionPlacedY = 5;
         final Board board = new Board(width, height);
-        final Piece piece = new Piece(Piece.DARK, Piece.DOWN);
-        board.setPieceAndGetAt(positionPlacedX, positionPlacedY, piece);
+        board.getPieceAt(positionPlacedX, positionPlacedY);
         fail("The X value should not be accepted!");
     }
     /**
@@ -323,8 +328,7 @@ public class TestBoard {
         final int positionPlacedX = width;
         final int positionPlacedY = 5;
         final Board board = new Board(width, height);
-        final Piece piece = new Piece(Piece.DARK, Piece.DOWN);
-        board.setPieceAndGetAt(positionPlacedX, positionPlacedY, piece);
+        board.getPieceAt(positionPlacedX, positionPlacedY);
         fail("The X value should not be accepted!");
     }
     /**
@@ -338,12 +342,9 @@ public class TestBoard {
         final int positionPlacedX = 4;
         final int positionPlacedY = 3;
         final Board board = new Board(width, height);
-        final Piece piece = new Piece(Piece.DARK, Piece.DOWN);
-        Piece retrievedPiece =
-                board.setPieceAndGetAt(positionPlacedX, positionPlacedY, piece);
-        // This should be null as there should not be a piece there yet.
-        assertNull(retrievedPiece);
-        retrievedPiece = board.getPieceAt(
+        final Piece piece = new Piece(DARK, DOWN);
+        board.setPieceAt(positionPlacedX, positionPlacedY, piece);
+        final Piece retrievedPiece = board.getPieceAt(
                 new BoardPosition(positionPlacedX, positionPlacedY));
         // This should be the same one we placed.
         assertEquals(piece, retrievedPiece);
@@ -354,19 +355,12 @@ public class TestBoard {
      */
     @SuppressWarnings("static-method")
     @Test (expected = NullPointerException.class)
-    public final void testGetPieceAtNullBoardPosition() {
+    public final void testGetPieceAtWithNullBoardPositionParameter() {
         final int width = 8;
         final int height = 8;
-        final int positionPlacedX = 4;
-        final int positionPlacedY = 3;
         final Board board = new Board(width, height);
-        final Piece piece = new Piece(Piece.DARK, Piece.DOWN);
-        Piece retrievedPiece =
-                board.setPieceAndGetAt(positionPlacedX, positionPlacedY, piece);
-        // This should be null as there should not be a piece there yet.
-        assertNull(retrievedPiece);
         // This should throw an NPE.
-        assertNull(board.getPieceAt(null));
+        board.getPieceAt(null);
         fail("NPE should have been thrown!");
     }
     /**
@@ -375,15 +369,14 @@ public class TestBoard {
      */
     @SuppressWarnings("static-method")
     @Test (expected = ArrayIndexOutOfBoundsException.class)
-    public final void testGetPieceAtNullBoardPositionWithOutOfBoundPosition() {
+    public final void testGetPieceAtWithOutOfBoundBoardPositionParameter() {
         final int width = 8;
         final int height = 8;
         final int positionPlacedX = width + 1;
         final int positionPlacedY = height + 1;
         final Board board = new Board(width, height);
         // This should throw an exception.
-        assertNull(board.getPieceAt(
-                new BoardPosition(positionPlacedX, positionPlacedY)));
+        board.getPieceAt(new BoardPosition(positionPlacedX, positionPlacedY));
         fail("The Y value should not be accepted!");
     }
     /**
@@ -392,14 +385,16 @@ public class TestBoard {
      */
     @SuppressWarnings("static-method")
     @Test
-    public final void testSetPieceAt() {
+    public final void testSetPieceAndGetAt() {
         final int width = 8;
         final int height = 8;
         final int positionPlacedX = 7;
         final int positionPlacedY = 2;
         final Board board = new Board(width, height);
-        final Piece piece = new Piece(Piece.DARK, Piece.DOWN);
-        board.setPieceAndGetAt(positionPlacedX, positionPlacedY, piece);
+        final Piece piece = new Piece(DARK, DOWN);
+        // The current position should be null.
+        assertNull(board.setPieceAndGetAt(
+                positionPlacedX, positionPlacedY, piece));
         final Piece retrievedPiece =
                 board.setPieceAndGetAt(positionPlacedX, positionPlacedY, null);
         // This should be the same one we placed.
@@ -411,13 +406,13 @@ public class TestBoard {
      */
     @SuppressWarnings("static-method")
     @Test
-    public final void testSetPieceAtBoardPosition() {
+    public final void testSetPieceAndGetAtBoardPosition() {
         final int width = 8;
         final int height = 8;
         final int positionPlacedX = 7;
         final int positionPlacedY = 2;
         final Board board = new Board(width, height);
-        final Piece piece = new Piece(Piece.DARK, Piece.DOWN);
+        final Piece piece = new Piece(DARK, DOWN);
         assertNull(board.setPieceAndGetAt(
                 new BoardPosition(positionPlacedX, positionPlacedY), piece));
         final Piece retrievedPiece =
@@ -431,11 +426,11 @@ public class TestBoard {
      */
     @SuppressWarnings("static-method")
     @Test (expected = NullPointerException.class)
-    public final void testSetPieceAtNullBoardPosition() {
+    public final void testSetPieceAndGetAtWithNullBoardPositionParameter() {
         final int width = 8;
         final int height = 8;
         final Board board = new Board(width, height);
-        final Piece piece = new Piece(Piece.DARK, Piece.DOWN);
+        final Piece piece = new Piece(DARK, DOWN);
         board.setPieceAndGetAt(null, piece);
         fail("NPE should have been thrown!");
     }
@@ -451,19 +446,17 @@ public class TestBoard {
         final int positionPlacedX = 7;
         final int positionPlacedY = 2;
         final Board board = new Board(width, height);
-        final Piece piece = new Piece(Piece.DARK, Piece.DOWN);
-        Piece retrievedPiece;
+        final Piece piece = new Piece(DARK, DOWN);
         // There should be no piece at the position yet.
         assertFalse(board.isPieceAt(positionPlacedX, positionPlacedY));
-        retrievedPiece =
-                board.setPieceAndGetAt(positionPlacedX, positionPlacedY, piece);
-        // This should be null as there should not be a previous piece there.
-        assertNull(retrievedPiece);
+        // Place a piece.
+        board.setPieceAt(positionPlacedX, positionPlacedY, piece);
         // There should now be a piece there.
         assertTrue(board.isPieceAt(positionPlacedX, positionPlacedY));
-        retrievedPiece =
+        // Retrieve and remove the piece.
+        final Piece retrievedPiece =
                 board.setPieceAndGetAt(positionPlacedX, positionPlacedY, null);
-        // This should be the same one we placed.
+        // The retrieved piece should be the same one we placed.
         assertEquals(piece, retrievedPiece);
         // The position should now be vacant again.
         assertFalse(board.isPieceAt(positionPlacedX, positionPlacedY));
@@ -517,7 +510,7 @@ public class TestBoard {
         assertTrue(board1.equals(board2));
         assertTrue(board2.equals(board1));
         // Test non-identity equality when adding a piece to a board.
-        final Piece piece1 = new Piece(Piece.DARK, Piece.DOWN);
+        final Piece piece1 = new Piece(DARK, DOWN);
         final Piece piece1Copy = new Piece(piece1);
         // Add a piece to board 1 and assert board1 and board2 are not equal.
         assertNull(board1.setPieceAndGetAt(0, 7, piece1));
@@ -570,7 +563,7 @@ public class TestBoard {
          * Adding the same piece to the same position on them all should make
          * no difference.
          */
-        final Piece piece = new Piece(Piece.DARK, Piece.DOWN);
+        final Piece piece = new Piece(DARK, DOWN);
         assertNull(board88.setPieceAndGetAt(1, 2, piece));
         assertNull(board78.setPieceAndGetAt(1, 2, piece));
         assertNull(board87.setPieceAndGetAt(1, 2, piece));

@@ -19,8 +19,8 @@ public class TestJump {
         final BoardPosition fromPosition = new BoardPosition(5, 3);
         final BoardPosition toPosition = new BoardPosition(3, 5);
         final BoardPosition jumpedPosition = new BoardPosition(3, 7);
-        final Jump move =
-                new Jump(fromPosition, toPosition, jumpedPosition);
+        final Jump move = new Jump(fromPosition, toPosition, jumpedPosition);
+        // Check the state is correct.
         assertEquals(fromPosition, move.from);
         assertEquals(toPosition, move.to);
         assertEquals(jumpedPosition, move.jumped);

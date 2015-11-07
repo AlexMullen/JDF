@@ -191,9 +191,6 @@ public class EnglishDraughtsMoveGenerator implements MoveGenerator {
         if (furtherJumps.isEmpty()) {
             sequences.add(new Move(path.get(0).from, jump.to, path));
         } else {
-//          possibly optimization to avoid memory allocation
-            // TODO: Possible bug here
-//            exploreJump(board, piece, furtherJumps.get(0), path, sequences);
             final int furtherJumpsSize = furtherJumps.size();
             for (int i = 0; i < furtherJumpsSize; i++) {
                 final Jump furtherJump = furtherJumps.get(i);
