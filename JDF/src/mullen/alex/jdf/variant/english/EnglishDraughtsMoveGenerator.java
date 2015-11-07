@@ -97,27 +97,21 @@ public class EnglishDraughtsMoveGenerator implements MoveGenerator {
     private static void findJumpsForPiece(final Board board, final Piece piece,
             final BoardPosition piecePosition, final Collection<Jump> jumps) {
         final int pieceColour = piece.colour;
-        if (piece.isCrowned()) {
-            /*
-             * The piece is crowned so can move in any direction.
-             */
-            findJumpAboveLeft(board, piecePosition, pieceColour, jumps);
-            findJumpAboveRight(board, piecePosition, pieceColour, jumps);
-            findJumpBottomLeft(board, piecePosition, pieceColour, jumps);
-            findJumpBottomRight(board, piecePosition, pieceColour, jumps);
-        } else {
-            /*
-             * The piece is not crowned so the direction needs to be determined.
-             */
-            if (piece.getMoveDirection() == Piece.UP) {
-                // Only get upward jumps.
+        switch (piece.getMoveDirection()) {
+            case Piece.BOTH:
                 findJumpAboveLeft(board, piecePosition, pieceColour, jumps);
                 findJumpAboveRight(board, piecePosition, pieceColour, jumps);
-            } else if (piece.getMoveDirection() == Piece.DOWN) {
-                // Only get downward jumps.
+                //$FALL-THROUGH$
+            case Piece.DOWN:
                 findJumpBottomLeft(board, piecePosition, pieceColour, jumps);
                 findJumpBottomRight(board, piecePosition, pieceColour, jumps);
-            }
+                break;
+            case Piece.UP:
+                findJumpAboveLeft(board, piecePosition, pieceColour, jumps);
+                findJumpAboveRight(board, piecePosition, pieceColour, jumps);
+                break;
+            default:
+                break;
         }
     }
     /**
@@ -131,23 +125,21 @@ public class EnglishDraughtsMoveGenerator implements MoveGenerator {
     private static void findSimpleMovesForPiece(final Board board,
             final Piece piece, final BoardPosition piecePosition,
             final Collection<Move> moves) {
-        if (piece.isCrowned()) {
-            // The piece is crowned so can move in any direction.
-            findMoveAboveLeft(board, piecePosition, moves);
-            findMoveAboveRight(board, piecePosition, moves);
-            findMoveBottomLeft(board, piecePosition, moves);
-            findMoveBottomRight(board, piecePosition, moves);
-        } else {
-            // The piece is not crowned so the direction needs to be determined.
-            if (piece.getMoveDirection() == Piece.UP) {
-                // Only get upward moves.
+        switch (piece.getMoveDirection()) {
+            case Piece.BOTH:
                 findMoveAboveLeft(board, piecePosition, moves);
                 findMoveAboveRight(board, piecePosition, moves);
-            } else if (piece.getMoveDirection() == Piece.DOWN) {
-                // Only get downward moves.
+                //$FALL-THROUGH$
+            case Piece.DOWN:
                 findMoveBottomLeft(board, piecePosition, moves);
                 findMoveBottomRight(board, piecePosition, moves);
-            }
+                break;
+            case Piece.UP:
+                findMoveAboveLeft(board, piecePosition, moves);
+                findMoveAboveRight(board, piecePosition, moves);
+                break;
+            default:
+                break;
         }
     }
     /**
@@ -172,46 +164,6 @@ public class EnglishDraughtsMoveGenerator implements MoveGenerator {
         return jumpSequences;
     }
     /**
-     * A helper method for {@link #exploreJump(Board, Piece, Jump, List, List)}
-     * that retrieves the next set of piece jumps for a piece.
-     *
-     * @param board          the board
-     * @param piece          the piece
-     * @param piecePosition  the position of the piece
-     *                       already taken
-     * @return               the list of successive moves for the piece
-     */
-    private static List<Jump> findNextPieceJumps(final Board board,
-            final Piece piece, final BoardPosition piecePosition) {
-        List<Jump> jumps;
-        final int pieceColour = piece.colour;
-        if (piece.isCrowned()) {
-            jumps = new ArrayList<>(4);
-            /*
-             * The piece is crowned so can move in any direction.
-             */
-            findJumpAboveLeft(board, piecePosition, pieceColour, jumps);
-            findJumpAboveRight(board, piecePosition, pieceColour, jumps);
-            findJumpBottomLeft(board, piecePosition, pieceColour, jumps);
-            findJumpBottomRight(board, piecePosition, pieceColour, jumps);
-        } else {
-            jumps = new ArrayList<>(2);
-            /*
-             * The piece is not crowned so the direction needs to be determined.
-             */
-            if (piece.getMoveDirection() == Piece.UP) {
-                // Only get upward jumps.
-                findJumpAboveLeft(board, piecePosition, pieceColour, jumps);
-                findJumpAboveRight(board, piecePosition, pieceColour, jumps);
-            } else {
-                // Only get downward jumps.
-                findJumpBottomLeft(board, piecePosition, pieceColour, jumps);
-                findJumpBottomRight(board, piecePosition, pieceColour, jumps);
-            }
-        }
-        return jumps;
-    }
-    /**
      * Recursively performs a depth-first-search of a a jump to get all possible
      * jump sequences it can be expanded to.
      *
@@ -230,18 +182,15 @@ public class EnglishDraughtsMoveGenerator implements MoveGenerator {
                 board.setPieceAndGetAt(jump.jumped, null);
         board.setPieceAt(jump.from, null);
         board.setPieceAt(jump.to, piece);
-        final List<Jump> furtherJumps =
-                findNextPieceJumps(board, piece, jump.to);
-//        final List<Jump> furtherJumps = new ArrayList<>(4);
-//        findJumpsForPiece(board, piece, jump.to, furtherJumps);
+        final List<Jump> furtherJumps = new ArrayList<>(4);
+        findJumpsForPiece(board, piece, jump.to, furtherJumps);
         if (furtherJumps.isEmpty()) {
             sequences.add(new Move(path.get(0).from, jump.to, path));
         } else {
             final int furtherJumpsSize = furtherJumps.size();
             for (int i = 0; i < furtherJumpsSize; i++) {
-                final Jump furtherJump = furtherJumps.get(i);
-                exploreJump(board, piece, furtherJump, new ArrayList<>(path),
-                        sequences);
+                exploreJump(board, piece, furtherJumps.get(i),
+                        new ArrayList<>(path), sequences);
             }
         }
         // Revert the board back to its original position.

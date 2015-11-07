@@ -161,6 +161,7 @@ public class NegamaxAlphaBetaDepthLimited implements MoveSearch {
 //            final int score =
 //                    quiescence(board, game, maxPlayer, minPlayer, a, b);
 //            return score;
+            nodesEvaluated++;
             return boardEvaluator.evaluate(board, maxPlayer);
         }
         int bestScore = -MAX_ABS_AB_RANGE;
@@ -222,7 +223,7 @@ public class NegamaxAlphaBetaDepthLimited implements MoveSearch {
 //                                TranspositionEntry.UPPER);
 //                tt.put(Integer.valueOf(board.hashCode()), newEntry);
 //            }
-//        } 
+//        }
 //        else {
 //            if (tt.size() <= 1000000) {
 //                final TranspositionEntry existingEntry =
