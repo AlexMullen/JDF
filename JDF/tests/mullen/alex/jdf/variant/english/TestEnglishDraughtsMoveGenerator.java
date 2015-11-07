@@ -277,7 +277,6 @@ public class TestEnglishDraughtsMoveGenerator {
         // There should two moves found.
         assertEquals(2, foundMoves.size());
         final Move firstMove = foundMoves.get(0);
-        System.out.println(firstMove);
         // This should have four jumps.
         assertEquals(4, firstMove.jumps.size());
 

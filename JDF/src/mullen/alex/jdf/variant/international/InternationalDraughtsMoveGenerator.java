@@ -2,7 +2,6 @@ package mullen.alex.jdf.variant.international;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import mullen.alex.jdf.common.Board;
@@ -184,18 +183,16 @@ public class InternationalDraughtsMoveGenerator implements MoveGenerator {
             final Jump jump, final List<Jump> path,
             final List<Move> sequences) {
         path.add(jump);
+        // Apply the move to the board, saving some objects so we can revert.
+        final Piece jumpedRemovedPiece =
+                board.setPieceAndGetAt(jump.jumped, null);
+        board.setPieceAt(jump.from, null);
+        board.setPieceAt(jump.to, piece);
         final List<Jump> furtherJumps = new ArrayList<>();
         findJumpsForPiece(board, piece, jump.to, furtherJumps);
-        /*
-         * Need to remove jumps that have already been done. This will happen
-         * with pieces as they can jump backwards.
-         */
-        removeAlreadyJumpedPositionMoves(furtherJumps, path);
         if (furtherJumps.isEmpty()) {
             sequences.add(new Move(path.get(0).from, jump.to, path));
         } else {
-//          possibly optimization to avoid memory allocation
-//            exploreJump(board, piece, furtherJumps.get(0), path, sequences);
             final int furtherJumpsSize = furtherJumps.size();
             for (int i = 0; i < furtherJumpsSize; i++) {
                 final Jump furtherJump = furtherJumps.get(i);
@@ -203,29 +200,9 @@ public class InternationalDraughtsMoveGenerator implements MoveGenerator {
                         sequences);
             }
         }
-    }
-    /**
-     * A helper method for pruning jumps that are not possible because a jump
-     * has already been performed over the position.
-     *
-     * @param jumps          the found jumps that could be pruned
-     * @param previousJumps  previous jumps
-     */
-    private static void removeAlreadyJumpedPositionMoves(
-            final List<Jump> jumps, final List<Jump> previousJumps) {
-        final Iterator<Jump> jumpsIterator = jumps.iterator();
-        while (jumpsIterator.hasNext()) {
-            final BoardPosition jumpedPosition =
-                    jumpsIterator.next().jumped;
-            // Check jumps already found.
-            final int previousJumpsSize = previousJumps.size();
-            for (int i = 0; i < previousJumpsSize; i++) {
-                if (jumpedPosition.equals(previousJumps.get(i).jumped)) {
-                    jumpsIterator.remove();
-                    // No point in searching the remaining if any.
-                    break;
-                }
-            }
-        }
+        // Revert the board back to its original position.
+        board.setPieceAt(jump.jumped, jumpedRemovedPiece);
+        board.setPieceAt(jump.from, piece);
+        board.setPieceAt(jump.to, null);
     }
 }

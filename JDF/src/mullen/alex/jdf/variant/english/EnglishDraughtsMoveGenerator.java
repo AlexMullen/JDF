@@ -2,7 +2,6 @@ package mullen.alex.jdf.variant.english;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import mullen.alex.jdf.common.Board;
@@ -173,46 +172,17 @@ public class EnglishDraughtsMoveGenerator implements MoveGenerator {
         return jumpSequences;
     }
     /**
-     * Recursively performs a depth-first-search of a a jump to get all possible
-     * jump sequences it can be expanded to.
-     *
-     * @param board      the board
-     * @param piece      the piece context that would be performing the jumps
-     * @param jump       the initial jump
-     * @param path       the current jump sequence path
-     * @param sequences  the list of found sequences
-     */
-    private static void exploreJump(final Board board, final Piece piece,
-            final Jump jump, final List<Jump> path,
-            final List<Move> sequences) {
-        path.add(jump);
-        final List<Jump> furtherJumps =
-                findNextPieceJumps(board, piece, jump.to, path);
-        if (furtherJumps.isEmpty()) {
-            sequences.add(new Move(path.get(0).from, jump.to, path));
-        } else {
-            final int furtherJumpsSize = furtherJumps.size();
-            for (int i = 0; i < furtherJumpsSize; i++) {
-                final Jump furtherJump = furtherJumps.get(i);
-                exploreJump(board, piece, furtherJump, new ArrayList<>(path),
-                        sequences);
-            }
-        }
-    }
-    /**
      * A helper method for {@link #exploreJump(Board, Piece, Jump, List, List)}
      * that retrieves the next set of piece jumps for a piece.
      *
      * @param board          the board
      * @param piece          the piece
      * @param piecePosition  the position of the piece
-     * @param previousJumps  the current path of jumps the piece has currently
      *                       already taken
      * @return               the list of successive moves for the piece
      */
     private static List<Jump> findNextPieceJumps(final Board board,
-            final Piece piece, final BoardPosition piecePosition,
-            final List<Jump> previousJumps) {
+            final Piece piece, final BoardPosition piecePosition) {
         List<Jump> jumps;
         final int pieceColour = piece.colour;
         if (piece.isCrowned()) {
@@ -224,11 +194,6 @@ public class EnglishDraughtsMoveGenerator implements MoveGenerator {
             findJumpAboveRight(board, piecePosition, pieceColour, jumps);
             findJumpBottomLeft(board, piecePosition, pieceColour, jumps);
             findJumpBottomRight(board, piecePosition, pieceColour, jumps);
-            /*
-             * Need to remove jumps that have already been done. This will
-             * happen with crown pieces as they can go back and forth.
-             */
-            removeAlreadyJumpedPositionMoves(jumps, previousJumps);
         } else {
             jumps = new ArrayList<>(2);
             /*
@@ -247,26 +212,41 @@ public class EnglishDraughtsMoveGenerator implements MoveGenerator {
         return jumps;
     }
     /**
-     * A helper method for pruning jumps that are not possible because a jump
-     * has already been performed over the position.
+     * Recursively performs a depth-first-search of a a jump to get all possible
+     * jump sequences it can be expanded to.
      *
-     * @param jumps          the found jumps that could be pruned
-     * @param previousJumps  previous jumps
+     * @param board      the board
+     * @param piece      the piece context that would be performing the jumps
+     * @param jump       the initial jump
+     * @param path       the current jump sequence path
+     * @param sequences  the list of found sequences
      */
-    private static void removeAlreadyJumpedPositionMoves(
-            final List<Jump> jumps, final List<Jump> previousJumps) {
-        final Iterator<Jump> jumpsIterator = jumps.iterator();
-        while (jumpsIterator.hasNext()) {
-            final BoardPosition jumpedPosition = jumpsIterator.next().jumped;
-            // Check jumps already found.
-            final int previousJumpsSize = previousJumps.size();
-            for (int i = 0; i < previousJumpsSize; i++) {
-                if (jumpedPosition.equals(previousJumps.get(i).jumped)) {
-                    jumpsIterator.remove();
-                    // No point in searching the remaining if any.
-                    break;
-                }
+    private static void exploreJump(final Board board, final Piece piece,
+            final Jump jump, final List<Jump> path,
+            final List<Move> sequences) {
+        path.add(jump);
+        // Apply the move to the board, saving some objects so we can revert.
+        final Piece jumpedRemovedPiece =
+                board.setPieceAndGetAt(jump.jumped, null);
+        board.setPieceAt(jump.from, null);
+        board.setPieceAt(jump.to, piece);
+        final List<Jump> furtherJumps =
+                findNextPieceJumps(board, piece, jump.to);
+//        final List<Jump> furtherJumps = new ArrayList<>(4);
+//        findJumpsForPiece(board, piece, jump.to, furtherJumps);
+        if (furtherJumps.isEmpty()) {
+            sequences.add(new Move(path.get(0).from, jump.to, path));
+        } else {
+            final int furtherJumpsSize = furtherJumps.size();
+            for (int i = 0; i < furtherJumpsSize; i++) {
+                final Jump furtherJump = furtherJumps.get(i);
+                exploreJump(board, piece, furtherJump, new ArrayList<>(path),
+                        sequences);
             }
         }
+        // Revert the board back to its original position.
+        board.setPieceAt(jump.jumped, jumpedRemovedPiece);
+        board.setPieceAt(jump.from, piece);
+        board.setPieceAt(jump.to, null);
     }
 }
