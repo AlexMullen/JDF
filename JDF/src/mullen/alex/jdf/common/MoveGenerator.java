@@ -21,17 +21,4 @@ public interface MoveGenerator {
      *               <code>null</code>.
      */
     List<Move> findMoves(Board board, int colour);
-    /**
-     * Checks if the specified colour has any moves on the given board.
-     * <p>
-     * Using this for checking if there are any moves is preferable than
-     * invoking {@link #findMoves(Board, int)} for efficiency as this can
-     * stop searching when at least one move is found.
-     *
-     * @param board   the board
-     * @param colour  the colour
-     * @return        <code>true</code> if there is at least <code>1</code> move
-     *                available for the colour; <code>false</code> otherwise
-     */
-    boolean hasAnyMoves(Board board, int colour);
 }

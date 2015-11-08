@@ -119,7 +119,7 @@ public class InternationalDraughtsGame implements Game {
         // Next player's turn.
         turnOwner = getOpponent(turnOwner);
         // Check if the next player has any moves left.
-        if (!moveGenerator.hasAnyMoves(board, turnOwner.getColour())) {
+        if (moveGenerator.findMoves(board, turnOwner.getColour()).isEmpty()) {
          // Their turn but they have no moves left so the opposing player wins.
             result = new GameResult(getOpponent(turnOwner));
         }

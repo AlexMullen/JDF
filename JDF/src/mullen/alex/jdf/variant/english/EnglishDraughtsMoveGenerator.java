@@ -55,37 +55,6 @@ public class EnglishDraughtsMoveGenerator implements MoveGenerator {
         return foundJumps.isEmpty() ? foundSimpleMoves : findJumpSequences(
                 board, foundJumps);
     }
-    @Override
-    public final boolean hasAnyMoves(final Board board, final int colour) {
-        final List<Jump> jumps = new ArrayList<>(4);
-        final List<Move> moves = new ArrayList<>(4);
-        final Piece[] pieces = board.pieces;
-        final BoardPosition[] positions = board.positions;
-        final int piecesArrayLength = pieces.length;
-        for (int i = 0; i < piecesArrayLength; i++) {
-            final Piece foundPiece = pieces[i];
-            if (foundPiece != null && foundPiece.colour == colour) {
-                final BoardPosition piecePosition = positions[i];
-                /*
-                 * Check for any simple moves. Statistically, there will
-                 * usually be more simple moves than jumps so this will most
-                 * likely return first - thus checked first.
-                 */
-                findSimpleMovesForPiece(
-                        board, foundPiece, piecePosition, moves);
-                if (!moves.isEmpty()) {
-                    return true;
-                }
-                // Check for any jumps.
-                findJumpsForPiece(board, foundPiece, piecePosition, jumps);
-                if (!jumps.isEmpty()) {
-                    return true;
-                }
-            }
-        }
-        // No moves found if execution gets to here.
-        return false;
-    }
     /**
      * Gets all available jumps for a piece on a board.
      *
