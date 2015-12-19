@@ -276,11 +276,47 @@ public class TestEnglishDraughtsMoveGenerator {
         final List<Move> foundMoves = moveGen.findMoves(board, LIGHT);
         // There should two moves found.
         assertEquals(2, foundMoves.size());
+        ////////////////////////////////////////////////////////////////////////
+        // Retrieve the first move and verify (Jumps go clockwise around).
         final Move firstMove = foundMoves.get(0);
         // This should have four jumps.
         assertEquals(4, firstMove.jumps.size());
-
-        final Move secondMove = foundMoves.get(1); 
+        // Verify the jumps (First jump).
+        assertEquals(new BoardPosition(4, 7), firstMove.jumps.get(0).from);
+        assertEquals(new BoardPosition(2, 5), firstMove.jumps.get(0).to);
+        assertEquals(new BoardPosition(3, 6), firstMove.jumps.get(0).jumped);
+        // Second jump.
+        assertEquals(new BoardPosition(2, 5), firstMove.jumps.get(1).from);
+        assertEquals(new BoardPosition(4, 3), firstMove.jumps.get(1).to);
+        assertEquals(new BoardPosition(3, 4), firstMove.jumps.get(1).jumped);
+        // Third jump.
+        assertEquals(new BoardPosition(4, 3), firstMove.jumps.get(2).from);
+        assertEquals(new BoardPosition(6, 5), firstMove.jumps.get(2).to);
+        assertEquals(new BoardPosition(5, 4), firstMove.jumps.get(2).jumped);
+        // Fourth jump.
+        assertEquals(new BoardPosition(6, 5), firstMove.jumps.get(3).from);
+        assertEquals(new BoardPosition(4, 7), firstMove.jumps.get(3).to);
+        assertEquals(new BoardPosition(5, 6), firstMove.jumps.get(3).jumped);
+        ////////////////////////////////////////////////////////////////////////
+        // Retrieve the second move and verify (Jumps go anti-clockwise around).
+        final Move secondMove = foundMoves.get(1);
+        // This should have four jumps.
+        assertEquals(4, secondMove.jumps.size());
+        // Verify the jumps (First jump).
+        assertEquals(new BoardPosition(4, 7), secondMove.jumps.get(0).from);
+        assertEquals(new BoardPosition(6, 5), secondMove.jumps.get(0).to);
+        assertEquals(new BoardPosition(5, 6), secondMove.jumps.get(0).jumped);
+        // Second jump.
+        assertEquals(new BoardPosition(6, 5), secondMove.jumps.get(1).from);
+        assertEquals(new BoardPosition(4, 3), secondMove.jumps.get(1).to);
+        assertEquals(new BoardPosition(5, 4), secondMove.jumps.get(1).jumped);
+        // Third jump.
+        assertEquals(new BoardPosition(4, 3), secondMove.jumps.get(2).from);
+        assertEquals(new BoardPosition(2, 5), secondMove.jumps.get(2).to);
+        assertEquals(new BoardPosition(3, 4), secondMove.jumps.get(2).jumped);
+        // Fourth jump.
+        assertEquals(new BoardPosition(2, 5), secondMove.jumps.get(3).from);
+        assertEquals(new BoardPosition(4, 7), secondMove.jumps.get(3).to);
+        assertEquals(new BoardPosition(3, 6), secondMove.jumps.get(3).jumped);
     }
-    
 }
