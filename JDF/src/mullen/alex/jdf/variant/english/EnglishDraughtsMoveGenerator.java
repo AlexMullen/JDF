@@ -133,7 +133,7 @@ public class EnglishDraughtsMoveGenerator implements MoveGenerator {
         return jumpSequences;
     }
     /**
-     * Recursively performs a depth-first-search of a a jump to get all possible
+     * Recursively performs a depth-first-search of a jump to get all possible
      * jump sequences it can be expanded to.
      *
      * @param board      the board
